@@ -60,6 +60,7 @@ public class packEnemyAI implements AI {
     }
 
     private Object getFormation(Point playerLocation, int length) {
+        return null;
     }
     
 }
