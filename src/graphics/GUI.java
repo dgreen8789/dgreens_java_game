@@ -8,11 +8,12 @@ import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsEnvironment;
 import java.awt.Insets;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.Transparency;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.font.LineMetrics;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.util.Timer;
@@ -175,7 +176,7 @@ public class GUI extends Thread {
 
     public void updateApplication() {
         if (!paused) {
-
+            
         }
     }
 
@@ -183,16 +184,43 @@ public class GUI extends Thread {
 
         if (!paused) {
             graphicsControl.render(g, width, height, insets);
-        }else{
+        } else {
             Font f = g.getFont();
-            g.setFont(f.deriveFont((float) height / 2));
-            LineMetrics l = f.getLineMetrics("PAUSED", 0, 0, g.getFontRenderContext());
+            g.setFont(this.fillRect("PAUSED", g, width, height));
             g.setColor(Color.RED);
-
-            g.drawString("PAUSED",
-                    width / 2 - (int) (f.getStringBounds("PAUSED", g.getFontRenderContext()).getWidth() / 2),
-                    height / 2 - l.getHeight() / 2);
+            g.drawString("PAUSED", width/2 - (g.getFontMetrics().stringWidth("PAUSED") / 2), 
+                    height/2);
         }
+    }
+
+    /**
+     *
+     * @param string
+     * @param g
+     * @param width
+     * @param height
+     * @return A font that will fill the given area with the given string, or
+     * null if the area is too small
+     */
+    public Font fillRect(String string, Graphics2D g, int width, int height) {
+        Font f = g.getFont();
+        Rectangle2D bounds = f.getStringBounds(string, g.getFontRenderContext());
+
+        while (bounds.getWidth() < width || bounds.getHeight() < height) {
+            f = f.deriveFont(f.getSize2D() + 1);
+            bounds = f.getStringBounds(string, g.getFontRenderContext());
+        }
+
+        while (bounds.getWidth() > width || bounds.getHeight() > height) {
+            if (f.getSize2D() < 2) {
+                return null;
+            } else {
+                f = f.deriveFont(f.getSize2D() - 1);
+                bounds = f.getStringBounds(string, g.getFontRenderContext());
+            }
+        }
+
+        return f;
     }
 
     public GraphicsController getGraphicsControl() {
@@ -205,6 +233,9 @@ public class GUI extends Thread {
 
     public void Pause(boolean paused) {
         this.paused = paused;
+    }
+     public Rectangle getBounds(){
+        return this.canvas.getBounds();
     }
 
 }
@@ -233,4 +264,5 @@ class FPSCounter extends TimerTask {
         val.set(myVal.get());
         myVal.set(0);
     }
+   
 }

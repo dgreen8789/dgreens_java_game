@@ -11,6 +11,19 @@ import unit.Unit;
  *
  * @author David
  */
-public interface AI {
-    public Unit[] getUnits();
+public abstract class AI {
+    private Unit unit;
+
+    public AI(Unit unit) {
+        this.unit = unit;
+    }
+    
+    public void executeMove(){
+        move();
+        attack();
+    }
+
+    protected abstract void move();
+
+    protected abstract void attack();
 }
