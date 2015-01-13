@@ -10,19 +10,22 @@ import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import javax.swing.event.MouseInputListener;
+import main.init;
 
 /**
  *
  * @author David
  */
 public class ControlClass implements MouseInputListener, KeyListener, WindowListener, FocusListener, MouseWheelListener {
-
+    private final char UP = 'W';
+    private final char DOWN = 'S';
+    private final char LEFT = 'A';
+    private final char RIGHT = 'D';
     public ControlClass() {
     }
     
@@ -61,10 +64,12 @@ public class ControlClass implements MouseInputListener, KeyListener, WindowList
 
     @Override
     public void mouseEntered(MouseEvent e) {
+                init.getGameGUI().Pause(false);
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
+        init.getGameGUI().Pause(true);
     }
 
     @Override

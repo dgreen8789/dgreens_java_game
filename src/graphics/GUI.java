@@ -2,6 +2,8 @@ package graphics;
 
 import control.ControlClass;
 import java.awt.Canvas;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsEnvironment;
@@ -10,6 +12,7 @@ import java.awt.Toolkit;
 import java.awt.Transparency;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.font.LineMetrics;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.util.Timer;
@@ -40,7 +43,7 @@ public class GUI extends Thread {
     private FPSCounter fpsCounter = new FPSCounter(FPS);
     private GraphicsController graphicsControl;
     private boolean paused;
-    private ControlClass x =  new ControlClass();
+    private ControlClass x = new ControlClass();
 
     // create a hardware accelerated image
     public final BufferedImage create(final int width, final int height, final boolean alpha) {
@@ -177,8 +180,18 @@ public class GUI extends Thread {
     }
 
     public void renderApplication(Graphics2D g, int width, int height, Insets insets) {
+
         if (!paused) {
             graphicsControl.render(g, width, height, insets);
+        }else{
+            Font f = g.getFont();
+            g.setFont(f.deriveFont((float) height / 2));
+            LineMetrics l = f.getLineMetrics("PAUSED", 0, 0, g.getFontRenderContext());
+            g.setColor(Color.RED);
+
+            g.drawString("PAUSED",
+                    width / 2 - (int) (f.getStringBounds("PAUSED", g.getFontRenderContext()).getWidth() / 2),
+                    height / 2 - l.getHeight() / 2);
         }
     }
 

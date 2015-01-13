@@ -32,7 +32,7 @@ public class packEnemyAI implements AI {
     }
     public Point getNextMove(int unit){
         if (this.getFormationCode() % 3 == 1){
-            Point p;
+            Point p = null;
             //p = getFormation(init.getGameGUI().getGraphicsControl().getPlayerLocation(), this.getUnits().length).rotate(1).getPoint(unit);
             if(this.getFormationCode() > 1){
                 
@@ -60,6 +60,7 @@ public class packEnemyAI implements AI {
     }
 
     private Object getFormation(Point playerLocation, int length) {
+        return null;
     }
     
 }
