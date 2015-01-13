@@ -2,8 +2,9 @@ package graphics;
 
 import AI.Formation;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import main.init;
+import unit.MainCharacter;
 import unit.Unit;
 
 /**
@@ -15,13 +16,15 @@ public class GraphicsController {
     private boolean lock;
     private Insets insets;
     private ArrayList<Unit> units;
-    int x = 4;
-    int r = 0;
+    private Unit mainCharacter;
+    private boolean firstRender = true;
+    private Rectangle oldBounds;
 
     public GraphicsController(Insets insets) {
         this.insets = insets;
         units = new ArrayList<>();
-
+        mainCharacter = new MainCharacter();
+        this.addUnit(mainCharacter);
     }
 
     /**
@@ -32,31 +35,51 @@ public class GraphicsController {
      * @param height the height of the canvas to draw on
      */
     void render(Graphics2D g, int width, int height, Insets insets) {
-
+        if (firstRender) {
+            firstRender();
+        }
         width -= insets.left + insets.right;
         height -= insets.top + insets.bottom;
-        g.setColor(Color.GREEN);
-        int[][] data = Formation.shape(new Point(width / 2, height / 2), 100, x, r);
-
-        g.drawPolygon(data[0], data[1], data[0].length);
-        g.setColor(Color.YELLOW);
-        for (int i = 0; i < data[0].length; i++) {
-            int[][] shape2 = Formation.shape(new Point(data[0][i], data[1][i]), 10, x, (360 / (i + 1)) * i);
-            g.drawPolygon(shape2[0], shape2[1], shape2[0].length);
+        if (!init.getGameGUI().getBounds().equals(oldBounds)) {
+            scale();
+            oldBounds = init.getGameGUI().getBounds();
         }
-        x = (x > 15) ? 3 : x;
-        r ++;
-        if (r == 360) {
-            r %= 360;
-            x++;
+        for (Unit unit : units) {
+            unit.draw(g);
         }
+        
     }
 
     public void addUnit(Unit u) {
         units.add(u);
     }
 
-    public Point getPlayerLocation() {
-        return null;
+    public void removeUnit(Unit u) {
+        units.remove(u);
     }
+
+    public Unit getMainCharacter() {
+        return mainCharacter;
+    }
+
+    public void setMainCharacter(Unit mainCharacter) {
+        this.mainCharacter = mainCharacter;
+    }
+
+    private void firstRender() {
+        Rectangle bounds = init.getGameGUI().getBounds();
+        firstRender = false;
+        mainCharacter.setLocation(bounds.width / 2, bounds.height / 2);
+        oldBounds = bounds;
+
+    }
+
+    private void scale() {
+        double xRatio = init.getGameGUI().getBounds().getWidth() / oldBounds.width * 1.0;
+        double yRatio = init.getGameGUI().getBounds().getHeight() / oldBounds.height * 1.0;
+        for (Unit unit : units) {
+            unit.setLocation((int) (unit.getX() * xRatio), (int) (unit.getY() * yRatio));
+        }
+    }
+
 }

@@ -13,7 +13,7 @@ import unit.Unit;
  *
  * @author David
  */
-public class packEnemyAI implements AI {
+public class packEnemyAI extends AI {
 
     private Unit[] units;
 
@@ -28,11 +28,12 @@ public class packEnemyAI implements AI {
     public static final int LINEAR_DELTA_FORMATION = 6;
     private int formationCode = 1;
     public packEnemyAI(Unit[] units) {
+        super(null);
         this.units = units;
     }
     public Point getNextMove(int unit){
         if (this.getFormationCode() % 3 == 1){
-            Point p;
+            Point p = null;
             //p = getFormation(init.getGameGUI().getGraphicsControl().getPlayerLocation(), this.getUnits().length).rotate(1).getPoint(unit);
             if(this.getFormationCode() > 1){
                 
@@ -61,6 +62,17 @@ public class packEnemyAI implements AI {
 
     private Object getFormation(Point playerLocation, int length) {
         return null;
+    }
+
+    @Override
+    protected void move() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    protected void attack() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
     }
     
 }

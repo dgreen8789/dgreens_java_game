@@ -2,14 +2,18 @@ package graphics;
 
 import control.ControlClass;
 import java.awt.Canvas;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsEnvironment;
 import java.awt.Insets;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.Transparency;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.util.Timer;
@@ -40,7 +44,7 @@ public class GUI extends Thread {
     private FPSCounter fpsCounter = new FPSCounter(FPS);
     private GraphicsController graphicsControl;
     private boolean paused;
-    private ControlClass x =  new ControlClass();
+    private ControlClass x = new ControlClass();
 
     // create a hardware accelerated image
     public final BufferedImage create(final int width, final int height, final boolean alpha) {
@@ -172,14 +176,51 @@ public class GUI extends Thread {
 
     public void updateApplication() {
         if (!paused) {
-
+            
         }
     }
 
     public void renderApplication(Graphics2D g, int width, int height, Insets insets) {
+
         if (!paused) {
             graphicsControl.render(g, width, height, insets);
+        } else {
+            Font f = g.getFont();
+            g.setFont(this.fillRect("PAUSED", g, width, height));
+            g.setColor(Color.RED);
+            g.drawString("PAUSED", width/2 - (g.getFontMetrics().stringWidth("PAUSED") / 2), 
+                    height/2);
         }
+    }
+
+    /**
+     *
+     * @param string
+     * @param g
+     * @param width
+     * @param height
+     * @return A font that will fill the given area with the given string, or
+     * null if the area is too small
+     */
+    public Font fillRect(String string, Graphics2D g, int width, int height) {
+        Font f = g.getFont();
+        Rectangle2D bounds = f.getStringBounds(string, g.getFontRenderContext());
+
+        while (bounds.getWidth() < width || bounds.getHeight() < height) {
+            f = f.deriveFont(f.getSize2D() + 1);
+            bounds = f.getStringBounds(string, g.getFontRenderContext());
+        }
+
+        while (bounds.getWidth() > width || bounds.getHeight() > height) {
+            if (f.getSize2D() < 2) {
+                return null;
+            } else {
+                f = f.deriveFont(f.getSize2D() - 1);
+                bounds = f.getStringBounds(string, g.getFontRenderContext());
+            }
+        }
+
+        return f;
     }
 
     public GraphicsController getGraphicsControl() {
@@ -192,6 +233,9 @@ public class GUI extends Thread {
 
     public void Pause(boolean paused) {
         this.paused = paused;
+    }
+     public Rectangle getBounds(){
+        return this.canvas.getBounds();
     }
 
 }
@@ -220,4 +264,5 @@ class FPSCounter extends TimerTask {
         val.set(myVal.get());
         myVal.set(0);
     }
+   
 }

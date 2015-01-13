@@ -26,7 +26,14 @@ public abstract class Unit {
     }
 
     public void setLocation(Point location) {
-        this.location = location;
+        if (init.getGameGUI().getBounds().contains(location)) {
+            this.location = location;
+        }
+    }
+
+    public void setLocation(int x, int y) {
+        setLocation(new Point(x, y));
+        
     }
 
     public AI getAi() {
@@ -59,17 +66,37 @@ public abstract class Unit {
 
     public Unit(int x, int y) {
         this.location = new Point(x, y);
-        init.getGameGUI().getGraphicsControl().addUnit(this);
     }
 
-    public abstract void draw(Graphics g);
+    public void moveX(int xDelta) {
+        this.setLocation(new Point(this.getLocation().x + xDelta, this.getLocation().y));
+    }
 
-    public abstract void onHit();
+    public void moveY(int yDelta) {
+        this.setLocation(new Point(this.getLocation().x, this.getLocation().y + yDelta));
+    }
 
-    public abstract void onCollide();
+    public int getX() {
+        return this.getLocation().x;
+    }
 
-    public abstract void onCreate();
-    
-    public abstract void onDeath();
+    public int getY() {
+        return this.getLocation().y;
+    }
+
+    public  abstract void draw(Graphics g);
+
+    public  abstract void onHit();
+
+    public  abstract void onCollide();
+
+    public  abstract void onCreate();
+
+    public void onDeath() {
+        init.getGameGUI().getGraphicsControl().removeUnit(this);
+    }
+    public void executeAImove(){
+        ai.executeMove();
+    }
 
 }

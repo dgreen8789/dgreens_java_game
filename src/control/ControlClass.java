@@ -10,12 +10,12 @@ import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import javax.swing.event.MouseInputListener;
+import main.init;
 
 /**
  *
@@ -23,9 +23,14 @@ import javax.swing.event.MouseInputListener;
  */
 public class ControlClass implements MouseInputListener, KeyListener, WindowListener, FocusListener, MouseWheelListener {
 
+    private char UP_KEY = 'W';
+    private char DOWN_KEY = 'S';
+    private char LEFT_KEY = 'A';
+    private char RIGHT_KEY = 'D';
+    private int MOVE_AMOUNT = 10;
+
     public ControlClass() {
     }
-    
 
     @Override
     public void mouseDragged(MouseEvent e) {
@@ -41,6 +46,20 @@ public class ControlClass implements MouseInputListener, KeyListener, WindowList
 
     @Override
     public void keyPressed(KeyEvent e) {
+        char c = Character.toUpperCase(e.getKeyChar());
+        
+        if (c == UP_KEY) {
+            init.getGameGUI().getGraphicsControl().getMainCharacter().moveY(MOVE_AMOUNT * -1);
+        }
+        if (c == DOWN_KEY) {
+            init.getGameGUI().getGraphicsControl().getMainCharacter().moveY(MOVE_AMOUNT);
+        }
+        if (c == LEFT_KEY) {
+            init.getGameGUI().getGraphicsControl().getMainCharacter().moveX(MOVE_AMOUNT * -1);
+        }
+        if (c == RIGHT_KEY) {
+            init.getGameGUI().getGraphicsControl().getMainCharacter().moveX(MOVE_AMOUNT);
+        }
     }
 
     @Override
@@ -61,10 +80,12 @@ public class ControlClass implements MouseInputListener, KeyListener, WindowList
 
     @Override
     public void mouseEntered(MouseEvent e) {
+        init.getGameGUI().Pause(false);
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
+        init.getGameGUI().Pause(true);
     }
 
     @Override
@@ -106,5 +127,37 @@ public class ControlClass implements MouseInputListener, KeyListener, WindowList
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
     }
-    
+
+    public char getUP_KEY() {
+        return UP_KEY;
+    }
+
+    public void setUP_KEY(char UP_KEY) {
+        this.UP_KEY = UP_KEY;
+    }
+
+    public char getDOWN_KEY() {
+        return DOWN_KEY;
+    }
+
+    public void setDOWN_KEY(char DOWN_KEY) {
+        this.DOWN_KEY = DOWN_KEY;
+    }
+
+    public char getLEFT_KEY() {
+        return LEFT_KEY;
+    }
+
+    public void setLEFT_KEY(char LEFT_KEY) {
+        this.LEFT_KEY = LEFT_KEY;
+    }
+
+    public char getRIGHT_KEY() {
+        return RIGHT_KEY;
+    }
+
+    public void setRIGHT_KEY(char RIGHT_KEY) {
+        this.RIGHT_KEY = RIGHT_KEY;
+    }
+
 }
