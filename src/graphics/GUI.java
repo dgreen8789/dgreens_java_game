@@ -180,7 +180,7 @@ public class GUI extends Thread {
 
     public void updateApplication() {
         if (!paused) {
-            ArrayList<Unit> x = this.graphicsControl.getUnits();
+            ArrayList<Unit> x = (ArrayList<Unit>)this.graphicsControl.getUnits().clone();
             
             for (Unit x1 : x) {
                 x1.executeAImove();

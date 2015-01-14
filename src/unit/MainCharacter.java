@@ -19,6 +19,7 @@ public class MainCharacter extends Unit {
 
     int shapeCount = 4;
     int rotationAngle = 0;
+    public final int BULLET_SPEED = 20;
 
     public MainCharacter() {
         this(0, 0);
@@ -66,8 +67,8 @@ public class MainCharacter extends Unit {
 
     public void fire() {
         StandardProjectile x = new StandardProjectile(Color.RED, 3, getX(), getY(), init.getGameGUI().getMousePosition());
+        x.setSpeed(BULLET_SPEED);
         init.getGameGUI().getGraphicsControl().addUnit(x); 
-        System.out.println("Projectile fired" + init.getGameGUI().getGraphicsControl().getUnits().toString());
         
     }
 

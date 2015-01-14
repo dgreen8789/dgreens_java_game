@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package AI;
 
 import java.awt.Point;
@@ -15,28 +14,41 @@ import unit.StandardProjectile;
  */
 public class projectileAI extends AI {
 
+    private int xValue;
+    private int yValue;
+    private int oldSpeed;
+    private double angleValue;
+
     public projectileAI(StandardProjectile unit) {
         super(unit);
-    }
-    
-    @Override
-    protected void move() {
-        StandardProjectile projectile = (StandardProjectile)getUnit();
+        StandardProjectile projectile = (StandardProjectile) getUnit();
         Point target = projectile.getTarget();
         int xDiff = target.x - projectile.getInitialX();
         int yDiff = target.y - projectile.getInitialY();
-        double scale =   Math.sqrt(Math.pow(yDiff, 2) + Math.pow(xDiff, 2)) / Math.pow(projectile.getSpeed(), 2);
-        xDiff*=scale;
-        yDiff*=scale;
-        this.getUnit().moveX(xDiff);
-        this.getUnit().moveY(yDiff);
-        System.out.println(unit.getX() + "\t" + xDiff + "\n" + unit.getY() + "\t" + yDiff + "\nScale " + scale);
-        
+        angleValue = Math.atan2(yDiff, xDiff);
+        oldSpeed = unit.getSpeed();
+        updateXY();
+    }
+
+    @Override
+    protected void move() {
+        if (((StandardProjectile) this.getUnit()).getSpeed() != oldSpeed){
+            updateXY();
+            oldSpeed = ((StandardProjectile) this.getUnit()).getSpeed();
+        }
+        this.getUnit().moveX(xValue);
+        this.getUnit().moveY(yValue);
+        System.out.println("DeltaX\t" + xValue + "\tDeltaY\t" + yValue);
     }
 
     @Override
     protected void attack() {
-        
+
     }
-    
+
+    private void updateXY() {
+        xValue = (int) (Math.cos(angleValue) * ((StandardProjectile) this.getUnit()).getSpeed());
+        yValue = (int) (Math.sin(angleValue) * ((StandardProjectile) this.getUnit()).getSpeed());
+    }
+
 }

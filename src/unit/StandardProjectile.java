@@ -9,6 +9,7 @@ import AI.projectileAI;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
+import main.init;
 
 /**
  *
@@ -24,10 +25,7 @@ public class StandardProjectile extends Unit implements ColoredUnit {
     private int initialY;
 
     public StandardProjectile(Color color, int radius, Point target) {
-        super();
-        this.color = color;
-        this.radius = radius;
-        this.target = target;
+        this(color, radius, 0, 0, target);
     }
 
     public StandardProjectile(Color color, int radius, int x, int y, Point target) {
@@ -100,10 +98,20 @@ public class StandardProjectile extends Unit implements ColoredUnit {
     public int getInitialX() {
         return initialX;
     }
+
     public int getInitialY() {
         return initialY;
     }
 
+    @Override
+    public void setLocation(Point location) {
+        if (super.isValidLocation(location)) {
+            super.setLocation(location);
+        } else {
+            init.getGameGUI().getGraphicsControl().removeUnit(this);
+            //this.setAi(null);
+        }
 
+    }
 
 }

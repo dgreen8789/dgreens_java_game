@@ -1,8 +1,8 @@
 package graphics;
 
-import AI.Formation;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import main.init;
 import unit.MainCharacter;
 import unit.Unit;
@@ -44,10 +44,15 @@ public class GraphicsController {
             scale();
             oldBounds = init.getGameGUI().getBounds();
         }
-        for (Unit unit : units) {
-            unit.draw(g);
+        for (int i = 0; i < units.size(); i++) {
+            try{
+                units.get(i).draw(g);
+            }catch(ConcurrentModificationException e){
+                if(units.get(i) == (null)) units.remove(i); else{
+                    i--;
+                }
+            }
         }
-        
     }
 
     public void addUnit(Unit u) {

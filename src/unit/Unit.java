@@ -26,7 +26,7 @@ public abstract class Unit {
     }
 
     public void setLocation(Point location) {
-        if (init.getGameGUI().getBounds().contains(location)) {
+        if (this.isValidLocation(location)) {
             this.location = location;
         }
     }
@@ -99,6 +99,9 @@ public abstract class Unit {
     }
     public void executeAImove(){
         ai.executeMove();
+    }
+    public boolean isValidLocation(Point location){
+        return init.getGameGUI().getBounds().contains(location);
     }
 
 }
