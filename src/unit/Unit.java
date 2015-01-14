@@ -91,6 +91,8 @@ public abstract class Unit {
     public  abstract void onCollide();
 
     public  abstract void onCreate();
+    
+    public abstract void fire();
 
     public void onDeath() {
         init.getGameGUI().getGraphicsControl().removeUnit(this);

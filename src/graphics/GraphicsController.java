@@ -82,4 +82,9 @@ public class GraphicsController {
         }
     }
 
+    public ArrayList<Unit> getUnits() {
+        return units;
+    }
+    
+
 }

@@ -9,6 +9,7 @@ import AI.Formation;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
+import main.init;
 
 /**
  *
@@ -63,4 +64,15 @@ public class MainCharacter extends Unit {
         //TODO: Cool Animation
     }
 
+    public void fire() {
+        StandardProjectile x = new StandardProjectile(Color.RED, 3, getX(), getY(), init.getGameGUI().getMousePosition());
+        init.getGameGUI().getGraphicsControl().addUnit(x); 
+        System.out.println("Projectile fired" + init.getGameGUI().getGraphicsControl().getUnits().toString());
+        
+    }
+
+    @Override
+    public void executeAImove() {
+    }
+    
 }

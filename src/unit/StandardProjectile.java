@@ -16,9 +16,12 @@ import java.awt.Point;
  */
 public class StandardProjectile extends Unit implements ColoredUnit {
 
-    Color color;
-    int radius;
-    Point target;
+    private Color color;
+    private int radius;
+    private Point target;
+    private int speed;
+    private int initialX;
+    private int initialY;
 
     public StandardProjectile(Color color, int radius, Point target) {
         super();
@@ -32,6 +35,8 @@ public class StandardProjectile extends Unit implements ColoredUnit {
         this.color = color;
         this.radius = radius;
         this.target = target;
+        this.initialX = x;
+        this.initialY = y;
         this.setAi(new projectileAI(this));
 
     }
@@ -57,8 +62,6 @@ public class StandardProjectile extends Unit implements ColoredUnit {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    
-
     public int getRadius() {
         return radius;
     }
@@ -79,6 +82,28 @@ public class StandardProjectile extends Unit implements ColoredUnit {
     @Override
     public void setColor(Color color) {
         this.color = color;
-    
+
     }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+
+    @Override
+    public void fire() {
+    }
+
+    public int getInitialX() {
+        return initialX;
+    }
+    public int getInitialY() {
+        return initialY;
+    }
+
+
+
 }

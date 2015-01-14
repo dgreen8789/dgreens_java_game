@@ -60,6 +60,10 @@ public class ControlClass implements MouseInputListener, KeyListener, WindowList
         if (c == RIGHT_KEY) {
             init.getGameGUI().getGraphicsControl().getMainCharacter().moveX(MOVE_AMOUNT);
         }
+        
+        if(e.getKeyCode() == KeyEvent.VK_SPACE){
+            init.getGameGUI().getGraphicsControl().getMainCharacter().fire();
+        }
     }
 
     @Override

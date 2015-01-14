@@ -7,7 +7,9 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsEnvironment;
+import java.awt.HeadlessException;
 import java.awt.Insets;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.Transparency;
@@ -16,12 +18,14 @@ import java.awt.event.WindowEvent;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 import main.init;
+import unit.Unit;
 
 public class GUI extends Thread {
 
@@ -176,7 +180,11 @@ public class GUI extends Thread {
 
     public void updateApplication() {
         if (!paused) {
+            ArrayList<Unit> x = this.graphicsControl.getUnits();
             
+            for (Unit x1 : x) {
+                x1.executeAImove();
+            }
         }
     }
 
@@ -237,6 +245,11 @@ public class GUI extends Thread {
      public Rectangle getBounds(){
         return this.canvas.getBounds();
     }
+
+    public Point getMousePosition() {
+        return canvas.getMousePosition();
+    }
+     
 
 }
 

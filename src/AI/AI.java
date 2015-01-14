@@ -12,7 +12,7 @@ import unit.Unit;
  * @author David
  */
 public abstract class AI {
-    private Unit unit;
+    protected Unit unit;
 
     public AI(Unit unit) {
         this.unit = unit;
@@ -22,7 +22,9 @@ public abstract class AI {
         move();
         attack();
     }
-
+    public Unit getUnit(){
+        return unit;
+    }
     protected abstract void move();
 
     protected abstract void attack();
