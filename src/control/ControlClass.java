@@ -48,16 +48,16 @@ public class ControlClass implements MouseInputListener, KeyListener, WindowList
     public void keyPressed(KeyEvent e) {
         char c = Character.toUpperCase(e.getKeyChar());
         
-        if (c == UP_KEY) {
+        if (c == UP_KEY || e.getKeyCode() ==  KeyEvent.VK_UP) {
             init.getGameGUI().getGraphicsControl().getMainCharacter().moveY(MOVE_AMOUNT * -1);
         }
-        if (c == DOWN_KEY) {
+        if (c == DOWN_KEY || e.getKeyCode() ==  KeyEvent.VK_DOWN) {
             init.getGameGUI().getGraphicsControl().getMainCharacter().moveY(MOVE_AMOUNT);
         }
-        if (c == LEFT_KEY) {
+        if (c == LEFT_KEY || e.getKeyCode() ==  KeyEvent.VK_LEFT ) {
             init.getGameGUI().getGraphicsControl().getMainCharacter().moveX(MOVE_AMOUNT * -1);
         }
-        if (c == RIGHT_KEY) {
+        if (c == RIGHT_KEY || e.getKeyCode() ==  KeyEvent.VK_RIGHT) {
             init.getGameGUI().getGraphicsControl().getMainCharacter().moveX(MOVE_AMOUNT);
         }
         
@@ -72,10 +72,19 @@ public class ControlClass implements MouseInputListener, KeyListener, WindowList
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        if (e.getButton() == MouseEvent.BUTTON1){
+            for (int i = 0; i < e.getClickCount() ; i++) {
+                            init.getGameGUI().getGraphicsControl().getMainCharacter().fire();
+
+            }
+        }
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
+        if (e.getButton() == MouseEvent.BUTTON1){
+            init.getGameGUI().getGraphicsControl().getMainCharacter().fire();
+        }
     }
 
     @Override

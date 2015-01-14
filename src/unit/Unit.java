@@ -8,6 +8,7 @@ package unit;
 import AI.AI;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.Shape;
 import main.init;
 
 /**
@@ -93,6 +94,8 @@ public abstract class Unit {
     public  abstract void onCreate();
     
     public abstract void fire();
+    
+    public abstract Shape getHitbox();
 
     public void onDeath() {
         init.getGameGUI().getGraphicsControl().removeUnit(this);

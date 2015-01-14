@@ -38,7 +38,6 @@ public class projectileAI extends AI {
         }
         this.getUnit().moveX(xValue);
         this.getUnit().moveY(yValue);
-        System.out.println("DeltaX\t" + xValue + "\tDeltaY\t" + yValue);
     }
 
     @Override

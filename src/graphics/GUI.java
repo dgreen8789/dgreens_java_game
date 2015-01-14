@@ -185,6 +185,7 @@ public class GUI extends Thread {
             for (Unit x1 : x) {
                 x1.executeAImove();
             }
+            
         }
     }
 

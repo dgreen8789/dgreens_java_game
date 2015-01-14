@@ -7,8 +7,11 @@ package unit;
 
 import AI.projectileAI;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.geom.Dimension2D;
+import java.awt.geom.Ellipse2D;
 import main.init;
 
 /**
@@ -112,6 +115,15 @@ public class StandardProjectile extends Unit implements ColoredUnit {
             //this.setAi(null);
         }
 
+    }
+
+    @Override
+    public Ellipse2D getHitbox() {
+        Ellipse2D hitbox = new Ellipse2D.Double();
+        Dimension2D size = new Dimension();
+        size.setSize(radius, radius);
+        hitbox.setFrame(this.getLocation(), size);
+        return hitbox;
     }
 
 }
