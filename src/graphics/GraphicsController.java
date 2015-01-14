@@ -3,8 +3,10 @@ package graphics;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
+import java.util.concurrent.atomic.AtomicLong;
 import main.init;
 import unit.MainCharacter;
+import unit.Target;
 import unit.Unit;
 
 /**
@@ -19,12 +21,16 @@ public class GraphicsController {
     private Unit mainCharacter;
     private boolean firstRender = true;
     private Rectangle oldBounds;
+    private AtomicLong score;
 
     public GraphicsController(Insets insets) {
         this.insets = insets;
         units = new ArrayList<>();
+        score = new AtomicLong(0);
         mainCharacter = new MainCharacter();
         this.addUnit(mainCharacter);
+        Target g = new Target(10, 10, 10, Color.BLUE);
+        this.addUnit(g);
     }
 
     /**
@@ -53,6 +59,7 @@ public class GraphicsController {
                 }
             }
         }
+        drawScore(0,0,50,20, g);
     }
 
     public void addUnit(Unit u) {
@@ -90,6 +97,25 @@ public class GraphicsController {
     public ArrayList<Unit> getUnits() {
         return units;
     }
+
+    public final long getScore() {
+        return score.get();
+    }
+
+    public final void addScore(long l) {
+        score.addAndGet(l);
+    }
+
+    private void drawScore(int x, int y, int width, int height, Graphics2D g) {
+        Font f = g.getFont();
+        g.setColor(Color.WHITE);
+        g.setFont(init.getGameGUI().fillRect(Long.toString(this.getScore()), g, width, height));
+        g.drawString(Long.toString(this.getScore()), 0, (int)(g.getFontMetrics()
+                .getLineMetrics(Long.toString(this.getScore()), g).getHeight()));
+    }
+
+
+    
     
 
 }

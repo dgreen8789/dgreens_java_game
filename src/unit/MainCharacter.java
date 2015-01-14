@@ -57,13 +57,8 @@ public class MainCharacter extends Unit {
         
 
     }
-
     @Override
-    public void onHit() {
-    }
-
-    @Override
-    public void onCollide() {
+    public void onCollide(Unit u) {
     }
 
     @Override

@@ -7,7 +7,6 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsEnvironment;
-import java.awt.HeadlessException;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -15,6 +14,7 @@ import java.awt.Toolkit;
 import java.awt.Transparency;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
@@ -25,6 +25,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 import main.init;
+import unit.StandardProjectile;
 import unit.Unit;
 
 public class GUI extends Thread {
@@ -180,12 +181,35 @@ public class GUI extends Thread {
 
     public void updateApplication() {
         if (!paused) {
-            ArrayList<Unit> x = (ArrayList<Unit>)this.graphicsControl.getUnits().clone();
-            
+            ArrayList<Unit> x = (ArrayList<Unit>) this.graphicsControl.getUnits().clone();
+
             for (Unit x1 : x) {
                 x1.executeAImove();
             }
-            
+            //Collision section
+            for (int i = 0; i < x.size(); i++) {
+                for (int j = i + 1; j < x.size(); j++) {
+                    Area a = new Area(x.get(i).getHitbox());
+                    Area b = new Area(x.get(j).getHitbox());
+                    Area test = ((Area) a.clone());
+                    test.subtract(b);
+                    if (!test.equals(a)) {
+                        if (x.get(i) instanceof StandardProjectile) {
+                            x.get(j).onCollide(x.get(i));
+                        } else if (x.get(j) instanceof StandardProjectile) {
+                            x.get(i).onCollide(x.get(j));
+                        } else {
+                            x.get(i).onCollide(x.get(j));
+                            if (x.get(i) != null && x.get(j) != null) {
+                                x.get(j).onCollide(x.get(i));
+                            }else{
+                                i--;
+                                j--;
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -197,8 +221,8 @@ public class GUI extends Thread {
             Font f = g.getFont();
             g.setFont(this.fillRect("PAUSED", g, width, height));
             g.setColor(Color.RED);
-            g.drawString("PAUSED", width/2 - (g.getFontMetrics().stringWidth("PAUSED") / 2), 
-                    height/2);
+            g.drawString("PAUSED", width / 2 - (g.getFontMetrics().stringWidth("PAUSED") / 2),
+                    height / 2);
         }
     }
 
@@ -243,14 +267,14 @@ public class GUI extends Thread {
     public void Pause(boolean paused) {
         this.paused = paused;
     }
-     public Rectangle getBounds(){
+
+    public Rectangle getBounds() {
         return this.canvas.getBounds();
     }
 
     public Point getMousePosition() {
         return canvas.getMousePosition();
     }
-     
 
 }
 
@@ -278,5 +302,5 @@ class FPSCounter extends TimerTask {
         val.set(myVal.get());
         myVal.set(0);
     }
-   
+
 }

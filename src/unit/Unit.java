@@ -87,9 +87,7 @@ public abstract class Unit {
 
     public  abstract void draw(Graphics g);
 
-    public  abstract void onHit();
-
-    public  abstract void onCollide();
+    public  abstract void onCollide(Unit u);
 
     public  abstract void onCreate();
     

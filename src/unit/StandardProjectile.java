@@ -21,7 +21,7 @@ import main.init;
 public class StandardProjectile extends Unit implements ColoredUnit {
 
     private Color color;
-    private int radius;
+    private int size;
     private Point target;
     private int speed;
     private int initialX;
@@ -34,7 +34,7 @@ public class StandardProjectile extends Unit implements ColoredUnit {
     public StandardProjectile(Color color, int radius, int x, int y, Point target) {
         super(x, y);
         this.color = color;
-        this.radius = radius;
+        this.size = radius;
         this.target = target;
         this.initialX = x;
         this.initialY = y;
@@ -45,30 +45,24 @@ public class StandardProjectile extends Unit implements ColoredUnit {
     @Override
     public void draw(Graphics g) {
         g.setColor(color);
-        g.drawOval(this.getX() - radius / 2, this.getY() - radius / 2, radius, radius);
+        g.drawOval(this.getX() - size / 2, this.getY() - size / 2, size, size);
     }
-
+   
     @Override
-    public void onHit() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void onCollide() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void onCollide(Unit u) {
     }
 
     @Override
     public void onCreate() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
 
-    public int getRadius() {
-        return radius;
+    public int getSize() {
+        return size;
     }
 
-    public void setRadius(int radius) {
-        this.radius = radius;
+    public void setSize(int size) {
+        this.size = size;
     }
 
     public Point getTarget() {
@@ -120,9 +114,9 @@ public class StandardProjectile extends Unit implements ColoredUnit {
     @Override
     public Ellipse2D getHitbox() {
         Ellipse2D hitbox = new Ellipse2D.Double();
-        Dimension2D size = new Dimension();
-        size.setSize(radius, radius);
-        hitbox.setFrame(this.getLocation(), size);
+        Dimension2D hitboxSize = new Dimension();
+        hitboxSize.setSize(size, size);
+        hitbox.setFrame(this.getLocation(), hitboxSize);
         return hitbox;
     }
 
