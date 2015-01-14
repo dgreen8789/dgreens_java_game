@@ -9,6 +9,7 @@ import AI.AI;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.Shape;
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Ellipse2D;
@@ -56,8 +57,13 @@ public class Target extends Unit implements ColoredUnit {
     public void onCollide(Unit u) {
         if (u instanceof StandardProjectile) {
             init.getGameGUI().getGraphicsControl().addScore(1);
-            this.setLocation((int) (Math.random() * init.getGameGUI().getBounds().width),
-                    (int) (Math.random() * init.getGameGUI().getBounds().height));
+            Point loc = new Point(-1, -1);
+            while (!this.isValidLocation(loc)) {
+                loc.x = (int) (Math.random() * init.getGameGUI().getBounds().width);
+                loc.y = (int) (Math.random() * init.getGameGUI().getBounds().height);
+            }
+            this.setLocation(loc);
+            System.out.println(loc.toString());
         }
 
     }
@@ -99,8 +105,22 @@ public class Target extends Unit implements ColoredUnit {
 
     @Override
     public AI getAi() {
-        return null; 
+        return null;
     }
-    
+
+    @Override
+    public boolean isValidLocation(Point location) {
+        location.x -= this.getSize();
+        location.y-= this.getSize();
+        return super.isValidLocation(location); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
 
 }

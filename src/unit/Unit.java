@@ -15,7 +15,7 @@ import main.init;
  *
  * @author David
  */
-public abstract class Unit {
+public abstract class Unit implements Comparable {
 
     private Point location;
     private AI ai;
@@ -104,5 +104,15 @@ public abstract class Unit {
     public boolean isValidLocation(Point location){
         return init.getGameGUI().getBounds().contains(location);
     }
+
+    @Override
+    public int compareTo(Object t) {
+        if (t instanceof Unit){
+            if (t instanceof StandardProjectile) return 1;
+            return 0;
+        }
+        return -1;
+    }
+    
 
 }

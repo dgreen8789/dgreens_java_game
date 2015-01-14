@@ -14,30 +14,27 @@ import unit.StandardProjectile;
  */
 public class projectileAI extends AI {
 
-    private int xValue;
-    private int yValue;
-    private int oldSpeed;
+    private double xValue;
+    private double yValue;
     private double angleValue;
+    private int xDiff;
+    private int yDiff;
 
     public projectileAI(StandardProjectile unit) {
         super(unit);
         StandardProjectile projectile = (StandardProjectile) getUnit();
         Point target = projectile.getTarget();
-        int xDiff = target.x - projectile.getInitialX();
-        int yDiff = target.y - projectile.getInitialY();
-        angleValue = Math.atan2(yDiff, xDiff);
-        oldSpeed = unit.getSpeed();
+        xDiff = target.x - projectile.getInitialX();
+        yDiff = target.y - projectile.getInitialY();
+
         updateXY();
     }
 
     @Override
     protected void move() {
-        if (((StandardProjectile) this.getUnit()).getSpeed() != oldSpeed){
-            updateXY();
-            oldSpeed = ((StandardProjectile) this.getUnit()).getSpeed();
-        }
-        this.getUnit().moveX(xValue);
-        this.getUnit().moveY(yValue);
+        updateXY();
+        this.getUnit().moveX((int) xValue);
+        this.getUnit().moveY((int) yValue);
     }
 
     @Override
@@ -46,8 +43,9 @@ public class projectileAI extends AI {
     }
 
     private void updateXY() {
-        xValue = (int) (Math.cos(angleValue) * ((StandardProjectile) this.getUnit()).getSpeed());
-        yValue = (int) (Math.sin(angleValue) * ((StandardProjectile) this.getUnit()).getSpeed());
+        angleValue = Math.atan2(yDiff, xDiff);
+        xValue = Math.cos(angleValue) * ((StandardProjectile) this.getUnit()).getSpeed();
+        yValue = Math.sin(angleValue) * ((StandardProjectile) this.getUnit()).getSpeed();
     }
 
 }
