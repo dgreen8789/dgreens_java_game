@@ -14,8 +14,13 @@ import unit.Unit;
  * @author David
  */
 public class CollisionHandler {
+    int[] indexes;
 
-    public static void ComputeAndHandle(ArrayList<Unit> u) {
+    public CollisionHandler() {
+        this.indexes = new int[CollisionConstants.CODE_LIST.length];
+    }
+    
+    public void ComputeAndHandle(ArrayList<Unit> u) {
         //Collections.sort(u);
         //System.out.println(u);
         //TODO
@@ -41,21 +46,24 @@ public class CollisionHandler {
      *
      */
     private void computeAndHandleSubset(ArrayList<Unit> one, ArrayList<Unit> two, boolean reverse) {
-        updateListLocs();
     }
 
     /**
      * updates the class variables that keep track of divisions between types of
      * units.
      */
-    private void updateListLocs() {
-
+    private void updateListLocs(int CollisionConstant, boolean add) {
+        for (int i = CollisionConstant + 1; i < indexes.length; i++) {
+            indexes[i]--;           
+        }
     }
-
-    private int getIndexOfUnitType(int type) {
-        int index = 0;
+    /**
+     * 
+     * @param CollisionCode returns the index of the last occurence of a unit 
+     * with the specified code in u;
+     */
+    private void getListLoc(int CollisionCode){
         
-        return index;
-
     }
+
 }

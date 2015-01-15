@@ -21,7 +21,7 @@ import main.init;
  *
  * @author David
  */
-public class ControlClass implements MouseInputListener, KeyListener, WindowListener, FocusListener, MouseWheelListener {
+public class ControlHandler implements MouseInputListener, KeyListener, WindowListener, FocusListener, MouseWheelListener {
 
     private char UP_KEY = 'W';
     private char DOWN_KEY = 'S';
@@ -29,7 +29,7 @@ public class ControlClass implements MouseInputListener, KeyListener, WindowList
     private char RIGHT_KEY = 'D';
     private int MOVE_AMOUNT = 10;
 
-    public ControlClass() {
+    public ControlHandler() {
     }
 
     @Override

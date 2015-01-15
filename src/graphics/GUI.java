@@ -1,7 +1,7 @@
 package graphics;
 
 import phyics.CollisionHandler;
-import control.ControlClass;
+import control.ControlHandler;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Font;
@@ -43,14 +43,15 @@ public class GUI extends Thread {
     private int scale = 1;
     private AtomicInteger FPS = new AtomicInteger();
     private AtomicInteger FPSLimit;
-    private GraphicsConfiguration config
+    private final GraphicsConfiguration config
             = GraphicsEnvironment.getLocalGraphicsEnvironment()
             .getDefaultScreenDevice()
             .getDefaultConfiguration();
-    private FPSCounter fpsCounter = new FPSCounter(FPS);
-    private GraphicsController graphicsControl;
+    private final FPSCounter fpsCounter = new FPSCounter(FPS);
+    private final GraphicsController graphicsControl;
     private boolean paused;
-    private ControlClass x = new ControlClass();
+    private final ControlHandler controlHandler;
+    private final CollisionHandler collisionHandler;
 
     // create a hardware accelerated image
     public final BufferedImage create(final int width, final int height, final boolean alpha) {
@@ -80,18 +81,27 @@ public class GUI extends Thread {
         this.FPSLimit = new AtomicInteger(FPSLimit);
         Timer x = new Timer();
         x.schedule(fpsCounter, 0, 1000);
-
+        
+        //Initialize Graphics
         graphicsControl = new GraphicsController(frame.getInsets());
+        
+        //Initialize input listeners
+        this.controlHandler = new ControlHandler();
         addListeners();
+        
+        //Initialize collision engine
+        collisionHandler = new CollisionHandler();
+        
+        //LIFTOFF *rocket noises*
         start();
     }
 
     private void addListeners() {
-        canvas.addMouseMotionListener(x);
-        canvas.addKeyListener(x);
-        canvas.addFocusListener(x);
-        canvas.addMouseListener(x);
-        canvas.addMouseWheelListener(x);
+        canvas.addMouseMotionListener(controlHandler);
+        canvas.addKeyListener(controlHandler);
+        canvas.addFocusListener(controlHandler);
+        canvas.addMouseListener(controlHandler);
+        canvas.addMouseWheelListener(controlHandler);
     }
 
     private class FrameClose extends WindowAdapter {
@@ -105,6 +115,7 @@ public class GUI extends Thread {
     public void setFPSLimit(int FPSLimit) {
         this.FPSLimit.set(FPSLimit);
     }
+
     public int getFPSLimit() {
         return FPSLimit.get();
     }
@@ -195,8 +206,8 @@ public class GUI extends Thread {
                 }
             }
             //Collision
-            CollisionHandler.ComputeAndHandle(x);
-            
+            collisionHandler.ComputeAndHandle(x);
+
         }
     }
 
@@ -263,31 +274,7 @@ public class GUI extends Thread {
         return canvas.getMousePosition();
     }
 
-}
-
-class FPSCounter extends TimerTask {
-
-    private AtomicInteger val;
-    private AtomicInteger myVal;
-
-    public FPSCounter() {
-        throw new UnsupportedOperationException("Default Constructor not allowed.");
+    public CollisionHandler getCollisionHandler() {
+        return collisionHandler;
     }
-
-    public FPSCounter(AtomicInteger val) {
-        this.val = val;
-        myVal = new AtomicInteger();
-    }
-
-    public void incrementFPSCount() {
-        myVal.addAndGet(1);
-    }
-
-    @Override
-    public void run() {
-
-        val.set(myVal.get());
-        myVal.set(0);
-    }
-
 }
