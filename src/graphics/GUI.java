@@ -1,6 +1,6 @@
 package graphics;
 
-import AI.CollisionHandler;
+import phyics.CollisionHandler;
 import control.ControlClass;
 import java.awt.Canvas;
 import java.awt.Color;

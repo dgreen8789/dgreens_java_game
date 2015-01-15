@@ -10,7 +10,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
-import weapon.MultishotWeapon;
+import phyics.CollisionConstants;
+import weapon.StandardWeapon;
 
 /**
  *
@@ -76,9 +77,9 @@ public class MainCharacter extends Unit {
     }
 
     public void fire(Point target) {
-        //for (int i = 0; i < 2000; i++) {
+        for (int i = 0; i < 1000; i++) {
         super.fire(target);
-           //}  
+           }  
     }
 
     @Override
@@ -103,11 +104,16 @@ public class MainCharacter extends Unit {
     public void allowFirePermission(boolean canFire) {
         super.allowFirePermission(canFire); 
         if (canFire && this.getWeapon() == null){
-            
-        //this.setWeapon(new StandardWeapon(this));
-        this.setWeapon(new MultishotWeapon(this, 4, 10));
+         this.setWeapon(new StandardWeapon(this));
+        //this.setWeapon(new MultishotWeapon(this, 4, 10));
         }
     }
+
+    @Override
+    public int getCollisionConstant() {
+        return CollisionConstants.FRIENDLY_UNIT;
+    }
+    
     
 
 }

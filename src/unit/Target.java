@@ -14,6 +14,7 @@ import java.awt.Shape;
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Ellipse2D;
 import main.init;
+import phyics.CollisionConstants;
 
 /**
  *
@@ -119,6 +120,11 @@ public class Target extends Unit implements ColoredUnit {
 
     public void setSize(int size) {
         this.size = size;
+    }
+
+    @Override
+    public int getCollisionConstant() {
+        return CollisionConstants.NEUTRAL_UNIT;
     }
 
 }

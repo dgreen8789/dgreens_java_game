@@ -27,19 +27,29 @@ public class StandardProjectile extends Unit implements ColoredUnit {
     private int speed;
     private int initialX;
     private int initialY;
+    private int affiliation;
     private boolean destroyOnCollision;
 
-    public StandardProjectile(Color color, int radius, Point target) {
-        this(color, radius, 0, 0, target);
+    public StandardProjectile(Color color, int radius, Point target, int affiliation) {
+        this(color, radius, 0, 0, target, affiliation);
     }
-
-    public StandardProjectile(Color color, int radius, int x, int y, Point target) {
+    /**
+     * 
+     * @param color
+     * @param radius
+     * @param x
+     * @param y
+     * @param target
+     * @param affiliation The collision constant for the team that this projectile is on
+     */
+    public StandardProjectile(Color color, int radius, int x, int y, Point target, int affiliation) {
         super(x, y);
         this.color = color;
         this.size = radius;
         this.target = target;
         this.initialX = x;
         this.initialY = y;
+        this.affiliation = affiliation;
         this.setAi(new projectileAI(this));
 
     }
@@ -125,6 +135,11 @@ public class StandardProjectile extends Unit implements ColoredUnit {
 
     public void setDestroyedOnCollision(boolean destroyOnCollision) {
         this.destroyOnCollision = destroyOnCollision;
+    }
+
+    @Override
+    public int getCollisionConstant() {
+        return affiliation;
     }
     
 

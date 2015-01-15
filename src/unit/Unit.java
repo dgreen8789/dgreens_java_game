@@ -17,7 +17,7 @@ import weapon.Weapon;
  * @author David
  */
 public abstract class Unit implements Comparable {
-
+    
     private Point location;
     private AI ai;
     private boolean hittable;
@@ -116,11 +116,7 @@ public abstract class Unit implements Comparable {
 
     @Override
     public int compareTo(Object t) {
-        if (t instanceof Unit){
-            if (t instanceof StandardProjectile) return 1;
-            return 0;
-        }
-        return -1;
+        return this.getCollisionConstant() - ((Unit)t).getCollisionConstant();
     }
 
     public boolean canFire() {
@@ -138,6 +134,7 @@ public abstract class Unit implements Comparable {
     public void setWeapon(Weapon weapon) {
         this.weapon = weapon;
     }
+    public abstract int getCollisionConstant();
     
     
     

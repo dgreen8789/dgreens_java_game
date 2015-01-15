@@ -11,6 +11,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import main.init;
+import phyics.CollisionConstants;
 
 /**
  *
@@ -30,7 +31,7 @@ public class ProjectileExplosion extends Unit {
     public static final int MAXIMUM_PROJECTILE_RADIUS = 5;
     public static final int PROJECTILE_SPEED = 3;
     public static final int DEFAULT_PROJECTILES_PER_FRAME = 500;
-    public static final int DEFAULT_FRAME_COUNT = 90;
+    public static final int DEFAULT_FRAME_COUNT = 1;
     public static final int FRAMES_BETWEEN_SIZE_DECREASE = 20;
 
     public ProjectileExplosion(Unit createOnFinish, int numProjectilesPerFrame,int frameCount, Color[] colors) {
@@ -63,7 +64,8 @@ public class ProjectileExplosion extends Unit {
             for (int i = 0; 
                      i < ((numProjectilesPerFrame == 0) 
                      ? DEFAULT_PROJECTILES_PER_FRAME : numProjectilesPerFrame); i++) {
-                StandardProjectile newProjectile = new StandardProjectile(c, radius, this.getX(), this.getY(), target);
+                StandardProjectile newProjectile = new StandardProjectile(c, radius, this.getX(), this.getY(), target,
+                CollisionConstants.GRAPHICAL_PROJECTILE);
                 newProjectile.setSpeed(PROJECTILE_SPEED);
                 newProjectile.setCollidable(false);
                 newProjectile.setHittable(false);
@@ -101,5 +103,12 @@ public class ProjectileExplosion extends Unit {
         this.createOnFinish.onCreate();
         super.onDeath(); //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    public int getCollisionConstant() {
+        return CollisionConstants.UNTARGETABlE;
+    }
+    
+    
 
 }

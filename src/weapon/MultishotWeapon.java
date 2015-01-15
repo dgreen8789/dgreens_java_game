@@ -35,7 +35,6 @@ public class MultishotWeapon extends StandardWeapon {
     @Override
     public void fire(Point Location, Point target) {
         updateFirePoints();
-        System.out.println("CALLED");
         for (int i = 0; i < firePoints[0].length; i++) {
             Point startPos = new Point(firePoints[0][i], firePoints[1][i]);
             if (!this.WeaponConverges()){
@@ -43,7 +42,6 @@ public class MultishotWeapon extends StandardWeapon {
                 target.y += firePoints[1][i] - Location.y;
             }
             super.fire(startPos, target);
-            System.out.println("Point #" + i + "\t" + startPos.toString());
         }
     }
     private void updateFirePoints(){
