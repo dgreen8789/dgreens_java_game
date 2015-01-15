@@ -82,8 +82,7 @@ public class GraphicsController {
     private void firstRender() {
         Rectangle bounds = init.getGameGUI().getBounds();
         firstRender = false;
-        mainCharacter = new MainCharacter();
-        mainCharacter.setLocation(bounds.width / 2, bounds.height / 2);
+        mainCharacter = new MainCharacter(bounds.width / 2, bounds.height / 2, 20);
         oldBounds = bounds;
         ProjectileExplosion explosion = new ProjectileExplosion(mainCharacter);
         explosion.onCreate();

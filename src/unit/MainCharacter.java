@@ -35,7 +35,7 @@ public class MainCharacter extends Unit {
 
     public MainCharacter(int x, int y, int size) {
         super(x, y);
-        this.finalSize = 100;
+        this.finalSize = size;
     }
 
     @Override
@@ -77,9 +77,9 @@ public class MainCharacter extends Unit {
     }
 
     public void fire(Point target) {
-        for (int i = 0; i < 1000; i++) {
+        //for (int i = 0; i < 1000; i++) { //STRESS TESTING FOR BULLETS
         super.fire(target);
-           }  
+        //   }  
     }
 
     @Override
