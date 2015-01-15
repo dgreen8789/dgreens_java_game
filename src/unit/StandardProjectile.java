@@ -54,10 +54,7 @@ public class StandardProjectile extends Unit implements ColoredUnit {
     public void onCollide(Unit u) {
     }
 
-    @Override
-    public void onCreate() {
 
-    }
 
     public int getSize() {
         return size;
@@ -91,7 +88,7 @@ public class StandardProjectile extends Unit implements ColoredUnit {
     }
 
     @Override
-    public void fire() {
+    public void fire(Point target) {
     }
 
     public int getInitialX() {

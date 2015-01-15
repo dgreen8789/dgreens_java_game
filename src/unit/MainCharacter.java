@@ -5,13 +5,12 @@
  */
 package unit;
 
-import AI.Formation;
 import graphics.RotatingShape;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
-import main.init;
+import weapon.MultishotWeapon;
 
 /**
  *
@@ -22,8 +21,8 @@ public class MainCharacter extends Unit {
     int shapeCount = 4;
     int rotationAngle = 0;
     int size;
+    int finalSize;
 
-    public final int BULLET_SPEED = 20;
 
     public MainCharacter() {
         this(0, 0, 100);
@@ -35,11 +34,14 @@ public class MainCharacter extends Unit {
 
     public MainCharacter(int x, int y, int size) {
         super(x, y);
-        this.size = 100;
+        this.finalSize = 100;
     }
 
     @Override
     public void draw(Graphics g) {
+        if (size < finalSize) {
+            size++;
+        }
         Color c = g.getColor();
         g.setColor(Color.GREEN);
         int[][] data = RotatingShape.shape(getLocation(), size, shapeCount, rotationAngle);
@@ -56,6 +58,8 @@ public class MainCharacter extends Unit {
             rotationAngle %= 360;
             shapeCount++;
         }
+        g.setColor(Color.WHITE);
+        g.drawOval(getX() - 5, getY() - 5, 10, 10);
         g.setColor(c);
 
     }
@@ -66,14 +70,15 @@ public class MainCharacter extends Unit {
 
     @Override
     public void onCreate() {
-        //TODO: Cool Animation
+        super.onCreate();
+        size = 1;
+        this.allowFirePermission(true);
     }
 
-    public void fire() {
-        StandardProjectile x = new StandardProjectile(Color.RED, 3, getX(), getY(), init.getGameGUI().getMousePosition());
-        x.setSpeed(BULLET_SPEED);
-        init.getGameGUI().getGraphicsControl().addUnit(x);
-
+    public void fire(Point target) {
+        //for (int i = 0; i < 2000; i++) {
+        super.fire(target);
+           //}  
     }
 
     @Override
@@ -89,5 +94,20 @@ public class MainCharacter extends Unit {
         return hitbox;
 
     }
+
+    public int getRotationAngle() {
+        return rotationAngle;
+    }
+
+    @Override
+    public void allowFirePermission(boolean canFire) {
+        super.allowFirePermission(canFire); 
+        if (canFire && this.getWeapon() == null){
+            
+        //this.setWeapon(new StandardWeapon(this));
+        this.setWeapon(new MultishotWeapon(this, 4, 10));
+        }
+    }
+    
 
 }

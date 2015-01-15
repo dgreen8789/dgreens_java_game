@@ -38,8 +38,8 @@ public class GUI extends Thread {
     private Graphics2D backgroundGraphics;
     private Graphics2D graphics;
     private JFrame frame;
-    private int width = 320;
-    private int height = 240;
+    private int width = 720;
+    private int height = 480;
     private int scale = 1;
     private AtomicInteger FPS = new AtomicInteger();
     private AtomicInteger FPSLimit;
@@ -104,6 +104,9 @@ public class GUI extends Thread {
 
     public void setFPSLimit(int FPSLimit) {
         this.FPSLimit.set(FPSLimit);
+    }
+    public int getFPSLimit() {
+        return FPSLimit.get();
     }
 
     // Screen and buffer stuff

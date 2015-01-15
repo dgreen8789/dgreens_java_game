@@ -6,6 +6,7 @@ import java.util.ConcurrentModificationException;
 import java.util.concurrent.atomic.AtomicLong;
 import main.init;
 import unit.MainCharacter;
+import unit.ProjectileExplosion;
 import unit.Target;
 import unit.Unit;
 
@@ -27,10 +28,6 @@ public class GraphicsController {
         this.insets = insets;
         units = new ArrayList<>();
         score = new AtomicLong(0);
-        mainCharacter = new MainCharacter();
-        this.addUnit(mainCharacter);
-        Target g = new Target(10, 10, 10, Color.BLUE);
-        this.addUnit(g);
     }
 
     /**
@@ -51,17 +48,19 @@ public class GraphicsController {
             oldBounds = init.getGameGUI().getBounds();
         }
         for (int i = 0; i < units.size(); i++) {
-            try{
+            try {
                 units.get(i).draw(g);
-            }catch(ConcurrentModificationException e){
-                if(units.get(i) == (null)) units.remove(i); else{
+            } catch (ConcurrentModificationException e) {
+                if (units.get(i) == (null)) {
+                    units.remove(i);
+                } else {
                     i--;
                 }
-            }catch(NullPointerException e){
-                
+            } catch (NullPointerException e) {
+
             }
         }
-        drawScore(0,0,50,20, g);
+        drawScore(0, 0, 50, 20, g);
     }
 
     public void addUnit(Unit u) {
@@ -83,9 +82,13 @@ public class GraphicsController {
     private void firstRender() {
         Rectangle bounds = init.getGameGUI().getBounds();
         firstRender = false;
+        mainCharacter = new MainCharacter();
         mainCharacter.setLocation(bounds.width / 2, bounds.height / 2);
         oldBounds = bounds;
-
+        ProjectileExplosion explosion = new ProjectileExplosion(mainCharacter);
+        explosion.onCreate();
+        Target g = new Target(10, 10, 10, Color.BLUE);
+        g.onCreate();
     }
 
     private void scale() {
@@ -112,12 +115,8 @@ public class GraphicsController {
         Font f = g.getFont();
         g.setColor(Color.WHITE);
         g.setFont(init.getGameGUI().fillRect(Long.toString(this.getScore()), g, width, height));
-        g.drawString(Long.toString(this.getScore()), 0, (int)(g.getFontMetrics()
+        g.drawString(Long.toString(this.getScore()), 0, (int) (g.getFontMetrics()
                 .getLineMetrics(Long.toString(this.getScore()), g).getHeight()));
     }
-
-
-    
-    
 
 }

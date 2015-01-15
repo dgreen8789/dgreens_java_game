@@ -62,7 +62,7 @@ public class ControlClass implements MouseInputListener, KeyListener, WindowList
         }
         
         if(e.getKeyCode() == KeyEvent.VK_SPACE){
-            init.getGameGUI().getGraphicsControl().getMainCharacter().fire();
+            init.getGameGUI().getGraphicsControl().getMainCharacter().fire(init.getGameGUI().getMousePosition());
         }
     }
 
@@ -74,7 +74,7 @@ public class ControlClass implements MouseInputListener, KeyListener, WindowList
     public void mouseClicked(MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON1){
             for (int i = 0; i < e.getClickCount() ; i++) {
-                            init.getGameGUI().getGraphicsControl().getMainCharacter().fire();
+                            init.getGameGUI().getGraphicsControl().getMainCharacter().fire(init.getGameGUI().getMousePosition());
 
             }
         }
@@ -83,7 +83,7 @@ public class ControlClass implements MouseInputListener, KeyListener, WindowList
     @Override
     public void mousePressed(MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON1){
-            init.getGameGUI().getGraphicsControl().getMainCharacter().fire();
+            init.getGameGUI().getGraphicsControl().getMainCharacter().fire(init.getGameGUI().getMousePosition());
         }
     }
 

@@ -68,12 +68,10 @@ public class Target extends Unit implements ColoredUnit {
 
     }
 
-    @Override
-    public void onCreate() {
-    }
+
 
     @Override
-    public void fire() {
+    public void fire(Point target) {
     }
 
     @Override

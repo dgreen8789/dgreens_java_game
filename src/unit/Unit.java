@@ -10,6 +10,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Shape;
 import main.init;
+import weapon.Weapon;
 
 /**
  *
@@ -21,6 +22,8 @@ public abstract class Unit implements Comparable {
     private AI ai;
     private boolean hittable;
     private boolean collidable;
+    private boolean canFire;
+    private Weapon weapon;
 
     public Point getLocation() {
         return location;
@@ -89,9 +92,15 @@ public abstract class Unit implements Comparable {
 
     public  abstract void onCollide(Unit u);
 
-    public  abstract void onCreate();
+    public  void onCreate(){
+       init.getGameGUI().getGraphicsControl().addUnit(this);
+    }
     
-    public abstract void fire();
+    public void fire(Point target){
+        if (canFire){
+            this.getWeapon().fire(this.getLocation(), target);
+        }
+    }
     
     public abstract Shape getHitbox();
 
@@ -113,6 +122,24 @@ public abstract class Unit implements Comparable {
         }
         return -1;
     }
+
+    public boolean canFire() {
+        return canFire;
+    }
+
+    public void allowFirePermission(boolean canFire) {
+        this.canFire = canFire;
+    }
+
+    public Weapon getWeapon() {
+        return weapon;
+    }
+
+    public void setWeapon(Weapon weapon) {
+        this.weapon = weapon;
+    }
+    
+    
     
 
 }
