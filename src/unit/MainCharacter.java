@@ -30,7 +30,8 @@ public class MainCharacter extends Unit {
     public MainCharacter(int x, int y) {
         this(x, y, 100);
     }
-    public MainCharacter(int x, int y, int size){
+
+    public MainCharacter(int x, int y, int size) {
         super(x, y);
         this.size = 100;
     }
@@ -44,7 +45,7 @@ public class MainCharacter extends Unit {
         g.drawPolygon(data[0], data[1], data[0].length);
         g.setColor(Color.YELLOW);
         for (int i = 0; i < data[0].length; i++) {
-            int[][] shape2 = Formation.shape(new Point(data[0][i], data[1][i]), size/10, shapeCount, (360 / (i + 1)) * i);
+            int[][] shape2 = Formation.shape(new Point(data[0][i], data[1][i]), size / 10, shapeCount, (360 / (i + 1)) * i);
             g.drawPolygon(shape2[0], shape2[1], shape2[0].length);
         }
         shapeCount = (shapeCount > 15) ? 3 : shapeCount;
@@ -54,9 +55,9 @@ public class MainCharacter extends Unit {
             shapeCount++;
         }
         g.setColor(c);
-        
 
     }
+
     @Override
     public void onCollide(Unit u) {
     }
@@ -69,8 +70,8 @@ public class MainCharacter extends Unit {
     public void fire() {
         StandardProjectile x = new StandardProjectile(Color.RED, 3, getX(), getY(), init.getGameGUI().getMousePosition());
         x.setSpeed(BULLET_SPEED);
-        init.getGameGUI().getGraphicsControl().addUnit(x); 
-        
+        init.getGameGUI().getGraphicsControl().addUnit(x);
+
     }
 
     @Override
@@ -81,12 +82,10 @@ public class MainCharacter extends Unit {
     public Rectangle getHitbox() {
         Rectangle hitbox = new Rectangle(this.getLocation());
         hitbox.x -= this.size / 2;
-        hitbox.y -=this.size / 2;
+        hitbox.y -= this.size / 2;
         hitbox.setBounds(hitbox.x, hitbox.y, size, size);
         return hitbox;
-        
-        
+
     }
-    
-    
+
 }

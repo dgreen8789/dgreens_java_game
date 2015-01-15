@@ -57,6 +57,8 @@ public class GraphicsController {
                 if(units.get(i) == (null)) units.remove(i); else{
                     i--;
                 }
+            }catch(NullPointerException e){
+                
             }
         }
         drawScore(0,0,50,20, g);

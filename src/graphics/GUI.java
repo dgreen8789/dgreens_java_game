@@ -184,32 +184,14 @@ public class GUI extends Thread {
             ArrayList<Unit> x = (ArrayList<Unit>) this.graphicsControl.getUnits().clone();
 
             for (Unit x1 : x) {
-                x1.executeAImove();
-            }
-            //Collision section
-            for (int i = 0; i < x.size(); i++) {
-                for (int j = i + 1; j < x.size(); j++) {
-                    Area a = new Area(x.get(i).getHitbox());
-                    Area b = new Area(x.get(j).getHitbox());
-                    Area test = ((Area) a.clone());
-                    test.subtract(b);
-                    if (!test.equals(a)) {
-                        if (x.get(i) instanceof StandardProjectile) {
-                            x.get(j).onCollide(x.get(i));
-                        } else if (x.get(j) instanceof StandardProjectile) {
-                            x.get(i).onCollide(x.get(j));
-                        } else {
-                            x.get(i).onCollide(x.get(j));
-                            if (x.get(i) != null && x.get(j) != null) {
-                                x.get(j).onCollide(x.get(i));
-                            }else{
-                                i--;
-                                j--;
-                            }
-                        }
-                    }
+                try {
+                    x1.executeAImove();
+                } catch (NullPointerException e) {
+
                 }
             }
+            //Collision section
+            
         }
     }
 

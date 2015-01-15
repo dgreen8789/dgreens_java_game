@@ -12,29 +12,30 @@ import unit.StandardProjectile;
  *
  * @author david.green
  */
+
 public class projectileAI extends AI {
 
-    private double xValue;
-    private double yValue;
-    private double angleValue;
-    private int xDiff;
-    private int yDiff;
 
+    private int count = 1;
+    double angle;
     public projectileAI(StandardProjectile unit) {
         super(unit);
         StandardProjectile projectile = (StandardProjectile) getUnit();
         Point target = projectile.getTarget();
-        xDiff = target.x - projectile.getInitialX();
-        yDiff = target.y - projectile.getInitialY();
-
-        updateXY();
+        angle = Math.atan2(target.y - projectile.getInitialY(), target.x - projectile.getInitialX());
     }
 
     @Override
     protected void move() {
-        updateXY();
-        this.getUnit().moveX((int) xValue);
-        this.getUnit().moveY((int) yValue);
+        StandardProjectile projectile = (StandardProjectile) getUnit();
+        double y = projectile.getSpeed() * Math.sin(angle)  ;
+        int sign = (Math.signum(projectile.getTarget().x - projectile.getInitialX()) < 1) ? -1 : 1;
+        double x = Math.sqrt(Math.pow(projectile.getSpeed(), 2) - Math.pow(y, 2)) *sign;
+        x*=  count;
+        y*= count++;
+        //System.out.println("X\t" + x + "\tY\t" + y);
+        projectile.setLocation((int)x + projectile.getInitialX(), (int)y + projectile.getInitialY());
+        
     }
 
     @Override
@@ -42,10 +43,5 @@ public class projectileAI extends AI {
 
     }
 
-    private void updateXY() {
-        angleValue = Math.atan2(yDiff, xDiff);
-        xValue = Math.cos(angleValue) * ((StandardProjectile) this.getUnit()).getSpeed();
-        yValue = Math.sin(angleValue) * ((StandardProjectile) this.getUnit()).getSpeed();
-    }
 
 }

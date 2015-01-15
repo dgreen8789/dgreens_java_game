@@ -5,6 +5,7 @@
  */
 package unit;
 
+import AI.Formation;
 import AI.projectileAI;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -26,6 +27,7 @@ public class StandardProjectile extends Unit implements ColoredUnit {
     private int speed;
     private int initialX;
     private int initialY;
+    private boolean destroyOnCollision;
 
     public StandardProjectile(Color color, int radius, Point target) {
         this(color, radius, 0, 0, target);
@@ -47,14 +49,14 @@ public class StandardProjectile extends Unit implements ColoredUnit {
         g.setColor(color);
         g.drawOval(this.getX() - size / 2, this.getY() - size / 2, size, size);
     }
-   
+
     @Override
     public void onCollide(Unit u) {
     }
 
     @Override
     public void onCreate() {
-        
+
     }
 
     public int getSize() {
@@ -106,7 +108,7 @@ public class StandardProjectile extends Unit implements ColoredUnit {
             super.setLocation(location);
         } else {
             init.getGameGUI().getGraphicsControl().removeUnit(this);
-            //this.setAi(null);
+            // this.setAi(null);
         }
 
     }
@@ -119,5 +121,14 @@ public class StandardProjectile extends Unit implements ColoredUnit {
         hitbox.setFrame(this.getLocation(), hitboxSize);
         return hitbox;
     }
+
+    public boolean isDestroyedOnCollision() {
+        return destroyOnCollision;
+    }
+
+    public void setDestroyedOnCollision(boolean destroyOnCollision) {
+        this.destroyOnCollision = destroyOnCollision;
+    }
+    
 
 }
