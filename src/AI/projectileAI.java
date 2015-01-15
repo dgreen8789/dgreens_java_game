@@ -30,10 +30,8 @@ public class projectileAI extends AI {
         StandardProjectile projectile = (StandardProjectile) getUnit();
         double y = projectile.getSpeed() * Math.sin(angle)  ;
         int sign = (Math.signum(projectile.getTarget().x - projectile.getInitialX()) < 1) ? -1 : 1;
-        double x = Math.sqrt(Math.pow(projectile.getSpeed(), 2) - Math.pow(y, 2)) *sign;
-        x*=  count;
+        double x = Math.sqrt((projectile.getSpeed() * projectile.getSpeed()) - (y * y)) * (sign * count);
         y*= count++;
-        //System.out.println("X\t" + x + "\tY\t" + y);
         projectile.setLocation((int)x + projectile.getInitialX(), (int)y + projectile.getInitialY());
         
     }

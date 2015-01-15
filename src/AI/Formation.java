@@ -13,24 +13,5 @@ import java.awt.Point;
  * @author David
  */
 public class Formation {
-    /**
-     * 
-     * @param startPos
-     * @param radius
-     * @param shapeNum
-     * @param initialAngle
-     * @return A two dimensional array of length shapeNum representing the x and y coordinates of the shape.
-     * int[0][i] = List of x-Coordinates;
-     * int[1][i] = List of y-Coordinates;
-     */
-    public static int[][] shape(Point startPos, int radius, int shapeNum, double initialAngle){
-        int locs[][] = new int[2][shapeNum];
-        initialAngle = Math.toRadians(initialAngle);
-        double angleDelta = Math.PI * 2 / shapeNum;
-        for (int i = 0; i < locs[0].length; i++) {
-            locs[0][i] = (int)(Math.cos(angleDelta * i + initialAngle) * radius) + startPos.x;
-            locs[1][i] = (int)(Math.sin(angleDelta * i + initialAngle) * radius) + startPos.y; 
-        }    
-        return locs;
-    }
+
 }

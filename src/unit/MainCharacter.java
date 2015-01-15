@@ -6,6 +6,7 @@
 package unit;
 
 import AI.Formation;
+import graphics.RotatingShape;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
@@ -21,6 +22,7 @@ public class MainCharacter extends Unit {
     int shapeCount = 4;
     int rotationAngle = 0;
     int size;
+
     public final int BULLET_SPEED = 20;
 
     public MainCharacter() {
@@ -40,12 +42,12 @@ public class MainCharacter extends Unit {
     public void draw(Graphics g) {
         Color c = g.getColor();
         g.setColor(Color.GREEN);
-        int[][] data = Formation.shape(getLocation(), size, shapeCount, rotationAngle);
+        int[][] data = RotatingShape.shape(getLocation(), size, shapeCount, rotationAngle);
 
         g.drawPolygon(data[0], data[1], data[0].length);
         g.setColor(Color.YELLOW);
         for (int i = 0; i < data[0].length; i++) {
-            int[][] shape2 = Formation.shape(new Point(data[0][i], data[1][i]), size / 10, shapeCount, (360 / (i + 1)) * i);
+            int[][] shape2 = RotatingShape.shape(new Point(data[0][i], data[1][i]), size / 10, shapeCount, (360 / (i + 1)) * i);
             g.drawPolygon(shape2[0], shape2[1], shape2[0].length);
         }
         shapeCount = (shapeCount > 15) ? 3 : shapeCount;

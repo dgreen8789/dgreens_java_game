@@ -1,5 +1,6 @@
 package graphics;
 
+import AI.CollisionHandler;
 import control.ControlClass;
 import java.awt.Canvas;
 import java.awt.Color;
@@ -190,7 +191,8 @@ public class GUI extends Thread {
 
                 }
             }
-            //Collision section
+            //Collision
+            CollisionHandler.ComputeAndHandle(x);
             
         }
     }

@@ -5,12 +5,15 @@
  */
 package AI;
 
+import java.util.ArrayList;
+import unit.Unit;
+
 /**
  *
  * @author David
  */
 public class CollisionHandler {
-    public static void ComputeAndHandle(){
+    public static void ComputeAndHandle(ArrayList<Unit> u){
         
     }
 }
