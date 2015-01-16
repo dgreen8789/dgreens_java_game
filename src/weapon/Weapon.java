@@ -13,5 +13,5 @@ import java.awt.Point;
  * @author david.green
  */
 public interface Weapon {
-    public void fire(Point Location, Point target);
+    public void fire(Point Location, Point target, int CollisionConstant);
 }

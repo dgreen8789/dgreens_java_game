@@ -12,13 +12,12 @@ import unit.StandardProjectile;
  *
  * @author david.green
  */
-
-public class projectileAI extends AI {
-
+public class ProjectileAI extends AI {
 
     private int count = 1;
-    double angle;
-    public projectileAI(StandardProjectile unit) {
+    private double angle;
+
+    public ProjectileAI(StandardProjectile unit) {
         super(unit);
         StandardProjectile projectile = (StandardProjectile) getUnit();
         Point target = projectile.getTarget();
@@ -28,12 +27,28 @@ public class projectileAI extends AI {
     @Override
     protected void move() {
         StandardProjectile projectile = (StandardProjectile) getUnit();
-        double y = projectile.getSpeed() * Math.sin(angle)  ;
+        double y = projectile.getSpeed() * Math.sin(angle);
         int sign = (Math.signum(projectile.getTarget().x - projectile.getInitialX()) < 1) ? -1 : 1;
-        double x = Math.sqrt((projectile.getSpeed() * projectile.getSpeed()) - (y * y)) * (sign * count);
+        double x = Math.sqrt((projectile.getSpeed() * projectile.getSpeed()) - (y * y)) * sign;
+        projectile.setHitboxDeltas((int) x, (int) y);
+        x*= count;
         y*= count++;
-        projectile.setLocation((int)x + projectile.getInitialX(), (int)y + projectile.getInitialY());
-        
+        projectile.setLocation((int) x + projectile.getInitialX(), (int) y + projectile.getInitialY());
+        projectile.updateHitbox();
+
+    }
+
+    protected void move(boolean b) {
+        if (b) {
+            move();
+        } else {
+            StandardProjectile projectile = (StandardProjectile) getUnit();
+            double y = projectile.getSpeed() * Math.sin(angle);
+            int sign = (Math.signum(projectile.getTarget().x - projectile.getInitialX()) < 1) ? -1 : 1;
+            double x = Math.sqrt((projectile.getSpeed() * projectile.getSpeed()) - (y * y)) * (sign * count);
+            y *= count++;
+            projectile.setHitboxDeltas((int) x, (int) y);
+        }
     }
 
     @Override
@@ -41,5 +56,12 @@ public class projectileAI extends AI {
 
     }
 
+    public double getAngleInRadians() {
+        return angle;
+    }
+
+    public double getAngleInDegrees() {
+        return Math.toDegrees(angle);
+    }
 
 }

@@ -17,7 +17,7 @@ public class init {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        gameGUI = new GUI(60);
+        gameGUI = new GUI(500);
         
     }
     public static String getVersion(){

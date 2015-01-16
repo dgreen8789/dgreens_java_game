@@ -64,19 +64,20 @@ public class GraphicsController {
         }
         drawScore(0, 0, 50, 20, g);
     }
-    public void addUnit(Unit u) {
+
+    public  void addUnit(Unit u) {
         int z = u.getCollisionConstant();
         int x = init.getGameGUI().getCollisionHandler().getBeginningIndex(z);
-        //        System.out.println("Collision Constant = #" + z + " or " + CollisionConstants.getCodeName(z));
-        //        System.out.println("Index = " + z);
-        //        System.out.println("Index List: " + Arrays.toString(init.getGameGUI().getCollisionHandler().getIndexes()) + "\n");
-        //        System.out.println(units.contains(mainCharacter));
+//        System.out.println("Collision Constant = #" + z + " or " + CollisionConstants.getCodeName(z));
+//        System.out.println("Index = " + z);
+//        System.out.println("Index List: " + Arrays.toString(init.getGameGUI().getCollisionHandler().getIndexes()));
+//        System.out.println(units.contains(mainCharacter) + "\n");
         units.add((x), u);
         init.getGameGUI().getCollisionHandler().updateListLocs(z, true);
 
     }
 
-    public void removeUnit(Unit u) {
+    public synchronized void removeUnit(Unit u) {
         if (units.remove(u)) //Is this slowing my program down
         {
 

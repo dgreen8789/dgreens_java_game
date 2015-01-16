@@ -33,7 +33,7 @@ public class MultishotWeapon extends StandardWeapon {
     }
     
     @Override
-    public void fire(Point Location, Point target) {
+    public void fire(Point Location, Point target, int CollisionConstant) {
         updateFirePoints();
         for (int i = 0; i < firePoints[0].length; i++) {
             Point startPos = new Point(firePoints[0][i], firePoints[1][i]);
@@ -41,7 +41,7 @@ public class MultishotWeapon extends StandardWeapon {
                 target.x += firePoints[0][i] - Location.x;
                 target.y += firePoints[1][i] - Location.y;
             }
-            super.fire(startPos, target);
+            super.fire(startPos, target, CollisionConstant);
         }
     }
     private void updateFirePoints(){

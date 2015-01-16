@@ -80,26 +80,29 @@ public class CollisionHandler {
 
                 if (one.getCollisionConstant() == CollisionConstants.FRIENDLY_UNIT
                         || two.getCollisionConstant() == CollisionConstants.FRIENDLY_UNIT) {
-                    System.out.println("List1 start: " + start1);
-                    System.out.println("List1 end: " + end1);
-                    System.out.println("List2 start: " + start2);
-                    System.out.println("List2 end: " + end2);
-                    System.out.println("Reverse = " + reverse);
-                    System.out.println("Index List: " + Arrays.toString(init.getGameGUI().getCollisionHandler().getIndexes()) + "\n");
-                    
+//                    System.out.println("List1 start: " + start1);
+//                    System.out.println("List1 end: " + end1);
+//                    System.out.println("List2 start: " + start2);
+//                    System.out.println("List2 end: " + end2);
+//                    System.out.println("Reverse = " + reverse);
+//                    System.out.println("Index List: " + Arrays.toString(init.getGameGUI().getCollisionHandler().getIndexes()) + "\n");
+
                 }
                 Area a = (Area) (one.getHitbox().clone());
                 a.intersect(two.getHitbox());
                 if (!a.isEmpty()) {
                     one.onCollide(two);
-                    if (two instanceof StandardProjectile || reverse) {
+                    if (two instanceof StandardProjectile) {
                         if (((StandardProjectile) (two)).isDestroyedOnCollision()) {
                             two.onDeath();
                             end2--;
                         } else {
                             two.onCollide(one);
                         }
+                    } else if (reverse) {
+                        two.onCollide(one);
                     }
+
                 }
             }
 

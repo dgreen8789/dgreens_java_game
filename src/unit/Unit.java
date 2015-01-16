@@ -99,7 +99,7 @@ public abstract class Unit implements Comparable {
     
     public void fire(Point target){
         if (canFire){
-            this.getWeapon().fire(this.getLocation(), target);
+            this.getWeapon().fire(this.getLocation(), target, this.getCollisionConstant());
         }
     }
     

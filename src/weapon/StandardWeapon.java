@@ -24,9 +24,9 @@ public class StandardWeapon implements Weapon {
         this.attachedUnit = attachedUnit;
     }
     
-    public void fire(Point Location, Point target) {
+    public void fire(Point Location, Point target, int CollisionConstant) {
         StandardProjectile x = new StandardProjectile(Color.RED, 3, Location.x, Location.y, target
-        ,CollisionConstants.FRIENDLY_PROJECTILE);
+        ,CollisionConstant);
         x.setSpeed(STANDARD_BULLET_SPEED);
         x.onCreate();
     }

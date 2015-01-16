@@ -5,17 +5,15 @@
  */
 package unit;
 
-import AI.Formation;
-import AI.projectileAI;
+import AI.ProjectileAI;
+import graphics.RotatingShape;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.Shape;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
-import java.awt.geom.Dimension2D;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.PathIterator;
-import java.util.ArrayList;
 import main.init;
 
 /**
@@ -32,19 +30,23 @@ public class StandardProjectile extends Unit implements ColoredUnit {
     private int initialY;
     private int affiliation;
     private boolean destroyOnCollision;
-    
+    private Area hitbox;
+    private int xDelta;
+    private int yDelta;
 
     public StandardProjectile(Color color, int radius, Point target, int affiliation) {
         this(color, radius, 0, 0, target, affiliation);
     }
+
     /**
-     * 
+     *
      * @param color
      * @param radius
      * @param x
      * @param y
      * @param target
-     * @param affiliation The collision constant for the team that this projectile is on
+     * @param affiliation The collision constant for the team that this
+     * projectile is on
      */
     public StandardProjectile(Color color, int radius, int x, int y, Point target, int affiliation) {
         super(x, y);
@@ -55,7 +57,9 @@ public class StandardProjectile extends Unit implements ColoredUnit {
         this.initialY = y;
         this.affiliation = affiliation;
         this.destroyOnCollision = true;
-        this.setAi(new projectileAI(this));
+        this.setAi(new ProjectileAI(this));
+        this.getAi().executeMove(false);
+        hitbox = buildHitbox();
 
     }
 
@@ -64,25 +68,20 @@ public class StandardProjectile extends Unit implements ColoredUnit {
         g.setColor(color);
         g.drawOval(this.getX() - size / 2, this.getY() - size / 2, size, size);
         g.setColor(Color.WHITE);
-//        Area a = this.getHitbox();
-//        PathIterator x = a.getPathIterator(null);
-//        ArrayList<Point> z =  new ArrayList<>();
-//        double[] data = new double[6];
-//        while(!x.isDone()){
-//            x.currentSegment(data);
-//            z.add(new Point((int)data[0], (int)data[1]));
-//        }
-//        for (int i = 0; i < z.size() - 1; i++) {
-//            g.drawLine(z.get(i).x, z.get(i).y, z.get(i + 1).x, z.get(i + 1).y);
-//        }
-//        g.drawLine(z.get(0).x, z.get(0).y, z.get(z.size() - 1).x, z.get(z.size() - 1).y);
+        Rectangle r = this.getHitbox().getBounds();
+        g.drawRect(r.x, r.y, r.width, r.height);
+        g.setColor(Color.GREEN);
+        Point x = this.getLocation();
+        x.x += xDelta / 2;
+        x.y += yDelta / 2;
+        int[][] data = RotatingShape.shape(x, size + this.getSpeed(), 2, ((ProjectileAI) this.getAi()).getAngleInDegrees());
+        g.drawPolygon(data[0], data[1], data[0].length);
+
     }
 
     @Override
     public void onCollide(Unit u) {
     }
-
-
 
     public int getSize() {
         return size;
@@ -113,6 +112,7 @@ public class StandardProjectile extends Unit implements ColoredUnit {
 
     public void setSpeed(int speed) {
         this.speed = speed;
+        this.buildHitbox();
     }
 
     @Override
@@ -140,11 +140,7 @@ public class StandardProjectile extends Unit implements ColoredUnit {
 
     @Override
     public Area getHitbox() {
-        Ellipse2D hitbox = new Ellipse2D.Double();
-        Dimension2D hitboxSize = new Dimension();
-        hitboxSize.setSize(size, size);
-        hitbox.setFrame(this.getLocation(), hitboxSize);
-        return new Area(hitbox);
+        return this.hitbox;
     }
 
     public boolean isDestroyedOnCollision() {
@@ -159,6 +155,38 @@ public class StandardProjectile extends Unit implements ColoredUnit {
     public int getCollisionConstant() {
         return affiliation;
     }
-    
+
+    public void setHitboxDeltas(int xDelta, int yDelta) {
+        this.xDelta = xDelta;
+        this.yDelta = yDelta;
+    }
+
+    private Area buildHitbox() {
+        int h = this.getSpeed() + this.size;
+        int w = this.size;
+        Area a = new Area(new Rectangle(this.getX(), this.getY(), w, h));
+        AffineTransform at = new AffineTransform();
+        System.out.println("ROTATION ANGLE =  " + ((ProjectileAI) this.getAi()).getAngleInDegrees());
+        System.out.println("X = " + this.getX());
+        System.out.println("Y = " + this.getY());
+        System.out.println("Y DELTA = " + this.yDelta / 2);
+        System.out.println("X DELTA = " +  this.xDelta / 2);
+        at.rotate(((ProjectileAI) this.getAi()).getAngleInRadians(),
+                this.getX() + this.xDelta / 2, this.getY() + this.yDelta / 2);
+        at.rotate(((ProjectileAI) this.getAi()).getAngleInRadians());
+        a = a.createTransformedArea(at);
+        return a;
+
+    }
+
+    public Area updateHitbox() {
+        AffineTransform at = new AffineTransform();
+        at.translate(xDelta, yDelta);
+        System.out.println("Y DELTA (TRANSLATION) = " + this.yDelta / 2);
+        System.out.println("X DELTA (TRANSLATION) = " +  this.xDelta / 2);
+        hitbox = hitbox.createTransformedArea(at);
+        return hitbox;
+
+    }
 
 }

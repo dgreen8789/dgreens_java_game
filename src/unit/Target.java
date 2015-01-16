@@ -84,7 +84,7 @@ public class Target extends Unit implements ColoredUnit {
         Point hitboxLocation = (Point)this.getLocation().clone();
         hitboxLocation.x -= size / 2;
         hitboxLocation.y -= size /2;
-        hitbox.setFrame(this.getLocation(), hitboxSize);
+        hitbox.setFrame(hitboxLocation, hitboxSize);
         return new Area(hitbox);
     }
 
