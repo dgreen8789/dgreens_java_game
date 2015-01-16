@@ -29,7 +29,7 @@ public class MultishotWeapon extends StandardWeapon {
         super(attachedUnit);
         this.numShots = numShots % 6;
         this.shotSpacing = shotSpacing;
-        System.out.println(super.getAttachedUnit().getLocation().toString());
+       // System.out.println(super.getAttachedUnit().getLocation().toString());
     }
     
     @Override

@@ -10,6 +10,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.geom.Area;
 import phyics.CollisionConstants;
 import weapon.StandardWeapon;
 
@@ -87,12 +88,12 @@ public class MainCharacter extends Unit {
     }
 
     @Override
-    public Rectangle getHitbox() {
+    public Area getHitbox() {
         Rectangle hitbox = new Rectangle(this.getLocation());
         hitbox.x -= this.size / 2;
         hitbox.y -= this.size / 2;
         hitbox.setBounds(hitbox.x, hitbox.y, size, size);
-        return hitbox;
+        return new Area(hitbox);
 
     }
 

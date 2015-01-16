@@ -9,6 +9,7 @@ import AI.AI;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Shape;
+import java.awt.geom.Area;
 import main.init;
 import weapon.Weapon;
 
@@ -102,7 +103,7 @@ public abstract class Unit implements Comparable {
         }
     }
     
-    public abstract Shape getHitbox();
+    public abstract Area getHitbox();
 
     public void onDeath() {
         init.getGameGUI().getGraphicsControl().removeUnit(this);

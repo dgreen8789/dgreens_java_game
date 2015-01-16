@@ -10,6 +10,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
+import java.awt.geom.Area;
 import main.init;
 import phyics.CollisionConstants;
 
@@ -89,7 +90,7 @@ public class ProjectileExplosion extends Unit {
     }
 
     @Override
-    public Shape getHitbox() {
+    public Area getHitbox() {
         return null;
     }
 

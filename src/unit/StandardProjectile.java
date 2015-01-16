@@ -11,8 +11,11 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.geom.Area;
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.PathIterator;
+import java.util.ArrayList;
 import main.init;
 
 /**
@@ -29,6 +32,7 @@ public class StandardProjectile extends Unit implements ColoredUnit {
     private int initialY;
     private int affiliation;
     private boolean destroyOnCollision;
+    
 
     public StandardProjectile(Color color, int radius, Point target, int affiliation) {
         this(color, radius, 0, 0, target, affiliation);
@@ -50,6 +54,7 @@ public class StandardProjectile extends Unit implements ColoredUnit {
         this.initialX = x;
         this.initialY = y;
         this.affiliation = affiliation;
+        this.destroyOnCollision = true;
         this.setAi(new projectileAI(this));
 
     }
@@ -58,6 +63,19 @@ public class StandardProjectile extends Unit implements ColoredUnit {
     public void draw(Graphics g) {
         g.setColor(color);
         g.drawOval(this.getX() - size / 2, this.getY() - size / 2, size, size);
+        g.setColor(Color.WHITE);
+//        Area a = this.getHitbox();
+//        PathIterator x = a.getPathIterator(null);
+//        ArrayList<Point> z =  new ArrayList<>();
+//        double[] data = new double[6];
+//        while(!x.isDone()){
+//            x.currentSegment(data);
+//            z.add(new Point((int)data[0], (int)data[1]));
+//        }
+//        for (int i = 0; i < z.size() - 1; i++) {
+//            g.drawLine(z.get(i).x, z.get(i).y, z.get(i + 1).x, z.get(i + 1).y);
+//        }
+//        g.drawLine(z.get(0).x, z.get(0).y, z.get(z.size() - 1).x, z.get(z.size() - 1).y);
     }
 
     @Override
@@ -121,12 +139,12 @@ public class StandardProjectile extends Unit implements ColoredUnit {
     }
 
     @Override
-    public Ellipse2D getHitbox() {
+    public Area getHitbox() {
         Ellipse2D hitbox = new Ellipse2D.Double();
         Dimension2D hitboxSize = new Dimension();
         hitboxSize.setSize(size, size);
         hitbox.setFrame(this.getLocation(), hitboxSize);
-        return hitbox;
+        return new Area(hitbox);
     }
 
     public boolean isDestroyedOnCollision() {

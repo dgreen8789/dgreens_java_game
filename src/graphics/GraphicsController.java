@@ -2,9 +2,11 @@ package graphics;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.ConcurrentModificationException;
 import java.util.concurrent.atomic.AtomicLong;
 import main.init;
+import phyics.CollisionConstants;
 import unit.MainCharacter;
 import unit.ProjectileExplosion;
 import unit.Target;
@@ -17,12 +19,12 @@ import unit.Unit;
 public class GraphicsController {
 
     private boolean lock;
-    private Insets insets;
-    private ArrayList<Unit> units;
+    private final Insets insets;
+    private final ArrayList<Unit> units;
     private Unit mainCharacter;
     private boolean firstRender = true;
     private Rectangle oldBounds;
-    private AtomicLong score;
+    private final AtomicLong score;
 
     public GraphicsController(Insets insets) {
         this.insets = insets;
@@ -62,13 +64,24 @@ public class GraphicsController {
         }
         drawScore(0, 0, 50, 20, g);
     }
-
     public void addUnit(Unit u) {
-        units.add(u);
+        int z = u.getCollisionConstant();
+        int x = init.getGameGUI().getCollisionHandler().getBeginningIndex(z);
+        //        System.out.println("Collision Constant = #" + z + " or " + CollisionConstants.getCodeName(z));
+        //        System.out.println("Index = " + z);
+        //        System.out.println("Index List: " + Arrays.toString(init.getGameGUI().getCollisionHandler().getIndexes()) + "\n");
+        //        System.out.println(units.contains(mainCharacter));
+        units.add((x), u);
+        init.getGameGUI().getCollisionHandler().updateListLocs(z, true);
+
     }
 
     public void removeUnit(Unit u) {
-        units.remove(u);
+        if (units.remove(u)) //Is this slowing my program down
+        {
+
+            init.getGameGUI().getCollisionHandler().updateListLocs(u.getCollisionConstant(), false);
+        }
     }
 
     public Unit getMainCharacter() {

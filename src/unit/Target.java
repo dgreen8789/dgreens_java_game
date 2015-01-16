@@ -11,6 +11,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Shape;
+import java.awt.geom.Area;
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Ellipse2D;
 import main.init;
@@ -64,7 +65,7 @@ public class Target extends Unit implements ColoredUnit {
                 loc.y = (int) (Math.random() * init.getGameGUI().getBounds().height);
             }
             this.setLocation(loc);
-            System.out.println(loc.toString());
+            //System.out.println(loc.toString());
         }
 
     }
@@ -76,12 +77,15 @@ public class Target extends Unit implements ColoredUnit {
     }
 
     @Override
-    public Ellipse2D getHitbox() {
+    public Area getHitbox() {
         Ellipse2D hitbox = new Ellipse2D.Double();
         Dimension2D hitboxSize = new Dimension();
         hitboxSize.setSize(size, size);
+        Point hitboxLocation = (Point)this.getLocation().clone();
+        hitboxLocation.x -= size / 2;
+        hitboxLocation.y -= size /2;
         hitbox.setFrame(this.getLocation(), hitboxSize);
-        return hitbox;
+        return new Area(hitbox);
     }
 
     @Override
