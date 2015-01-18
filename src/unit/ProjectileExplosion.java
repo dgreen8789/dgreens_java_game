@@ -66,8 +66,7 @@ public class ProjectileExplosion extends Unit {
                      i < ((numProjectilesPerFrame == 0) 
                      ? DEFAULT_PROJECTILES_PER_FRAME : numProjectilesPerFrame); i++) {
                 StandardProjectile newProjectile = new StandardProjectile(c, radius, this.getX(), this.getY(), target,
-                CollisionConstants.GRAPHICAL_PROJECTILE);
-                newProjectile.setSpeed(PROJECTILE_SPEED);
+                CollisionConstants.GRAPHICAL_PROJECTILE, PROJECTILE_SPEED);
                 newProjectile.setCollidable(false);
                 newProjectile.setHittable(false);
                 newProjectile.onCreate();

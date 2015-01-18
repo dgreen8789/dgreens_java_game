@@ -61,8 +61,8 @@ public class Target extends Unit implements ColoredUnit {
             init.getGameGUI().getGraphicsControl().addScore(1);
             Point loc = new Point(-1, -1);
             while (!this.isValidLocation(loc)) {
-                loc.x = (int) (Math.random() * init.getGameGUI().getBounds().width);
-                loc.y = (int) (Math.random() * init.getGameGUI().getBounds().height);
+                loc.x = (int) (Math.random() * init.getGameGUI().getGraphicsControl().getGameWidth());
+                loc.y = (int) (Math.random() * init.getGameGUI().getGraphicsControl().getGameHeight());
             }
             this.setLocation(loc);
             //System.out.println(loc.toString());
