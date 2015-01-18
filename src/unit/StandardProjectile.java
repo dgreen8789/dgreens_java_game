@@ -19,6 +19,7 @@ import java.awt.geom.PathIterator;
 import java.util.ArrayList;
 import java.util.Arrays;
 import main.init;
+import phyics.CollisionConstants;
 
 /**
  *
@@ -59,7 +60,7 @@ public class StandardProjectile extends Unit implements ColoredUnit {
         this.target = target;
         this.initialX = x;
         this.initialY = y;
-        this.affiliation = affiliation;
+        this.affiliation = assignAffiliation(affiliation);
         this.speed = speed;
         this.destroyOnCollision = true;
         this.setAi(new ProjectileAI(this));
@@ -71,6 +72,25 @@ public class StandardProjectile extends Unit implements ColoredUnit {
     @Override
     public void draw(Graphics g) {
         g.setColor(color);
+        //DEBUG CODE
+//        Color c;
+//        switch (getCollisionConstant()) {
+//            case CollisionConstants.FRIENDLY_PROJECTILE:
+//                c = Color.GREEN;
+//                break;
+//            case CollisionConstants.ENEMY_PROJECTILE:
+//                c = Color.RED;
+//                break;
+//            case CollisionConstants.NEUTRAL_PROJECTILE:
+//                c = Color.YELLOW;
+//                break;
+//            default:
+//                c = Color.MAGENTA;
+//
+//        }
+//        System.out.println(CollisionConstants.getCodeName(affiliation));
+//        g.setColor(c);
+
         g.drawOval(this.getX() - size / 2, this.getY() - size / 2, size, size);
         g.setColor(Color.GREEN);
 
@@ -178,6 +198,17 @@ public class StandardProjectile extends Unit implements ColoredUnit {
         return hitbox;
 
     }
-    
 
+    private int assignAffiliation(int affiliation) {
+        switch (affiliation) {
+            case CollisionConstants.FRIENDLY_UNIT:
+                return CollisionConstants.FRIENDLY_PROJECTILE;
+            case CollisionConstants.ENEMY_UNIT:
+                return CollisionConstants.ENEMY_PROJECTILE;
+            case CollisionConstants.NEUTRAL_UNIT:
+                return CollisionConstants.NEUTRAL_PROJECTILE;
+            default:
+                return affiliation;
+        }
+    }
 }

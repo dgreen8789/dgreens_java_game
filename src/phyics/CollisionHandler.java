@@ -34,30 +34,30 @@ public class CollisionHandler {
         //TODO
         //compare neutral and friendly units against enemy projectiles 
         int start1 = getBeginningIndex(CollisionConstants.NEUTRAL_UNIT);
-        int end1 = getEndingIndex(CollisionConstants.FRIENDLY_UNIT);
+        int end1 = getEndingIndex(CollisionConstants.FRIENDLY_UNIT, u);
         int start2 = getBeginningIndex(CollisionConstants.ENEMY_PROJECTILE);
-        int end2 = getEndingIndex(CollisionConstants.ENEMY_PROJECTILE);
+        int end2 = getEndingIndex(CollisionConstants.ENEMY_PROJECTILE, u);
         computeAndHandleSubset(u, start1, end1, start2, end2, false);
 
         //compare enemy and neutral units against friendly projectiles  
         start1 = getBeginningIndex(CollisionConstants.ENEMY_UNIT);
-        end1 = getEndingIndex(CollisionConstants.NEUTRAL_UNIT);
+        end1 = getEndingIndex(CollisionConstants.NEUTRAL_UNIT, u);
         start2 = getBeginningIndex(CollisionConstants.FRIENDLY_PROJECTILE);
-        end2 = getEndingIndex(CollisionConstants.FRIENDLY_PROJECTILE);
+        end2 = getEndingIndex(CollisionConstants.FRIENDLY_PROJECTILE, u);
         computeAndHandleSubset(u, start1, end1, start2, end2, false);
 
         //compare enemy units vs friendly AND neutral units
         start1 = getBeginningIndex(CollisionConstants.ENEMY_UNIT);
-        end1 = getEndingIndex(CollisionConstants.ENEMY_UNIT);
+        end1 = getEndingIndex(CollisionConstants.ENEMY_UNIT, u);
         start2 = getBeginningIndex(CollisionConstants.NEUTRAL_UNIT);
-        end2 = getEndingIndex(CollisionConstants.FRIENDLY_UNIT);
+        end2 = getEndingIndex(CollisionConstants.FRIENDLY_UNIT, u);
         computeAndHandleSubset(u, start1, end1, start2, end2, true);
 
         //compare friendly units vs neutral units
         start1 = getBeginningIndex(CollisionConstants.FRIENDLY_UNIT);
-        end1 = getEndingIndex(CollisionConstants.FRIENDLY_UNIT);
+        end1 = getEndingIndex(CollisionConstants.FRIENDLY_UNIT, u);
         start2 = getBeginningIndex(CollisionConstants.NEUTRAL_UNIT);
-        end2 = getEndingIndex(CollisionConstants.NEUTRAL_UNIT);
+        end2 = getEndingIndex(CollisionConstants.NEUTRAL_UNIT, u);
         computeAndHandleSubset(u, start1, end1, start2, end2, true);
 
     }
@@ -98,7 +98,13 @@ public class CollisionHandler {
 
             }
         } catch (IndexOutOfBoundsException e) {
-            System.out.println("YOU F**KED UP");
+            for (int i = 0; i < indexes.length; i++) {
+                System.out.println(CollisionConstants.getCodeName(i) + " begins at index " +
+                        indexes[i].get() + " and ends at index " + getEndingIndex(i, units) );
+                
+            }
+            System.out.println("# of units = " + units.size() + "\n\n");
+            
         }
     }
 
@@ -131,9 +137,9 @@ public class CollisionHandler {
         return indexes[collisionCode].get();
     }
 
-    public int getEndingIndex(int collisionCode) {
+    public int getEndingIndex(int collisionCode, ArrayList<Unit> u) {
         if (collisionCode == CollisionConstants.CODE_LIST[CollisionConstants.CODE_LIST.length - 1]) {
-            return init.getGameGUI().getGraphicsControl().getUnits().size() - 1; // OPTIMIZE THIS !!!
+            return u.size() - 1; // OPTIMIZE THIS !!!
         }
         return indexes[collisionCode + 1].get();
     }

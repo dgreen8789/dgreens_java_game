@@ -200,7 +200,7 @@ public class GUI extends Thread {
 
             for (Unit x1 : x) {
                 try {
-                    x1.executeAImove();
+                     x1.executeAImove();
                 } catch (NullPointerException e) {
 
                 }
