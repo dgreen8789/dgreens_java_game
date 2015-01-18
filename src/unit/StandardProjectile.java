@@ -164,7 +164,6 @@ public class StandardProjectile extends Unit implements ColoredUnit {
         Area a = new Area(new Rectangle(this.getX(), this.getY(), w, h));
         AffineTransform at = new AffineTransform();
         double angle = ((ProjectileAI) this.getAi()).getAngleInRadians() + Math.PI / 2;
-        System.out.println(Math.toDegrees(angle));
         at.rotate(angle,
                 this.getX(), this.getY());
         a = a.createTransformedArea(at);

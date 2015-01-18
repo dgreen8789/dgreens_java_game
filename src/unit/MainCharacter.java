@@ -12,6 +12,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.Area;
 import phyics.CollisionConstants;
+import weapon.MultishotWeapon;
 import weapon.StandardWeapon;
 
 /**
@@ -78,9 +79,9 @@ public class MainCharacter extends Unit {
     }
 
     public void fire(Point target) {
-        //for (int i = 0; i < 10; i++) { //STRESS TESTING FOR BULLETS
+        for (int i = 0; i < 10; i++) { //STRESS TESTING FOR BULLETS
         super.fire(target);
-         //  }  
+          }  
     }
 
     @Override
@@ -105,8 +106,8 @@ public class MainCharacter extends Unit {
     public void allowFirePermission(boolean canFire) {
         super.allowFirePermission(canFire); 
         if (canFire && this.getWeapon() == null){
-         this.setWeapon(new StandardWeapon(this));
-        //this.setWeapon(new MultishotWeapon(this, 4, 10));
+        //this.setWeapon(new StandardWeapon(this));
+        this.setWeapon(new MultishotWeapon(this, 5, 10));
         }
     }
 

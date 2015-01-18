@@ -72,40 +72,33 @@ public class CollisionHandler {
      * two.get(y).onHit(one.get(x) is called
      *
      */
-    private void computeAndHandleSubset(ArrayList<Unit> u, int start1, int end1, int start2, int end2, boolean reverse) {
-        for (int i = start1; i < end1; i++) {
-            for (int j = start2; j < end2; j++) {
-                Unit one = u.get(i);
-                Unit two = u.get(j);
-
-                if (one.getCollisionConstant() == CollisionConstants.FRIENDLY_UNIT
-                        || two.getCollisionConstant() == CollisionConstants.FRIENDLY_UNIT) {
-//                    System.out.println("List1 start: " + start1);
-//                    System.out.println("List1 end: " + end1);
-//                    System.out.println("List2 start: " + start2);
-//                    System.out.println("List2 end: " + end2);
-//                    System.out.println("Reverse = " + reverse);
-//                    System.out.println("Index List: " + Arrays.toString(init.getGameGUI().getCollisionHandler().getIndexes()) + "\n");
-
-                }
-                Area a = (Area) (one.getHitbox().clone());
-                a.intersect(two.getHitbox());
-                if (!a.isEmpty()) {
-                    one.onCollide(two);
-                    if (two instanceof StandardProjectile) {
-                        if (((StandardProjectile) (two)).isDestroyedOnCollision()) {
-                            two.onDeath();
-                            end2--;
-                        } else {
+    private void computeAndHandleSubset(ArrayList<Unit> units, int start1, int end1, int start2, int end2, boolean reverse) {
+        try {
+            for (int listOne = start1; listOne < end1; listOne++) {
+                for (int listTwo = start2; listTwo < end2; listTwo++) {
+                    Unit one = units.get(listOne);
+                    Unit two = units.get(listTwo);
+                    Area a = (Area) (one.getHitbox().clone());
+                    a.intersect(two.getHitbox());
+                    if (!a.isEmpty()) {
+                        one.onCollide(two);
+                        if (two instanceof StandardProjectile) {
+                            if (((StandardProjectile) (two)).isDestroyedOnCollision()) {
+                                two.onDeath();
+                                end2--;
+                            } else {
+                                two.onCollide(one);
+                            }
+                        } else if (reverse) {
                             two.onCollide(one);
                         }
-                    } else if (reverse) {
-                        two.onCollide(one);
+
                     }
-
                 }
-            }
 
+            }
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("YOU F**KED UP");
         }
     }
 

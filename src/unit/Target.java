@@ -28,6 +28,7 @@ public class Target extends Unit implements ColoredUnit {
 
     public Target() {
         this(0, 0, 100);
+        this.setLocation(this.getRandomLocation());
     }
 
     public Target(int x, int y) {
@@ -59,18 +60,12 @@ public class Target extends Unit implements ColoredUnit {
     public void onCollide(Unit u) {
         if (u instanceof StandardProjectile) {
             init.getGameGUI().getGraphicsControl().addScore(1);
-            Point loc = new Point(-1, -1);
-            while (!this.isValidLocation(loc)) {
-                loc.x = (int) (Math.random() * init.getGameGUI().getGraphicsControl().getGameWidth());
-                loc.y = (int) (Math.random() * init.getGameGUI().getGraphicsControl().getGameHeight());
-            }
+            Point loc = getRandomLocation();
             this.setLocation(loc);
             //System.out.println(loc.toString());
-        }
+        } 
 
     }
-
-
 
     @Override
     public void fire(Point target) {
@@ -81,9 +76,9 @@ public class Target extends Unit implements ColoredUnit {
         Ellipse2D hitbox = new Ellipse2D.Double();
         Dimension2D hitboxSize = new Dimension();
         hitboxSize.setSize(size, size);
-        Point hitboxLocation = (Point)this.getLocation().clone();
+        Point hitboxLocation = (Point) this.getLocation().clone();
         hitboxLocation.x -= size / 2;
-        hitboxLocation.y -= size /2;
+        hitboxLocation.y -= size / 2;
         hitbox.setFrame(hitboxLocation, hitboxSize);
         return new Area(hitbox);
     }
@@ -114,7 +109,7 @@ public class Target extends Unit implements ColoredUnit {
     @Override
     public boolean isValidLocation(Point location) {
         location.x -= this.getSize();
-        location.y-= this.getSize();
+        location.y -= this.getSize();
         return super.isValidLocation(location); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -129,6 +124,15 @@ public class Target extends Unit implements ColoredUnit {
     @Override
     public int getCollisionConstant() {
         return CollisionConstants.NEUTRAL_UNIT;
+    }
+
+    private Point getRandomLocation() {
+        Point loc = new Point(-1, -1);
+        while (!this.isValidLocation(loc)) {
+            loc.x = (int) (Math.random() * init.getGameGUI().getGraphicsControl().getGameWidth());
+            loc.y = (int) (Math.random() * init.getGameGUI().getGraphicsControl().getGameHeight());
+        }
+        return loc;
     }
 
 }

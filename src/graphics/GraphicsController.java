@@ -27,7 +27,7 @@ public class GraphicsController {
     private boolean firstRender = true;
     private Rectangle oldBounds;
     private final AtomicLong score;
-    private final boolean drawHitboxes = false; //Debug Line
+    private final boolean drawHitboxes = false ; //Debug Line
 
     public GraphicsController(Insets insets) {
         this.insets = insets;
@@ -64,7 +64,7 @@ public class GraphicsController {
                 if (units.get(i) == (null)) {
                     units.remove(i);
                 } else {
-                    i--;
+                    //i--;
                 }
             } catch (NullPointerException e) {
 
@@ -85,7 +85,7 @@ public class GraphicsController {
 
     }
 
-    public synchronized void removeUnit(Unit u) {
+    public void removeUnit(Unit u) {
         if (units.remove(u)) //Is this slowing my program down
         {
 
@@ -108,7 +108,9 @@ public class GraphicsController {
         oldBounds = bounds;
         ProjectileExplosion explosion = new ProjectileExplosion(mainCharacter);
         explosion.onCreate();
-        Target g = new Target(10, 10, 10, Color.BLUE);
+        Target g = new Target();
+        g.setSize(10);
+        g.setColor(Color.BLUE);
         g.onCreate();
     }
 
