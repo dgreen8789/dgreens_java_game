@@ -45,18 +45,20 @@ public class UnitOperation {
         return true;
     }
 
-    public void execute(ArrayList<Unit> u) {
+    public void execute(ArrayList<Unit> units) {
+        Unit u = getAffectedUnit();
         switch (getOperationType()) {
             case ADD_UNIT:
-                u.add(getAffectedUnit());
+                int x = init.getGameGUI().getCollisionHandler().getBeginningIndex(u.getCollisionConstant());
+                units.add(x, getAffectedUnit());
                 init.getGameGUI().getCollisionHandler().updateListLocs(getAffectedUnit().getCollisionConstant(), true);
                 break;
             case DELETE_UNIT:
-                u.remove(getAffectedUnit());
+                units.remove(getAffectedUnit());
                 init.getGameGUI().getCollisionHandler().updateListLocs(getAffectedUnit().getCollisionConstant(), false);
                 break;
             case SPECIAL_OPERATION:
-                boolean b = specialOperation(u);
+                boolean b = specialOperation(units);
                 break;
 
         }

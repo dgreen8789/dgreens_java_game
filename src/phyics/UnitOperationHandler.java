@@ -19,8 +19,9 @@ public class UnitOperationHandler implements Runnable {
 
     @Override
     public void run() {
+        //System.out.println("");
         while (true) {
-           // System.out.println("Ran List of size " + operations.size());
+            int lol = 0;
             while (operations.size() > 0) {
                 try {
                     operations.get(0).execute(units);

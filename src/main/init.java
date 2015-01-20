@@ -13,8 +13,10 @@ import phyics.UnitOperationHandler;
  * @author David
  */
 public class init {
+
     public static GUI gameGUI;
     public static UnitOperationHandler unitOperationHandler;
+
     /**
      * @param args the command line arguments
      */
@@ -23,10 +25,11 @@ public class init {
         unitOperationHandler = new UnitOperationHandler();
         Thread unitHandler = new Thread(unitOperationHandler);
         unitHandler.start();
-        
-        
+        System.out.println(unitHandler.getName());
+
     }
-    public static String getVersion(){
+
+    public static String getVersion() {
         return "1.0";
     }
 
@@ -37,5 +40,5 @@ public class init {
     public static UnitOperationHandler getUnitOperationHandler() {
         return unitOperationHandler;
     }
-    
+
 }
