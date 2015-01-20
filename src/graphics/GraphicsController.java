@@ -53,6 +53,7 @@ public class GraphicsController {
             scale();
             oldBounds = init.getGameGUI().getBounds();
         }
+        boolean b = init.getUnitOperationHandler().lock();
         ArrayList<Unit> units = init.getUnitOperationHandler().getUnits();
         for (int i = 0; i < units.size(); i++) {
             try {
@@ -62,16 +63,11 @@ public class GraphicsController {
                     GraphicsController.drawArea(units.get(i).getHitbox(), g);
 
                 }
-            } catch (ConcurrentModificationException e) {
-                if (units.get(i) == (null)) {
-                    units.remove(i);
-                } else {
-                    //i--;
-                }
-            } catch (NullPointerException e) {
-                System.out.println("AAAA");
+            }catch (NullPointerException e) {
+                System.out.println("Yo dawg, null pointer - drawing operations");
             }
         }
+        b = init.getUnitOperationHandler().unlock();
         drawScore(0, 0, 50, 20, g);
     }
 

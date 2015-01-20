@@ -25,7 +25,7 @@ public class init {
         unitOperationHandler = new UnitOperationHandler();
         Thread unitHandler = new Thread(unitOperationHandler);
         unitHandler.start();
-        System.out.println(unitHandler.getName());
+        // System.out.println(unitHandler.getName());
 
     }
 

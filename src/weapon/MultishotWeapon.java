@@ -18,7 +18,7 @@ public class MultishotWeapon extends StandardWeapon {
     private int shotSpacing;
     private int numShots;
     private int[][] firePoints;
-    private boolean weaponConverge = true;
+    private boolean weaponConverge = false;
     /**
      * 
      * @param attachedUnit the unit this gun belongs to;
@@ -38,7 +38,7 @@ public class MultishotWeapon extends StandardWeapon {
         for (int i = 0; i < firePoints[0].length; i++) {
             Point startPos = new Point(firePoints[0][i], firePoints[1][i]);
             if (!this.WeaponConverges()){
-                target.x += firePoints[0][i] - Location.x;
+                 target.x += firePoints[0][i] - Location.x;
                 target.y += firePoints[1][i] - Location.y;
             }
             super.fire(startPos, target, CollisionConstant);

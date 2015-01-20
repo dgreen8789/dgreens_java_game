@@ -79,9 +79,9 @@ public class MainCharacter extends Unit {
     }
 
     public void fire(Point target) {
-        for (int i = 0; i < 10; i++) { //STRESS TESTING FOR BULLETS
+        //for (int i = 0; i < 100; i++) { //STRESS TESTING FOR BULLETS
         super.fire(target);
-          }  
+        //}  
     }
 
     @Override

@@ -91,11 +91,8 @@ public class UnitOperation {
             boolean specialOperation = this.getOperationType() == UnitOperation.SPECIAL_OPERATION
                     && this.getOperationType() == UnitOperation.SPECIAL_OPERATION;
             boolean unitsMatch = false;
-            try {
+            if (!(this.getAffectedUnit() == null || other.getAffectedUnit() == null))
                 unitsMatch = this.affectedUnit.equals(other.getAffectedUnit());
-            } catch (NullPointerException e) {
-
-            }
             return (namesMatch && (specialOperation || unitsMatch));
         }
         return false;

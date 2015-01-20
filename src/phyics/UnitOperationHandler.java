@@ -14,15 +14,16 @@ import unit.Unit;
  */
 public class UnitOperationHandler implements Runnable {
 
-    private ArrayList<UnitOperation> operations;
+    private volatile ArrayList<UnitOperation> operations;
     private ArrayList<Unit> units;
+    private volatile boolean lock;
+    private volatile boolean isActuallyLocked;
 
     @Override
     public void run() {
         //System.out.println("");
         while (true) {
-            int lol = 0;
-            while (operations.size() > 0) {
+            while (operations.size() > 0 && !isActuallyLocked) {
                 try {
                     operations.get(0).execute(units);
                     //System.out.println(operations.get(0).getOperationName());
@@ -30,7 +31,9 @@ public class UnitOperationHandler implements Runnable {
                 } catch (NullPointerException e) {
                     operations.remove(0);
                 }
+                isActuallyLocked = lock;
             }
+            isActuallyLocked = lock;
         }
     }
 
@@ -49,5 +52,15 @@ public class UnitOperationHandler implements Runnable {
     public ArrayList<Unit> getUnits() {
         return (ArrayList<Unit>) units.clone();
     }
-
+    public boolean lock(){
+        lock = true;
+        while (isActuallyLocked != lock);
+        return lock;
+    }
+    public boolean unlock(){
+        lock = false;
+        while (isActuallyLocked != lock);
+        return lock;
+    }
+ 
 }
