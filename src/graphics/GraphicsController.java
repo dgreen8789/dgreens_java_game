@@ -23,7 +23,6 @@ public class GraphicsController {
 
     private boolean lock;
     private final Insets insets;
-    private final ArrayList<Unit> units;
     private Unit mainCharacter;
     private boolean firstRender = true;
     private Rectangle oldBounds;
@@ -33,7 +32,6 @@ public class GraphicsController {
 
     public GraphicsController(Insets insets) {
         this.insets = insets;
-        units = new ArrayList<Unit>();
         score = new AtomicLong(0);
 
     }
@@ -55,6 +53,7 @@ public class GraphicsController {
             scale();
             oldBounds = init.getGameGUI().getBounds();
         }
+        ArrayList<Unit> units = init.getUnitOperationHandler().getUnits();
         for (int i = 0; i < units.size(); i++) {
             try {
                 units.get(i).draw(g);
@@ -74,30 +73,6 @@ public class GraphicsController {
             }
         }
         drawScore(0, 0, 50, 20, g);
-    }
-
-    public void addUnit(Unit u, Object o) {
-        if (o == owner) {
-            int z = u.getCollisionConstant();
-            int x = init.getGameGUI().getCollisionHandler().getBeginningIndex(z);
-//        System.out.println("Collision Constant = #" + z + " or " + CollisionConstants.getCodeName(z));
-//        System.out.println("Index = " + z);
-//        System.out.println("Index List: " + Arrays.toString(init.getGameGUI().getCollisionHandler().getIndexes()));
-//        System.out.println(units.contains(mainCharacter) + "\n");
-            units.add(x, u);
-            init.getGameGUI().getCollisionHandler().updateListLocs(z, true);
-        }
-    }
-
-    public void removeUnit(Unit u, Object o) {
-        if (o == owner) {
-            if (units.remove(u)) //Is this slowing my program down
-            {
-
-                init.getGameGUI().getCollisionHandler().updateListLocs(u.getCollisionConstant(), false);
-            }
-        }
-
     }
 
     public Unit getMainCharacter() {
@@ -124,13 +99,9 @@ public class GraphicsController {
     private void scale() {
         double xRatio = init.getGameGUI().getBounds().getWidth() / oldBounds.width * 1.0;
         double yRatio = init.getGameGUI().getBounds().getHeight() / oldBounds.height * 1.0;
-        for (Unit unit : units) {
+        for (Unit unit : init.unitOperationHandler.getUnits()) {
             unit.setLocation((int) (unit.getX() * xRatio), (int) (unit.getY() * yRatio));
         }
-    }
-
-    public ArrayList<Unit> getUnits() {
-        return units;
     }
 
     public final long getScore() {
@@ -180,27 +151,6 @@ public class GraphicsController {
                 lineData.get(0).y,
                 lineData.get(lineData.size() - 1).x,
                 lineData.get(lineData.size() - 1).y);
-
-    }
-
-    public boolean isLocked() {
-        return lock;
-    }
-
-    public void lock(Object o) {
-        if (owner == null) {
-            lock = true;
-            this.owner = o;
-            System.out.println("Locked by " + o);
-        }
-
-    }
-
-    public void unlock(Object o) {
-        if (o == owner) {
-            lock = false;
-            System.out.println("Unlocked by " + o);
-        }
 
     }
 

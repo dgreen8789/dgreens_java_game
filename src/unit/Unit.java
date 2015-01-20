@@ -11,6 +11,7 @@ import java.awt.Point;
 import java.awt.Shape;
 import java.awt.geom.Area;
 import main.init;
+import phyics.UnitOperation;
 import weapon.Weapon;
 
 /**
@@ -94,10 +95,8 @@ public abstract class Unit implements Comparable {
     public abstract void onCollide(Unit u);
 
     public void onCreate() {
-        while (init.getGameGUI().getGraphicsControl().isLocked());
-        init.getGameGUI().getGraphicsControl().lock(this);
-        init.getGameGUI().getGraphicsControl().addUnit(this, this);
-        init.getGameGUI().getGraphicsControl().unlock(this);
+        init.getUnitOperationHandler().addOperation(
+                new UnitOperation(UnitOperation.ADD_UNIT, this));
 
     }
 
@@ -110,10 +109,9 @@ public abstract class Unit implements Comparable {
     public abstract Area getHitbox();
 
     public void onDeath() {
-        while (init.getGameGUI().getGraphicsControl().isLocked());
-        init.getGameGUI().getGraphicsControl().lock(this);
-        init.getGameGUI().getGraphicsControl().removeUnit(this, this);
-        init.getGameGUI().getGraphicsControl().unlock(this);
+        
+        init.getUnitOperationHandler().addOperation(
+                new UnitOperation(UnitOperation.DELETE_UNIT, this));
 
     }
 

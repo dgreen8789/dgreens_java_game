@@ -1,6 +1,6 @@
 package graphics;
 
-import phyics.CollisionHandler;
+import phyics.CollisionOperation;
 import control.ControlHandler;
 import java.awt.Canvas;
 import java.awt.Color;
@@ -52,7 +52,7 @@ public class GUI extends Thread {
     private final GraphicsController graphicsControl;
     private boolean paused;
     private final ControlHandler controlHandler;
-    private final CollisionHandler collisionHandler;
+    private final CollisionOperation collisionHandler;
 
     // create a hardware accelerated image
     public final BufferedImage create(final int width, final int height, final boolean alpha) {
@@ -91,7 +91,7 @@ public class GUI extends Thread {
         addListeners();
 
         //Initialize collision engine
-        collisionHandler = new CollisionHandler();
+        collisionHandler = new CollisionOperation();
 
         //LIFTOFF *rocket noises*
         start();
@@ -197,16 +197,14 @@ public class GUI extends Thread {
 
     public void updateApplication() {
         if (!paused) {
-            while (getGraphicsControl().isLocked());
-            getGraphicsControl().lock(this);
-            ArrayList<Unit> x = (ArrayList<Unit>) this.graphicsControl.getUnits();
+
+            ArrayList<Unit> x = init.getUnitOperationHandler().getUnits();
             for (Iterator<Unit> iter = x.iterator(); iter.hasNext();) {
                 Unit u = iter.next();
                 u.executeAImove();
             }
             //Collision
-            collisionHandler.ComputeAndHandle(x);
-            getGraphicsControl().unlock(this);
+            init.getUnitOperationHandler().addOperation(collisionHandler);
 
         }
     }
@@ -274,7 +272,7 @@ public class GUI extends Thread {
         return canvas.getMousePosition();
     }
 
-    public CollisionHandler getCollisionHandler() {
+    public CollisionOperation getCollisionHandler() {
         return collisionHandler;
     }
 }

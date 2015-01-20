@@ -6,6 +6,7 @@
 package main;
 
 import graphics.GUI;
+import phyics.UnitOperationHandler;
 
 /**
  *
@@ -13,11 +14,16 @@ import graphics.GUI;
  */
 public class init {
     public static GUI gameGUI;
+    public static UnitOperationHandler unitOperationHandler;
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         gameGUI = new GUI(60);
+        unitOperationHandler = new UnitOperationHandler();
+        Thread unitHandler = new Thread(unitOperationHandler);
+        unitHandler.start();
+        
         
     }
     public static String getVersion(){
@@ -26,6 +32,10 @@ public class init {
 
     public static GUI getGameGUI() {
         return gameGUI;
+    }
+
+    public static UnitOperationHandler getUnitOperationHandler() {
+        return unitOperationHandler;
     }
     
 }
