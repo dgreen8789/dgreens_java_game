@@ -21,21 +21,23 @@ public class UnitOperationHandler implements Runnable {
     @Override
     public void run() {
         while (true) {
-            System.out.println("Ran, operations.size() = " + operations.size());
+           // System.out.println("Ran List of size " + operations.size());
             while (operations.size() > 0) {
-                System.out.println("Ran List of size " + operations.size());
                 try {
                     operations.get(0).execute(units);
-                    System.out.println(operations.get(0).getOperationName());
-                    System.out.println(operations.remove(0));
+                    //System.out.println(operations.get(0).getOperationName());
+                    operations.remove(0);
                 } catch (NullPointerException e) {
-                    System.out.println("Null Operation Called");
+                    operations.remove(0);
                 }
             }
         }
     }
 
     public boolean addOperation(UnitOperation e) {
+        if (operations.contains(e)) {
+            return false;
+        }
         return operations.add(e);
     }
 

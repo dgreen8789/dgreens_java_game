@@ -1,5 +1,6 @@
 package graphics;
 
+import AI.AIMoveHandler;
 import phyics.CollisionOperation;
 import control.ControlHandler;
 import java.awt.Canvas;
@@ -15,20 +16,14 @@ import java.awt.Toolkit;
 import java.awt.Transparency;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 import main.init;
-import unit.StandardProjectile;
-import unit.Unit;
 
 public class GUI extends Thread {
 
@@ -53,6 +48,7 @@ public class GUI extends Thread {
     private boolean paused;
     private final ControlHandler controlHandler;
     private final CollisionOperation collisionHandler;
+  
 
     // create a hardware accelerated image
     public final BufferedImage create(final int width, final int height, final boolean alpha) {
@@ -198,11 +194,8 @@ public class GUI extends Thread {
     public void updateApplication() {
         if (!paused) {
 
-            ArrayList<Unit> x = init.getUnitOperationHandler().getUnits();
-            for (Iterator<Unit> iter = x.iterator(); iter.hasNext();) {
-                Unit u = iter.next();
-                u.executeAImove();
-            }
+            //AI moves
+            init.getUnitOperationHandler().addOperation(new AIMoveHandler());
             //Collision
             init.getUnitOperationHandler().addOperation(collisionHandler);
 
