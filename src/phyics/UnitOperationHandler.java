@@ -14,7 +14,6 @@ import unit.Unit;
  */
 public class UnitOperationHandler implements Runnable {
 
-    private volatile boolean lock;
     private ArrayList<UnitOperation> operations;
     private ArrayList<Unit> units;
 
