@@ -18,7 +18,7 @@ import weapon.Weapon;
  * @author David
  */
 public abstract class Unit implements Comparable {
-    
+
     private Point location;
     private AI ai;
     private boolean hittable;
@@ -38,7 +38,7 @@ public abstract class Unit implements Comparable {
 
     public void setLocation(int x, int y) {
         setLocation(new Point(x, y));
-        
+
     }
 
     public AI getAi() {
@@ -89,35 +89,45 @@ public abstract class Unit implements Comparable {
         return this.getLocation().y;
     }
 
-    public  abstract void draw(Graphics g);
+    public abstract void draw(Graphics g);
 
-    public  abstract void onCollide(Unit u);
+    public abstract void onCollide(Unit u);
 
-    public  void onCreate(){
-       init.getGameGUI().getGraphicsControl().addUnit(this);
+    public void onCreate() {
+        while (init.getGameGUI().getGraphicsControl().isLocked());
+        init.getGameGUI().getGraphicsControl().lock(this);
+        init.getGameGUI().getGraphicsControl().addUnit(this, this);
+        init.getGameGUI().getGraphicsControl().unlock(this);
+
     }
-    
-    public void fire(Point target){
-        if (canFire){
+
+    public void fire(Point target) {
+        if (canFire) {
             this.getWeapon().fire(this.getLocation(), target, this.getCollisionConstant());
         }
     }
-    
+
     public abstract Area getHitbox();
 
     public void onDeath() {
-        init.getGameGUI().getGraphicsControl().removeUnit(this);
+        while (init.getGameGUI().getGraphicsControl().isLocked());
+        init.getGameGUI().getGraphicsControl().lock(this);
+        init.getGameGUI().getGraphicsControl().removeUnit(this, this);
+        init.getGameGUI().getGraphicsControl().unlock(this);
+
     }
-    public void executeAImove(){
+
+    public void executeAImove() {
         ai.executeMove();
     }
-    public boolean isValidLocation(Point location){
+
+    public boolean isValidLocation(Point location) {
         return init.getGameGUI().getBounds().contains(location);
     }
 
     @Override
     public int compareTo(Object t) {
-        return this.getCollisionConstant() - ((Unit)t).getCollisionConstant();
+        return this.getCollisionConstant() - ((Unit) t).getCollisionConstant();
     }
 
     public boolean canFire() {
@@ -135,9 +145,7 @@ public abstract class Unit implements Comparable {
     public void setWeapon(Weapon weapon) {
         this.weapon = weapon;
     }
+
     public abstract int getCollisionConstant();
-    
-    
-    
 
 }

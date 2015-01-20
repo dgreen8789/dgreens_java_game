@@ -20,6 +20,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -81,17 +82,17 @@ public class GUI extends Thread {
         this.FPSLimit = new AtomicInteger(FPSLimit);
         Timer x = new Timer();
         x.schedule(fpsCounter, 0, 1000);
-        
+
         //Initialize Graphics
         graphicsControl = new GraphicsController(frame.getInsets());
-        
+
         //Initialize input listeners
         this.controlHandler = new ControlHandler();
         addListeners();
-        
+
         //Initialize collision engine
         collisionHandler = new CollisionHandler();
-        
+
         //LIFTOFF *rocket noises*
         start();
     }
@@ -196,17 +197,16 @@ public class GUI extends Thread {
 
     public void updateApplication() {
         if (!paused) {
-            ArrayList<Unit> x = (ArrayList<Unit>) this.graphicsControl.getUnits().clone();
-
-            for (Unit x1 : x) {
-                try {
-                     x1.executeAImove();
-                } catch (NullPointerException e) {
-
-                }
+            while (getGraphicsControl().isLocked());
+            getGraphicsControl().lock(this);
+            ArrayList<Unit> x = (ArrayList<Unit>) this.graphicsControl.getUnits();
+            for (Iterator<Unit> iter = x.iterator(); iter.hasNext();) {
+                Unit u = iter.next();
+                u.executeAImove();
             }
             //Collision
             collisionHandler.ComputeAndHandle(x);
+            getGraphicsControl().unlock(this);
 
         }
     }

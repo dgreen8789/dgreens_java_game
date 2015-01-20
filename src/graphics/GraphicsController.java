@@ -5,6 +5,7 @@ import java.awt.geom.Area;
 import java.awt.geom.PathIterator;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.ConcurrentModificationException;
 import java.util.concurrent.atomic.AtomicLong;
 import main.init;
@@ -27,12 +28,14 @@ public class GraphicsController {
     private boolean firstRender = true;
     private Rectangle oldBounds;
     private final AtomicLong score;
-    private final boolean drawHitboxes = false ; //Debug Line
+    private Object owner;
+    private final boolean drawHitboxes = false; //Debug Line
 
     public GraphicsController(Insets insets) {
         this.insets = insets;
-        units = new ArrayList<>();
+        units = new ArrayList<Unit>();
         score = new AtomicLong(0);
+
     }
 
     /**
@@ -58,7 +61,7 @@ public class GraphicsController {
                 if (drawHitboxes) {
                     g.setColor(Color.MAGENTA);
                     GraphicsController.drawArea(units.get(i).getHitbox(), g);
-                    
+
                 }
             } catch (ConcurrentModificationException e) {
                 if (units.get(i) == (null)) {
@@ -67,30 +70,34 @@ public class GraphicsController {
                     //i--;
                 }
             } catch (NullPointerException e) {
-
+                System.out.println("AAAA");
             }
         }
         drawScore(0, 0, 50, 20, g);
     }
 
-    public void addUnit(Unit u) {
-        int z = u.getCollisionConstant();
-        int x = init.getGameGUI().getCollisionHandler().getBeginningIndex(z);
+    public void addUnit(Unit u, Object o) {
+        if (o == owner) {
+            int z = u.getCollisionConstant();
+            int x = init.getGameGUI().getCollisionHandler().getBeginningIndex(z);
 //        System.out.println("Collision Constant = #" + z + " or " + CollisionConstants.getCodeName(z));
 //        System.out.println("Index = " + z);
 //        System.out.println("Index List: " + Arrays.toString(init.getGameGUI().getCollisionHandler().getIndexes()));
 //        System.out.println(units.contains(mainCharacter) + "\n");
-        units.add((x), u);
-        init.getGameGUI().getCollisionHandler().updateListLocs(z, true);
-
+            units.add(x, u);
+            init.getGameGUI().getCollisionHandler().updateListLocs(z, true);
+        }
     }
 
-    public void removeUnit(Unit u) {
-        if (units.remove(u)) //Is this slowing my program down
-        {
+    public void removeUnit(Unit u, Object o) {
+        if (o == owner) {
+            if (units.remove(u)) //Is this slowing my program down
+            {
 
-            init.getGameGUI().getCollisionHandler().updateListLocs(u.getCollisionConstant(), false);
+                init.getGameGUI().getCollisionHandler().updateListLocs(u.getCollisionConstant(), false);
+            }
         }
+
     }
 
     public Unit getMainCharacter() {
@@ -173,6 +180,27 @@ public class GraphicsController {
                 lineData.get(0).y,
                 lineData.get(lineData.size() - 1).x,
                 lineData.get(lineData.size() - 1).y);
+
+    }
+
+    public boolean isLocked() {
+        return lock;
+    }
+
+    public void lock(Object o) {
+        if (owner == null) {
+            lock = true;
+            this.owner = o;
+            System.out.println("Locked by " + o);
+        }
+
+    }
+
+    public void unlock(Object o) {
+        if (o == owner) {
+            lock = false;
+            System.out.println("Unlocked by " + o);
+        }
 
     }
 

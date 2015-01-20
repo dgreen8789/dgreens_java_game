@@ -115,7 +115,7 @@ public class CollisionHandler {
      * @param collisionCode the Collision code for the units involved
      * @param add true to add one unit, false to subtract
      */
-    public synchronized void updateListLocs(int collisionCode, boolean add) {
+    public void updateListLocs(int collisionCode, boolean add) {
         if (CollisionConstants.isValidCollisionCode(collisionCode)) {
             for (int i = collisionCode + 1; i < indexes.length; i++) {
                 if (add) {

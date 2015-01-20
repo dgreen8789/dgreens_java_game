@@ -149,7 +149,7 @@ public class StandardProjectile extends Unit implements ColoredUnit {
         if (super.isValidLocation(location)) {
             super.setLocation(location);
         } else {
-            init.getGameGUI().getGraphicsControl().removeUnit(this);
+            super.onDeath();
             // this.setAi(null);
         }
 
