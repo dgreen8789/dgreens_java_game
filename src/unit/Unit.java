@@ -145,5 +145,9 @@ public abstract class Unit implements Comparable {
     }
 
     public abstract int getCollisionConstant();
+    
+    public abstract int getComplexity();
+    public abstract int getScore();
+   
 
 }

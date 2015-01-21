@@ -3,6 +3,7 @@ package graphics;
 import AI.AIMoveHandler;
 import phyics.CollisionOperation;
 import control.ControlHandler;
+import graphics.tasks.LevelStartDelayer;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Font;
@@ -21,8 +22,11 @@ import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.util.Timer;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
+import level.LevelMaker;
 import main.init;
 
 public class GUI extends Thread {
@@ -48,7 +52,8 @@ public class GUI extends Thread {
     private boolean paused;
     private final ControlHandler controlHandler;
     private final CollisionOperation collisionHandler;
-  
+    private LevelMaker level;
+    private boolean levelInitialized;
 
     // create a hardware accelerated image
     public final BufferedImage create(final int width, final int height, final boolean alpha) {
@@ -193,12 +198,21 @@ public class GUI extends Thread {
 
     public void updateApplication() {
         if (!paused) {
+            if (!this.levelInitialized) {
+                //Initialize Level System
+                this.getGraphicsControl().addTask(new LevelStartDelayer(60));
+                levelInitialized = true;
 
+            }
             //AI moves
             init.getUnitOperationHandler().addOperation(new AIMoveHandler());
             //Collision
             init.getUnitOperationHandler().addOperation(collisionHandler);
-
+            if (this.getLevel() != null) {
+                if (this.getLevel().isCompleted()) {
+                    this.getLevel().onVictory(graphics, this.getBounds());
+                }
+            }
         }
     }
 
@@ -208,41 +222,11 @@ public class GUI extends Thread {
             graphicsControl.render(g, width, height, insets);
         } else {
             Font f = g.getFont();
-            g.setFont(this.fillRect("PAUSED", g, width, height));
+            g.setFont(GraphicsUtilities.fillRect("PAUSED", g, width, height));
             g.setColor(Color.RED);
             g.drawString("PAUSED", width / 2 - (g.getFontMetrics().stringWidth("PAUSED") / 2),
                     height / 2);
         }
-    }
-
-    /**
-     *
-     * @param string
-     * @param g
-     * @param width
-     * @param height
-     * @return A font that will fill the given area with the given string, or
-     * null if the area is too small
-     */
-    public Font fillRect(String string, Graphics2D g, int width, int height) {
-        Font f = g.getFont();
-        Rectangle2D bounds = f.getStringBounds(string, g.getFontRenderContext());
-
-        while (bounds.getWidth() < width || bounds.getHeight() < height) {
-            f = f.deriveFont(f.getSize2D() + 1);
-            bounds = f.getStringBounds(string, g.getFontRenderContext());
-        }
-
-        while (bounds.getWidth() > width || bounds.getHeight() > height) {
-            if (f.getSize2D() < 2) {
-                return null;
-            } else {
-                f = f.deriveFont(f.getSize2D() - 1);
-                bounds = f.getStringBounds(string, g.getFontRenderContext());
-            }
-        }
-
-        return f;
     }
 
     public GraphicsController getGraphicsControl() {
@@ -268,4 +252,13 @@ public class GUI extends Thread {
     public CollisionOperation getCollisionHandler() {
         return collisionHandler;
     }
+
+    public LevelMaker getLevel() {
+        return level;
+    }
+
+    public void setLevelMaker(LevelMaker level) {
+        this.level = level;
+    }
+
 }

@@ -56,6 +56,9 @@ public class UnitOperation {
             case DELETE_UNIT:
                 units.remove(getAffectedUnit());
                 init.getGameGUI().getCollisionHandler().updateListLocs(getAffectedUnit().getCollisionConstant(), false);
+                if (init.getGameGUI().getLevel().checkForVictory()){
+                    init.getGameGUI().getLevel().setCompleted(true);
+                }
                 break;
             case SPECIAL_OPERATION:
                 boolean b = specialOperation(units);
@@ -91,8 +94,9 @@ public class UnitOperation {
             boolean specialOperation = this.getOperationType() == UnitOperation.SPECIAL_OPERATION
                     && this.getOperationType() == UnitOperation.SPECIAL_OPERATION;
             boolean unitsMatch = false;
-            if (!(this.getAffectedUnit() == null || other.getAffectedUnit() == null))
+            if (!(this.getAffectedUnit() == null || other.getAffectedUnit() == null)) {
                 unitsMatch = this.affectedUnit.equals(other.getAffectedUnit());
+            }
             return (namesMatch && (specialOperation || unitsMatch));
         }
         return false;

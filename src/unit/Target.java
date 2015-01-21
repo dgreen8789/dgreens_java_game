@@ -28,7 +28,7 @@ public class Target extends Unit implements ColoredUnit {
 
     public Target() {
         this(0, 0, 100);
-        this.setLocation(this.getRandomLocation());
+        this.setLocation(UnitUtilities.getRandomLocation(this));
     }
 
     public Target(int x, int y) {
@@ -59,8 +59,8 @@ public class Target extends Unit implements ColoredUnit {
     @Override
     public void onCollide(Unit u) {
         if (u instanceof StandardProjectile) {
-            init.getGameGUI().getGraphicsControl().addScore(1);
-            Point loc = getRandomLocation();
+            init.getGameGUI().getGraphicsControl().addScore(getScore());
+            Point loc = UnitUtilities.getRandomLocation(this);
             this.setLocation(loc);
             //System.out.println(loc.toString());
         } 
@@ -126,13 +126,15 @@ public class Target extends Unit implements ColoredUnit {
         return CollisionConstants.NEUTRAL_UNIT;
     }
 
-    private Point getRandomLocation() {
-        Point loc = new Point(-1, -1);
-        while (!this.isValidLocation(loc)) {
-            loc.x = (int) (Math.random() * init.getGameGUI().getGraphicsControl().getGameWidth());
-            loc.y = (int) (Math.random() * init.getGameGUI().getGraphicsControl().getGameHeight());
-        }
-        return loc;
+
+        @Override
+    public int getComplexity() {
+        return 1;
+    }
+
+    @Override
+    public int getScore() {
+        return 1;
     }
 
 }

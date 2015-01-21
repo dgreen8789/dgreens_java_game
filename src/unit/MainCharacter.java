@@ -115,6 +115,16 @@ public class MainCharacter extends Unit {
     public int getCollisionConstant() {
         return CollisionConstants.FRIENDLY_UNIT;
     }
+
+    @Override
+    public int getComplexity() {
+        return 0;
+    }
+
+    @Override
+    public int getScore() {
+        return 0;
+    }
     
     
 

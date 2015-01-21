@@ -32,7 +32,7 @@ public class ProjectileExplosion extends Unit {
     public static final int MAXIMUM_PROJECTILE_RADIUS = 5;
     public static final int PROJECTILE_SPEED = 3;
     public static final int DEFAULT_PROJECTILES_PER_FRAME = 200;
-    public static final int DEFAULT_FRAME_COUNT = 1;
+    public static final int DEFAULT_FRAME_COUNT = 90;
     public static final int FRAMES_BETWEEN_SIZE_DECREASE = 20;
 
     public ProjectileExplosion(Unit createOnFinish, int numProjectilesPerFrame,int frameCount, Color[] colors) {
@@ -107,6 +107,15 @@ public class ProjectileExplosion extends Unit {
     @Override
     public int getCollisionConstant() {
         return CollisionConstants.UNTARGETABlE;
+    }
+        @Override
+    public int getComplexity() {
+        return 0;
+    }
+
+    @Override
+    public int getScore() {
+        return 0;
     }
     
     

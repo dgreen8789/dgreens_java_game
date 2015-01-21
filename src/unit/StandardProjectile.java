@@ -211,4 +211,13 @@ public class StandardProjectile extends Unit implements ColoredUnit {
                 return affiliation;
         }
     }
+        @Override
+    public int getComplexity() {
+        return 0;
+    }
+
+    @Override
+    public int getScore() {
+        return 0;
+    }
 }

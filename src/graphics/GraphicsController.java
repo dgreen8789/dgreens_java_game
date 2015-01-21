@@ -1,5 +1,6 @@
 package graphics;
 
+import graphics.tasks.GraphicsTask;
 import java.awt.*;
 import java.awt.geom.Area;
 import java.awt.geom.PathIterator;
@@ -21,19 +22,17 @@ import unit.Unit;
  */
 public class GraphicsController {
 
-    private boolean lock;
     private final Insets insets;
     private Unit mainCharacter;
     private boolean firstRender = true;
     private Rectangle oldBounds;
     private final AtomicLong score;
-    private Object owner;
     private final boolean drawHitboxes = false; //Debug Line
-
+    private ArrayList<GraphicsTask> tasks;
     public GraphicsController(Insets insets) {
         this.insets = insets;
         score = new AtomicLong(0);
-
+         tasks = new ArrayList<>();
     }
 
     /**
@@ -60,7 +59,7 @@ public class GraphicsController {
                 units.get(i).draw(g);
                 if (drawHitboxes) {
                     g.setColor(Color.MAGENTA);
-                    GraphicsController.drawArea(units.get(i).getHitbox(), g);
+                    GraphicsUtilities.drawArea(units.get(i).getHitbox(), g);
 
                 }
             }catch (NullPointerException e) {
@@ -68,6 +67,19 @@ public class GraphicsController {
             }
         }
         b = init.getUnitOperationHandler().unlock();
+        ArrayList<GraphicsTask> removeTasks = new ArrayList<>();
+        for (GraphicsTask task : tasks) {
+            task.draw(g, width, height);
+            task.frames--;
+            if (task.frames == 0){
+                task.onCompletion();
+                removeTasks.add(task);
+            }
+        }
+        for (GraphicsTask removeTask : removeTasks) {
+            tasks.remove(removeTask);
+        }
+        removeTasks.clear();
         drawScore(0, 0, 50, 20, g);
     }
 
@@ -111,7 +123,7 @@ public class GraphicsController {
     private void drawScore(int x, int y, int width, int height, Graphics2D g) {
         Font f = g.getFont();
         g.setColor(Color.WHITE);
-        g.setFont(init.getGameGUI().fillRect(Long.toString(this.getScore()), g, width, height));
+        g.setFont(GraphicsUtilities.fillRect(Long.toString(this.getScore()), g, width, height));
         g.drawString(Long.toString(this.getScore()), 0, (int) (g.getFontMetrics()
                 .getLineMetrics(Long.toString(this.getScore()), g).getHeight()));
         g.setFont(f);
@@ -125,29 +137,14 @@ public class GraphicsController {
         return oldBounds.height - (this.insets.top + this.insets.bottom);
     }
 
-    public static void drawArea(Area a, Graphics g) {
-        PathIterator path = a.getPathIterator(null);
-        double[] pathData = new double[6];
-        ArrayList<Point> lineData = new ArrayList<>();
-        while (!path.isDone()) {
-            path.currentSegment(pathData);
-            //System.out.println(Arrays.toString(pathData));
-            double[] x = new double[2];
-            System.arraycopy(pathData, 0, x, 0, 2);
-            path.next();
-            lineData.add(new Point((int) x[0], (int) x[1]));
-        }
-        for (int i = 0; i < lineData.size() - 1; i++) {
-            g.drawLine(lineData.get(i).x,
-                    lineData.get(i).y,
-                    lineData.get(i + 1).x,
-                    lineData.get(i + 1).y);
-        }
-        g.drawLine(lineData.get(0).x,
-                lineData.get(0).y,
-                lineData.get(lineData.size() - 1).x,
-                lineData.get(lineData.size() - 1).y);
-
+    public boolean addTask(GraphicsTask e) {
+        return tasks.add(e);
     }
+
+    public boolean removeTask(GraphicsTask o) {
+        return tasks.remove(o);
+    }
+    
+    
 
 }
