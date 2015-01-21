@@ -6,19 +6,12 @@
 package unit;
 
 import AI.ProjectileAI;
-import graphics.GraphicsController;
-import graphics.RotatingShape;
 import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
-import java.awt.geom.PathIterator;
-import java.util.ArrayList;
-import java.util.Arrays;
-import main.init;
 import phyics.CollisionConstants;
 
 /**
@@ -70,7 +63,7 @@ public class StandardProjectile extends Unit implements ColoredUnit {
     }
 
     @Override
-    public void draw(Graphics g) {
+    public void draw(Graphics2D g) {
         g.setColor(color);
         //DEBUG CODE
 //        Color c;

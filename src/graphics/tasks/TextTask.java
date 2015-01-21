@@ -6,6 +6,7 @@
 package graphics.tasks;
 
 import graphics.GraphicsUtilities;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -20,6 +21,7 @@ public class TextTask extends GraphicsTask {
     private int width;
     private int height;
     private Point position;
+    private int colorSwitch;
 
     public TextTask(String text, int width, int height, Point position, int frames) {
         super(frames);
@@ -40,9 +42,15 @@ public class TextTask extends GraphicsTask {
     @Override
     public void draw(Graphics2D g, int width, int height) {
         Font f = g.getFont();
+        Color c = g.getColor();
+        g.setColor((colorSwitch++ == 0) ? Color.GREEN : Color.WHITE);
+        colorSwitch %=2;
         Font newFont = this.getFont(g);
+        g.setFont(newFont);
         g.drawString(text, position.x, position.y);
-        g.setFont(newFont);       
+        g.setFont(f);
+        g.setColor(c);
+        
     }
 
     private Font getFont(Graphics2D g) {

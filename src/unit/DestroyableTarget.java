@@ -5,7 +5,9 @@
  */
 package unit;
 
+import graphics.GraphicsUtilities;
 import java.awt.Color;
+import java.awt.Graphics2D;
 
 /**
  *
@@ -28,7 +30,7 @@ public class DestroyableTarget extends Target {
         super(x, y, size);
         this.health = health;
     }
-    
+
     public DestroyableTarget(int health, int x, int y, int size, Color color) {
         super(x, y, size, color);
         this.health = health;
@@ -45,4 +47,21 @@ public class DestroyableTarget extends Target {
             }
         }
     }
+
+    @Override
+
+    public void draw(Graphics2D g) {
+        super.draw(g);
+        int characterAllowance = (getSize() / 10 + 1);
+        if (characterAllowance == 0) {
+            characterAllowance++;
+        }
+        characterAllowance *= (getSize() / 4);
+        g.setFont(GraphicsUtilities.fillRect(Integer.toString(health), g,
+                (getSize() / 2) + characterAllowance, getSize()));
+        g.drawString(Integer.toString(health),
+                getX() - characterAllowance * Integer.signum(getX()),
+                getY() - (getSize() * Integer.signum(getY())));
+    }
+
 }

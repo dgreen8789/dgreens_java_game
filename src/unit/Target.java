@@ -8,9 +8,9 @@ package unit;
 import AI.AI;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.Shape;
+import java.awt.Rectangle;
 import java.awt.geom.Area;
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Ellipse2D;
@@ -45,7 +45,7 @@ public class Target extends Unit implements ColoredUnit {
     }
 
     @Override
-    public void draw(Graphics g) {
+    public void draw(Graphics2D g) {
         g.setColor(color);
         g.fillOval(this.getX() - getSize() / 2, this.getY() - getSize() / 2, getSize(), getSize());
         if (getSize() > 6) {
@@ -107,9 +107,13 @@ public class Target extends Unit implements ColoredUnit {
 
     @Override
     public boolean isValidLocation(Point location) {
-        location.x -= this.getSize();
-        location.y -= this.getSize();
-        return super.isValidLocation(location); //To change body of generated methods, choose Tools | Templates.
+        Rectangle bounds = (Rectangle)init.getGameGUI().getBounds().clone();
+        int change = this.getSize() * 2;
+        bounds.x += change;
+        bounds.y += change;
+        bounds.width -= change;
+        bounds.height -= change;
+        return bounds.contains(location);
     }
 
     @Override

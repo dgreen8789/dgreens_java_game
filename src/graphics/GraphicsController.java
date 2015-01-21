@@ -72,7 +72,7 @@ public class GraphicsController {
             }
 
         }
-        drawScore(0, 0, 50, 20, g);
+        drawScore(0, 0, 50, 100, g);
     }
 
     public Unit getMainCharacter() {
@@ -95,7 +95,7 @@ public class GraphicsController {
     private void scale() {
         double xRatio = init.getGameGUI().getBounds().getWidth() / oldBounds.width * 1.0;
         double yRatio = init.getGameGUI().getBounds().getHeight() / oldBounds.height * 1.0;
-        for (Unit unit : init.unitOperationHandler.getUnits()) {
+        for (Unit unit : init.getUnitOperationHandler().getUnits()) {
             unit.setLocation((int) (unit.getX() * xRatio), (int) (unit.getY() * yRatio));
         }
     }
@@ -111,9 +111,10 @@ public class GraphicsController {
     private void drawScore(int x, int y, int width, int height, Graphics2D g) {
         Font f = g.getFont();
         g.setColor(Color.WHITE);
-        g.setFont(GraphicsUtilities.fillRect(Long.toString(this.getScore()), g, width, height));
-        g.drawString(Long.toString(this.getScore()), 0, (int) (g.getFontMetrics()
-                .getLineMetrics(Long.toString(this.getScore()), g).getHeight()));
+        String scoreString =  "Score = " + this.getScore();
+        g.setFont(GraphicsUtilities.fillRect(scoreString, g, width, height));
+        g.drawString(scoreString, 0, (int) (g.getFontMetrics()
+                .getLineMetrics(scoreString, g).getHeight()));
         g.setFont(f);
     }
 

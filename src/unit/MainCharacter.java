@@ -7,13 +7,12 @@ package unit;
 
 import graphics.RotatingShape;
 import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.Area;
 import phyics.CollisionConstants;
 import weapon.MultishotWeapon;
-import weapon.StandardWeapon;
 
 /**
  *
@@ -40,7 +39,7 @@ public class MainCharacter extends Unit {
     }
 
     @Override
-    public void draw(Graphics g) {
+    public void draw(Graphics2D g) {
         if (getSize() < finalSize) {
             setSize(getSize() + 1);
         }

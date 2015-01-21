@@ -14,9 +14,10 @@ import main.init;
  * @author David
  */
 public class LevelStartDelayer extends GraphicsTask{
-
-    public LevelStartDelayer(int frames) {
+    private int levelNum;
+    public LevelStartDelayer(int frames, int levelNum) {
         super(frames);
+        this.levelNum = levelNum;
     }
 
     @Override
@@ -25,7 +26,8 @@ public class LevelStartDelayer extends GraphicsTask{
 
     @Override
     public void onCompletion() {
-        init.getGameGUI().setLevelMaker(new LevelMaker(1));
+        init.getGameGUI().setLevelMaker(new LevelMaker(levelNum));
+        init.getGameGUI().getLevel().setup();
     }
 
 

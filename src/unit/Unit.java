@@ -6,9 +6,8 @@
 package unit;
 
 import AI.AI;
-import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.Shape;
 import java.awt.geom.Area;
 import main.init;
 import phyics.UnitOperation;
@@ -91,7 +90,7 @@ public abstract class Unit implements Comparable {
         return this.getLocation().y;
     }
 
-    public abstract void draw(Graphics g);
+    public abstract void draw(Graphics2D g);
 
     public abstract void onCollide(Unit u);
 

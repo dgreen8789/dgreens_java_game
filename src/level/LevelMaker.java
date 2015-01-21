@@ -30,9 +30,7 @@ public class LevelMaker {
     ArrayList<Unit> units;
 
     public LevelMaker(int difficulty) {
-        setup(difficulty);
         this.difficulty = difficulty;
-
     }
 
     public boolean onVictory(Graphics2D g, Rectangle bounds) {
@@ -66,7 +64,7 @@ public class LevelMaker {
         return vals;
     }
 
-    private void setup(int difficulty) {
+    public void setup() {
         ArrayList<Integer> unitComplexities = generateUnitNumbers(difficulty);
         units = generateUnits(unitComplexities);
         for (Unit u : units) {

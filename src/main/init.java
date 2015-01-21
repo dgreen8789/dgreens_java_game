@@ -14,8 +14,8 @@ import phyics.UnitOperationHandler;
  */
 public class init {
 
-    public static GUI gameGUI;
-    public static UnitOperationHandler unitOperationHandler;
+    private static GUI gameGUI;
+    private static UnitOperationHandler unitOperationHandler;
 
     /**
      * @param args the command line arguments
