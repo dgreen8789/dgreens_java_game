@@ -195,7 +195,6 @@ public class GUI extends Thread {
         }
         frame.dispose();
     }
-
     public void updateApplication() {
         if (!paused) {
             if (!this.levelInitialized) {
@@ -210,6 +209,7 @@ public class GUI extends Thread {
             init.getUnitOperationHandler().addOperation(collisionHandler);
             if (this.getLevel() != null) {
                 if (this.getLevel().isCompleted()) {
+               
                     this.getLevel().onVictory(graphics, this.getBounds());
                 }
             }

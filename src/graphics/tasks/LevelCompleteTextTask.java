@@ -6,6 +6,7 @@
 package graphics.tasks;
 
 import java.awt.Point;
+import level.LevelMaker;
 import main.init;
 
 /**
@@ -20,7 +21,8 @@ public class LevelCompleteTextTask extends TextTask {
 
     @Override
     public void onCompletion() {
-        init.getGameGUI().getLevel().afterLevel();
+        int x = init.getGameGUI().getLevel().getDifficulty();
+        init.getGameGUI().setLevelMaker(new LevelMaker(++x));
     }
     
 }

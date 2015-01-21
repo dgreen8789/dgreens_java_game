@@ -24,7 +24,6 @@ import phyics.CollisionConstants;
 public class Target extends Unit implements ColoredUnit {
 
     private Color color;
-    private int size;
 
     public Target() {
         this(0, 0, 100);
@@ -41,15 +40,15 @@ public class Target extends Unit implements ColoredUnit {
 
     public Target(int x, int y, int size, Color color) {
         super(x, y);
-        this.size = size;
         this.color = color;
+        setSize(size);
     }
 
     @Override
     public void draw(Graphics g) {
         g.setColor(color);
-        g.fillOval(this.getX() - size / 2, this.getY() - size / 2, size, size);
-        if (size > 6) {
+        g.fillOval(this.getX() - getSize() / 2, this.getY() - getSize() / 2, getSize(), getSize());
+        if (getSize() > 6) {
             g.setColor(Color.WHITE);
             g.fillOval(this.getX() - 2, this.getY() - 2, 4, 4);
         }
@@ -63,7 +62,7 @@ public class Target extends Unit implements ColoredUnit {
             Point loc = UnitUtilities.getRandomLocation(this);
             this.setLocation(loc);
             //System.out.println(loc.toString());
-        } 
+        }
 
     }
 
@@ -75,10 +74,10 @@ public class Target extends Unit implements ColoredUnit {
     public Area getHitbox() {
         Ellipse2D hitbox = new Ellipse2D.Double();
         Dimension2D hitboxSize = new Dimension();
-        hitboxSize.setSize(size, size);
+        hitboxSize.setSize(getSize(), getSize());
         Point hitboxLocation = (Point) this.getLocation().clone();
-        hitboxLocation.x -= size / 2;
-        hitboxLocation.y -= size / 2;
+        hitboxLocation.x -= getSize() / 2;
+        hitboxLocation.y -= getSize() / 2;
         hitbox.setFrame(hitboxLocation, hitboxSize);
         return new Area(hitbox);
     }
@@ -113,21 +112,12 @@ public class Target extends Unit implements ColoredUnit {
         return super.isValidLocation(location); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public int getSize() {
-        return size;
-    }
-
-    public void setSize(int size) {
-        this.size = size;
-    }
-
     @Override
     public int getCollisionConstant() {
         return CollisionConstants.NEUTRAL_UNIT;
     }
 
-
-        @Override
+    @Override
     public int getComplexity() {
         return 1;
     }

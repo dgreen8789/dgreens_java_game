@@ -22,60 +22,74 @@ import unit.Unit;
  * @author David
  */
 public class LevelMaker {
+
     public static int MINIMUM_UNIT_COMPLEXITY = 1;
     public static int MAXIMUM_UNIT_COMPLEXITY = 1024;
     private boolean completed;
     int difficulty;
     ArrayList<Unit> units;
-    public LevelMaker(int difficulty){
+
+    public LevelMaker(int difficulty) {
         setup(difficulty);
         this.difficulty = difficulty;
 
     }
-    public void onVictory(Graphics2D g, Rectangle bounds){
+
+    public boolean onVictory(Graphics2D g, Rectangle bounds) {
+        System.out.println("VICTORY METHOD CALLED");
+        afterLevel();
         String message = "Level " + difficulty + " Success!!!";
         Point p = new Point(0, 3 * bounds.height / 4);
-        
+
         LevelCompleteTextTask task = new LevelCompleteTextTask(message,
                 bounds.width, bounds.height / 2, p, 60);
-    }    
-    private ArrayList<Unit> generateUnits(ArrayList<Integer> complexities){
+        init.getGameGUI().getGraphicsControl().addTask(task);
+        return true;
+    }
+
+    private ArrayList<Unit> generateUnits(ArrayList<Integer> complexities) {
         ArrayList<Unit> levelUnits = new ArrayList<>();
         for (Integer i : complexities) {
             levelUnits.add(generateEnemy(i));
         }
         return levelUnits;
     }
-    private ArrayList<Integer> generateUnitNumbers(int difficulty){
+
+    private ArrayList<Integer> generateUnitNumbers(int difficulty) {
         ArrayList<Integer> vals = new ArrayList<>();
-        while (difficulty > 0){
+        while (difficulty > 0) {
             int max = Math.min(difficulty, MAXIMUM_UNIT_COMPLEXITY);
-            int complexity = (int)(Math.random() * (max - MINIMUM_UNIT_COMPLEXITY ) + MINIMUM_UNIT_COMPLEXITY);
+            int complexity = (int) (Math.random() * (max - MINIMUM_UNIT_COMPLEXITY) + MINIMUM_UNIT_COMPLEXITY);
             vals.add(complexity);
             difficulty -= complexity;
         }
-        return vals;       
+        return vals;
     }
-    private void setup(int difficulty){
+
+    private void setup(int difficulty) {
         ArrayList<Integer> unitComplexities = generateUnitNumbers(difficulty);
         units = generateUnits(unitComplexities);
         for (Unit u : units) {
             u.onCreate();
         }
+        System.out.println("Setup for level " + difficulty + " complete");
     }
-    public boolean checkForVictory(){
-        boolean b = init.getUnitOperationHandler().lock();
+
+    public boolean checkForVictory() {
+        // boolean b = init.getUnitOperationHandler().lock();
         boolean returnValue = Collections.disjoint(init.getUnitOperationHandler().getUnits(), units);
-        b = init.getUnitOperationHandler().unlock();
+        // b = init.getUnitOperationHandler().unlock();
         return returnValue;
     }
-    public void afterLevel(){
+
+    public void afterLevel() {
         //blah blah
-        setup(difficulty + 1);
     }
 
     private Unit generateEnemy(Integer i) {
-        return new DestroyableTarget(i);
+        Unit u = new DestroyableTarget(i);
+        u.setSize(15);
+        return u;
     }
 
     public boolean isCompleted() {
@@ -85,5 +99,10 @@ public class LevelMaker {
     public void setCompleted(boolean completed) {
         this.completed = completed;
     }
+
+    public int getDifficulty() {
+        return difficulty;
+    }
     
+
 }

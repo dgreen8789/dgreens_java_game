@@ -26,6 +26,7 @@ public abstract class Unit implements Comparable {
     private boolean collidable;
     private boolean canFire;
     private Weapon weapon;
+    private int size;
 
     public Point getLocation() {
         return location;
@@ -109,7 +110,7 @@ public abstract class Unit implements Comparable {
     public abstract Area getHitbox();
 
     public void onDeath() {
-        
+
         init.getUnitOperationHandler().addOperation(
                 new UnitOperation(UnitOperation.DELETE_UNIT, this));
 
@@ -145,9 +146,17 @@ public abstract class Unit implements Comparable {
     }
 
     public abstract int getCollisionConstant();
-    
+
     public abstract int getComplexity();
+
     public abstract int getScore();
-   
+
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
 
 }

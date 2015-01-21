@@ -2,18 +2,12 @@ package graphics;
 
 import graphics.tasks.GraphicsTask;
 import java.awt.*;
-import java.awt.geom.Area;
-import java.awt.geom.PathIterator;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.ConcurrentModificationException;
+import java.util.Iterator;
 import java.util.concurrent.atomic.AtomicLong;
 import main.init;
-import phyics.CollisionConstants;
 import unit.MainCharacter;
 import unit.ProjectileExplosion;
-import unit.Target;
 import unit.Unit;
 
 /**
@@ -29,10 +23,11 @@ public class GraphicsController {
     private final AtomicLong score;
     private final boolean drawHitboxes = false; //Debug Line
     private ArrayList<GraphicsTask> tasks;
+
     public GraphicsController(Insets insets) {
         this.insets = insets;
         score = new AtomicLong(0);
-         tasks = new ArrayList<>();
+        tasks = new ArrayList<>();
     }
 
     /**
@@ -62,24 +57,21 @@ public class GraphicsController {
                     GraphicsUtilities.drawArea(units.get(i).getHitbox(), g);
 
                 }
-            }catch (NullPointerException e) {
+            } catch (NullPointerException e) {
                 System.out.println("Yo dawg, null pointer - drawing operations");
             }
         }
         b = init.getUnitOperationHandler().unlock();
-        ArrayList<GraphicsTask> removeTasks = new ArrayList<>();
-        for (GraphicsTask task : tasks) {
-            task.draw(g, width, height);
-            task.frames--;
-            if (task.frames == 0){
-                task.onCompletion();
-                removeTasks.add(task);
+        for (Iterator iterator = tasks.iterator(); iterator.hasNext();) {
+            GraphicsTask x = (GraphicsTask) iterator.next();
+            x.draw(g, width, height);
+            x.frames--;
+            if (x.frames == 0) {
+                x.onCompletion();
+                iterator.remove();
             }
+
         }
-        for (GraphicsTask removeTask : removeTasks) {
-            tasks.remove(removeTask);
-        }
-        removeTasks.clear();
         drawScore(0, 0, 50, 20, g);
     }
 
@@ -98,10 +90,6 @@ public class GraphicsController {
         oldBounds = bounds;
         ProjectileExplosion explosion = new ProjectileExplosion(mainCharacter);
         explosion.onCreate();
-        Target g = new Target();
-        g.setSize(10);
-        g.setColor(Color.BLUE);
-        g.onCreate();
     }
 
     private void scale() {
@@ -144,7 +132,5 @@ public class GraphicsController {
     public boolean removeTask(GraphicsTask o) {
         return tasks.remove(o);
     }
-    
-    
 
 }

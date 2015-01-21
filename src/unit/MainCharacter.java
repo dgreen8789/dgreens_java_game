@@ -23,7 +23,6 @@ public class MainCharacter extends Unit {
 
     int shapeCount = 4;
     int rotationAngle = 0;
-    int size;
     int finalSize;
 
 
@@ -42,17 +41,17 @@ public class MainCharacter extends Unit {
 
     @Override
     public void draw(Graphics g) {
-        if (size < finalSize) {
-            size++;
+        if (getSize() < finalSize) {
+            setSize(getSize() + 1);
         }
         Color c = g.getColor();
         g.setColor(Color.GREEN);
-        int[][] data = RotatingShape.shape(getLocation(), size, shapeCount, rotationAngle);
+        int[][] data = RotatingShape.shape(getLocation(), getSize(), shapeCount, rotationAngle);
 
         g.drawPolygon(data[0], data[1], data[0].length);
         g.setColor(Color.YELLOW);
         for (int i = 0; i < data[0].length; i++) {
-            int[][] shape2 = RotatingShape.shape(new Point(data[0][i], data[1][i]), size / 10, shapeCount, (360 / (i + 1)) * i);
+            int[][] shape2 = RotatingShape.shape(new Point(data[0][i], data[1][i]),  getSize() / 10, shapeCount, (360 / (i + 1)) * i);
             g.drawPolygon(shape2[0], shape2[1], shape2[0].length);
         }
         shapeCount = (shapeCount > 15) ? 3 : shapeCount;
@@ -74,7 +73,7 @@ public class MainCharacter extends Unit {
     @Override
     public void onCreate() {
         super.onCreate();
-        size = 1;
+        setSize(1);
         this.allowFirePermission(true);
     }
 
@@ -91,9 +90,9 @@ public class MainCharacter extends Unit {
     @Override
     public Area getHitbox() {
         Rectangle hitbox = new Rectangle(this.getLocation());
-        hitbox.x -= this.size / 2;
-        hitbox.y -= this.size / 2;
-        hitbox.setBounds(hitbox.x, hitbox.y, size, size);
+        hitbox.x -= getSize() / 2;
+        hitbox.y -= getSize() / 2;
+        hitbox.setBounds(hitbox.x, hitbox.y,  getSize(),  getSize());
         return new Area(hitbox);
 
     }
