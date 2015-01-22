@@ -21,7 +21,7 @@ public class GraphicsController {
     private boolean firstRender = true;
     private Rectangle oldBounds;
     private final AtomicLong score;
-    private final boolean drawHitboxes = false; //Debug Line
+    private final boolean drawHitboxes = true; //Debug Line
     private ArrayList<GraphicsTask> tasks;
 
     public GraphicsController(Insets insets) {
@@ -54,11 +54,12 @@ public class GraphicsController {
                 units.get(i).draw(g);
                 if (drawHitboxes) {
                     g.setColor(Color.MAGENTA);
+                    
                     GraphicsUtilities.drawArea(units.get(i).getHitbox(), g);
 
                 }
             } catch (NullPointerException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
             }
         }
         b = init.getUnitOperationHandler().unlock();

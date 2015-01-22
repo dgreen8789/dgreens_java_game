@@ -5,9 +5,7 @@
  */
 package level;
 
-import graphics.GraphicsUtilities;
 import graphics.tasks.LevelCompleteTextTask;
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -18,6 +16,8 @@ import phyics.UnitClearOperation;
 import phyics.UnitOperation;
 import unit.DestroyableTarget;
 import unit.Unit;
+import unit.UnitUtilities;
+import unit.enemy.BasicEnemy;
 
 /**
  *
@@ -86,10 +86,19 @@ public class LevelMaker {
     public void afterLevel() {
         //blah blah
     }
+    Unit[] availableUnits = {new DestroyableTarget(1), new BasicEnemy(1, 1, 1)};
 
     private Unit generateEnemy(Integer i) {
-        Unit u = new DestroyableTarget(i);
-        u.setSize(15);
+        Unit u;
+        if (i > 5) {
+            u = new BasicEnemy(i - 5, 1, 1);
+            u.setLocation(UnitUtilities.getRandomLocation(u));
+            u.setSize(15);
+        } else {
+            u = new DestroyableTarget(i);
+            u.setSize(15);
+
+        }
         return u;
     }
 

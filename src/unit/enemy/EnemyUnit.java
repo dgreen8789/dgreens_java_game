@@ -13,6 +13,7 @@ import phyics.CollisionConstants;
 import unit.ColoredUnit;
 import unit.StandardProjectile;
 import unit.Unit;
+import weapon.StandardWeapon;
 
 /**
  *
@@ -27,6 +28,8 @@ public abstract class EnemyUnit extends Unit implements ColoredUnit {
     public EnemyUnit(int health, int x, int y) {
         super(x, y);
         this.health = health;
+        this.allowFirePermission(true);
+        this.setWeapon(new StandardWeapon(this));
     }
     
     @Override
@@ -66,14 +69,5 @@ public abstract class EnemyUnit extends Unit implements ColoredUnit {
     public void setColor(Color color) {
         this.color = color;
     }
-
-    public int getHealth() {
-        return health;
-    }
-
-    public void setHealth(int health) {
-        this.health = health;
-    }
-    
     
 }

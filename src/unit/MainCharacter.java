@@ -46,7 +46,6 @@ public class MainCharacter extends Unit {
         Color c = g.getColor();
         g.setColor(Color.GREEN);
         int[][] data = RotatingShape.shape(getLocation(), getSize(), shapeCount, rotationAngle);
-
         g.drawPolygon(data[0], data[1], data[0].length);
         g.setColor(Color.YELLOW);
         for (int i = 0; i < data[0].length; i++) {

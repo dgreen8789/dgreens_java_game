@@ -9,6 +9,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Rectangle2D;
@@ -26,10 +27,16 @@ public class GraphicsUtilities {
         while (!path.isDone()) {
             path.currentSegment(pathData);
             //System.out.println(Arrays.toString(pathData));
-            double[] x = new double[2];
-            System.arraycopy(pathData, 0, x, 0, 2);
+            double[] x = new double[6];
+            System.arraycopy(pathData, 0, x, 0, 6);
             path.next();
-            lineData.add(new Point((int) x[0], (int) x[1]));
+            for (int i = 0; i < 3; i++) {
+                 if (x[2 * i] != 0)
+                 lineData.add(new Point((int) x[2 * i], (int) x[2 * i + 1]));
+                 else{
+                     i = 4;
+                 }
+            }
         }
         for (int i = 0; i < lineData.size() - 1; i++) {
             g.drawLine(lineData.get(i).x,
