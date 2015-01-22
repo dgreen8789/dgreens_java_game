@@ -25,8 +25,11 @@ public class UnitOperationHandler implements Runnable {
         while (true) {
             while (operations.size() > 0 && !isActuallyLocked) {
                 try {
+                    long timeStart = System.currentTimeMillis();
                     operations.get(0).execute(units);
-                    //System.out.println(operations.get(0).getOperationName());
+                    long timeStop = System.currentTimeMillis();
+                    System.out.println(operations.get(0).getOperationName() + " took " + 
+                            + (timeStop - timeStart) + " ms");
                     operations.remove(0);
                 } catch (NullPointerException e) {
                     operations.remove(0);

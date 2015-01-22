@@ -26,7 +26,7 @@ public abstract class Unit implements Comparable {
     private boolean canFire;
     private Weapon weapon;
     private int size;
-
+    protected int health;
     public Point getLocation() {
         return location;
     }
@@ -98,11 +98,15 @@ public abstract class Unit implements Comparable {
         init.getUnitOperationHandler().addOperation(
                 new UnitOperation(UnitOperation.ADD_UNIT, this));
 
-    }
+    }    
 
     public void fire(Point target) {
-        if (canFire) {
+        if (canFire && target != null) {
+            try{
             this.getWeapon().fire(this.getLocation(), target, this.getCollisionConstant());
+            }catch(NullPointerException e){
+                //System.out.println("Target " + target + "\tLocation " + this.getLocation());
+            }
         }
     }
 
@@ -158,4 +162,12 @@ public abstract class Unit implements Comparable {
         this.size = size;
     }
 
+    public int getHealth() {
+        return health;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
+    
 }

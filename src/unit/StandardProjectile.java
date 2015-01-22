@@ -31,6 +31,7 @@ public class StandardProjectile extends Unit implements ColoredUnit {
     private Area hitbox;
     private double xDelta;
     private double yDelta;
+    private int damage;
 
     public StandardProjectile(Color color, int radius, Point target, int affiliation) {
         this(color, radius, 0, 0, target, affiliation, 10);
@@ -213,4 +214,13 @@ public class StandardProjectile extends Unit implements ColoredUnit {
     public int getScore() {
         return 0;
     }
+
+    public int getDamage() {
+        return damage;
+    }
+
+    public void setDamage(int damage) {
+        this.damage = damage;
+    }
+    
 }

@@ -76,6 +76,7 @@ public class MainCharacter extends Unit {
         this.allowFirePermission(true);
     }
 
+    @Override
     public void fire(Point target) {
         //for (int i = 0; i < 100; i++) { //STRESS TESTING FOR BULLETS
         super.fire(target);

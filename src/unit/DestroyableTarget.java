@@ -8,14 +8,13 @@ package unit;
 import graphics.GraphicsUtilities;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import main.init;
 
 /**
  *
  * @author David
  */
 public class DestroyableTarget extends Target {
-
-    int health;
 
     public DestroyableTarget(int health) {
         this.health = health;
@@ -41,6 +40,7 @@ public class DestroyableTarget extends Target {
         if (u instanceof StandardProjectile) {
             health--;
             if (health <= 0) {
+                init.getGameGUI().getGraphicsControl().addScore(1);
                 onDeath();
             } else {
                 super.onCollide(u);

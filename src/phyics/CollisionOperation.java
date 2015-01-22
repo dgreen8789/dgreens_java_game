@@ -125,7 +125,7 @@ public class CollisionOperation extends UnitOperation {
     public void updateListLocs(int collisionCode, int delta) {
         if (CollisionConstants.isValidCollisionCode(collisionCode)) {
             for (int i = collisionCode + 1; i < indexes.length; i++) {
-                indexes[i].addAndGet(delta);
+                indexes[i].set(Math.max(indexes[i].get() + delta, 0));              
             }
         }
     }
