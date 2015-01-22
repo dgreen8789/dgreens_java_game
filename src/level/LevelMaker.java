@@ -14,6 +14,8 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Collections;
 import main.init;
+import phyics.UnitClearOperation;
+import phyics.UnitOperation;
 import unit.DestroyableTarget;
 import unit.Unit;
 
@@ -34,9 +36,9 @@ public class LevelMaker {
     }
 
     public boolean onVictory(Graphics2D g, Rectangle bounds) {
-        System.out.println("VICTORY METHOD CALLED");
+        //System.out.println("VICTORY METHOD CALLED");
         afterLevel();
-        String message = "Level " + difficulty + " Success!!!";
+        String message = "Level " + difficulty + " Success";
         Point p = new Point(0, 3 * bounds.height / 4);
 
         LevelCompleteTextTask task = new LevelCompleteTextTask(message,
@@ -65,12 +67,13 @@ public class LevelMaker {
     }
 
     public void setup() {
+        clearLevel(true);
         ArrayList<Integer> unitComplexities = generateUnitNumbers(difficulty);
         units = generateUnits(unitComplexities);
         for (Unit u : units) {
             u.onCreate();
         }
-        System.out.println("Setup for level " + difficulty + " complete");
+        //System.out.println("Setup for level " + difficulty + " complete");
     }
 
     public boolean checkForVictory() {
@@ -101,6 +104,13 @@ public class LevelMaker {
     public int getDifficulty() {
         return difficulty;
     }
-    
+
+    public void clearLevel(boolean reAddMainCharacter) {
+        init.getUnitOperationHandler().addOperation(new UnitClearOperation());
+        if (reAddMainCharacter) {
+            init.getUnitOperationHandler().addOperation(new UnitOperation(UnitOperation.ADD_UNIT,
+                    init.getGameGUI().getGraphicsControl().getMainCharacter()));
+        }
+    }
 
 }

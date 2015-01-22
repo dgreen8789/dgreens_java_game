@@ -120,16 +120,12 @@ public class CollisionOperation extends UnitOperation {
      * units.
      *
      * @param collisionCode the Collision code for the units involved
-     * @param add true to add one unit, false to subtract
+     * @param delta the amount to add
      */
-    public void updateListLocs(int collisionCode, boolean add) {
+    public void updateListLocs(int collisionCode, int delta) {
         if (CollisionConstants.isValidCollisionCode(collisionCode)) {
             for (int i = collisionCode + 1; i < indexes.length; i++) {
-                if (add) {
-                    indexes[i].incrementAndGet();
-                } else {
-                    indexes[i].decrementAndGet();
-                }
+                indexes[i].addAndGet(delta);
             }
         }
     }
@@ -162,6 +158,11 @@ public class CollisionOperation extends UnitOperation {
     @Override
     public String getOperationName() {
         return "COLLISION";
+    }
+    public void clearIndexes(){
+        for (int i = 0; i < indexes.length; i++) {
+           indexes[i].set(0);        
+        }
     }
     
 

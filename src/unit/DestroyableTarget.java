@@ -40,8 +40,8 @@ public class DestroyableTarget extends Target {
     public void onCollide(Unit u) {
         if (u instanceof StandardProjectile) {
             health--;
-            if (health == 0) {
-                super.onDeath();
+            if (health <= 0) {
+                onDeath();
             } else {
                 super.onCollide(u);
             }
@@ -62,6 +62,16 @@ public class DestroyableTarget extends Target {
         g.drawString(Integer.toString(health),
                 getX() - characterAllowance * Integer.signum(getX()),
                 getY() - (getSize() * Integer.signum(getY())));
+    }
+
+    @Override
+    public void onDeath() {
+        ProjectileExplosion explosion = new ProjectileExplosion(null, 5, 20, new Color[0]);
+        explosion.setLocation(getLocation());
+        explosion.setProjectileMoves(5);
+        explosion.onCreate();
+        super.onDeath();
+
     }
 
 }

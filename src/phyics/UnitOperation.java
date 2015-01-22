@@ -51,11 +51,11 @@ public class UnitOperation {
             case ADD_UNIT:
                 int x = init.getGameGUI().getCollisionHandler().getBeginningIndex(u.getCollisionConstant());
                 units.add(x, getAffectedUnit());
-                init.getGameGUI().getCollisionHandler().updateListLocs(getAffectedUnit().getCollisionConstant(), true);
+                init.getGameGUI().getCollisionHandler().updateListLocs(getAffectedUnit().getCollisionConstant(), 1);
                 break;
             case DELETE_UNIT:
                 units.remove(getAffectedUnit());
-                init.getGameGUI().getCollisionHandler().updateListLocs(getAffectedUnit().getCollisionConstant(), false);
+                init.getGameGUI().getCollisionHandler().updateListLocs(getAffectedUnit().getCollisionConstant(), -1);
                 if (init.getGameGUI().getLevel().checkForVictory()){
                     init.getGameGUI().getLevel().setCompleted(true);
                 }

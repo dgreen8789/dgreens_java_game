@@ -58,7 +58,7 @@ public class GraphicsController {
 
                 }
             } catch (NullPointerException e) {
-                System.out.println("Yo dawg, null pointer - drawing operations");
+                e.printStackTrace();
             }
         }
         b = init.getUnitOperationHandler().unlock();
@@ -89,6 +89,7 @@ public class GraphicsController {
         mainCharacter = new MainCharacter(bounds.width / 2, bounds.height / 2, 20);
         oldBounds = bounds;
         ProjectileExplosion explosion = new ProjectileExplosion(mainCharacter);
+        explosion.setLocation(mainCharacter.getLocation());
         explosion.onCreate();
     }
 
