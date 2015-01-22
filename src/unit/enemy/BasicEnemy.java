@@ -12,6 +12,8 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.geom.Area;
+import unit.ProjectileExplosion;
+import unit.UnitUtilities;
 
 /**
  *
@@ -38,6 +40,7 @@ public class BasicEnemy extends EnemyUnit {
         g.drawPolygon(data[0], data[1], data[0].length);
         angle++;
         angle %= 360;
+        UnitUtilities.drawHealth(g, this);
     }
 
     @Override
@@ -55,5 +58,14 @@ public class BasicEnemy extends EnemyUnit {
     public int getScore() {
         return getComplexity();
     }
-
+    @Override
+    
+    public void onDeath(){
+        ProjectileExplosion explosion = new ProjectileExplosion(null, 5, 20, new Color[0]);
+        explosion.setLocation(getLocation());
+        explosion.setProjectileMoves(5);
+        explosion.onCreate();
+        super.onDeath();
+    }
+    
 }

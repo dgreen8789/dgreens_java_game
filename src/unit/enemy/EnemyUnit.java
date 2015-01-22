@@ -29,7 +29,7 @@ public abstract class EnemyUnit extends Unit implements ColoredUnit {
         super(x, y);
         this.health = health;
         this.allowFirePermission(true);
-        this.setWeapon(new StandardWeapon(this));
+        this.setWeapon(new StandardWeapon(this, 1));
     }
     
     @Override
@@ -45,6 +45,7 @@ public abstract class EnemyUnit extends Unit implements ColoredUnit {
                 u.getCollisionConstant() == CollisionConstants.NEUTRAL_PROJECTILE){
             this.health -= ((StandardProjectile) u).getDamage();
         }
+        if (this.health < 0) onDeath();
     }
 
     @Override

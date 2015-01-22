@@ -16,6 +16,7 @@ import unit.enemy.EnemyUnit;
 public class EnemyAI extends AI{
     private Formation formation;
     private int numberInFormation;
+    private int fireChance = 20;
     public EnemyAI(EnemyUnit unit, Formation formation, int numberInFormation) {
         super(unit);
         this.formation = formation;
@@ -35,7 +36,7 @@ public class EnemyAI extends AI{
 
     @Override
     protected void attack() {
-        if ((int ) (Math.random() * 2)  == 1){
+        if ((int ) (Math.random() * 100)  < fireChance){
             getUnit().fire(init.getGameGUI().getGraphicsControl().getMainCharacter().getLocation());
         }
     }
@@ -47,6 +48,15 @@ public class EnemyAI extends AI{
     public void setFormation(Formation formation) {
         this.formation = formation;
     }
+
+    public int getFireChance() {
+        return fireChance;
+    }
+
+    public void setFireChance(int fireChance) {
+        this.fireChance = fireChance;
+    }
+    
     
     
 }
