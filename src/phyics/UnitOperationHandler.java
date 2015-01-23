@@ -28,8 +28,8 @@ public class UnitOperationHandler implements Runnable {
                     long timeStart = System.currentTimeMillis();
                     operations.get(0).execute(units);
                     long timeStop = System.currentTimeMillis();
-                    System.out.println(operations.get(0).getOperationName() + " took " + 
-                            + (timeStop - timeStart) + " ms");
+                   //System.out.println(operations.get(0).getOperationName() + " took " + 
+                    //         + (timeStop - timeStart) + " ms");
                     operations.remove(0);
                 } catch (NullPointerException e) {
                     operations.remove(0);
@@ -55,15 +55,17 @@ public class UnitOperationHandler implements Runnable {
     public ArrayList<Unit> getUnits() {
         return (ArrayList<Unit>) units.clone();
     }
-    public boolean lock(){
+
+    public boolean lock() {
         lock = true;
         while (isActuallyLocked != lock);
         return lock;
     }
-    public boolean unlock(){
+
+    public boolean unlock() {
         lock = false;
         while (isActuallyLocked != lock);
         return lock;
     }
- 
+
 }

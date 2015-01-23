@@ -9,7 +9,6 @@ import AI.ProjectileAI;
 import AI.TimedAI;
 import java.awt.Color;
 import java.awt.Point;
-import java.util.logging.Logger;
 
 /**
  *
