@@ -68,23 +68,24 @@ public class StandardProjectile extends Unit implements ColoredUnit {
     public void draw(Graphics2D g) {
         g.setColor(color);
         //DEBUG CODE
-//        Color c;
-//        switch (getCollisionConstant()) {
-//            case CollisionConstants.FRIENDLY_PROJECTILE:
-//                c = Color.GREEN;
-//                break;
-//            case CollisionConstants.ENEMY_PROJECTILE:
-//                c = Color.RED;
-//                break;
-//            case CollisionConstants.NEUTRAL_PROJECTILE:
-//                c = Color.YELLOW;
-//                break;
-//            default:
-//                c = Color.MAGENTA;
-//
-//        }
-//        System.out.println(CollisionConstants.getCodeName(affiliation));
-//        g.setColor(c);
+        Color c;
+        switch (getCollisionConstant()) {
+            case CollisionConstants.FRIENDLY_PROJECTILE:
+                c = Color.GREEN;
+                break;
+            case CollisionConstants.ENEMY_PROJECTILE:
+                c = Color.RED;
+                break;
+            case CollisionConstants.NEUTRAL_PROJECTILE:
+                c = Color.YELLOW;
+                break;
+            case CollisionConstants.GRAPHICAL_PROJECTILE:
+                c = getColor(); break;
+            default:
+                c = Color.MAGENTA;
+
+        }
+        g.setColor(c);
 
         g.drawOval(this.getX() - size / 2, this.getY() - size / 2, size, size);
         g.setColor(Color.GREEN);

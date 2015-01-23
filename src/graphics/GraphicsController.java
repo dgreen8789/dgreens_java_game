@@ -54,7 +54,7 @@ public class GraphicsController {
                 units.get(i).draw(g);
                 if (drawHitboxes) {
                     g.setColor(Color.MAGENTA);
-                    
+
                     GraphicsUtilities.drawArea(units.get(i).getHitbox(), g);
 
                 }
@@ -113,7 +113,7 @@ public class GraphicsController {
     private void drawScore(int x, int y, int width, int height, Graphics2D g) {
         Font f = g.getFont();
         g.setColor(Color.WHITE);
-        String scoreString =  "Score = " + this.getScore();
+        String scoreString = "Score = " + this.getScore();
         g.setFont(GraphicsUtilities.fillRect(scoreString, g, width, height));
         g.drawString(scoreString, 0, (int) (g.getFontMetrics()
                 .getLineMetrics(scoreString, g).getHeight()));
