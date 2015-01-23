@@ -5,6 +5,7 @@
  */
 package unit;
 
+import AI.PlayerAI;
 import graphics.RotatingShape;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -34,6 +35,7 @@ public class MainCharacter extends Unit {
 
     public MainCharacter(int x, int y, int size) {
         super(x, y);
+        this.setAi(new PlayerAI(this));
         this.finalSize = size;
         setHealth(1000000);
     }
@@ -92,10 +94,6 @@ public class MainCharacter extends Unit {
         //for (int i = 0; i < 100; i++) { //STRESS TESTING FOR BULLETS
         super.fire(target);
         //}  
-    }
-
-    @Override
-    public void executeAImove() {
     }
 
     @Override

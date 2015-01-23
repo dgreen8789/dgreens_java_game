@@ -21,6 +21,7 @@ import weapon.StandardWeapon;
  */
 public abstract class EnemyUnit extends Unit implements ColoredUnit {
     private Color color;
+    protected int score;
     public EnemyUnit(int health) {
         this.health = health;
     }
@@ -59,7 +60,9 @@ public abstract class EnemyUnit extends Unit implements ColoredUnit {
     @Override
     public abstract int getComplexity();
     @Override
-    public abstract int getScore();
+    public int getScore(){
+        return score;
+    }
 
     @Override
     public Color getColor() {

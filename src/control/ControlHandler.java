@@ -27,8 +27,14 @@ public class ControlHandler implements MouseInputListener, KeyListener, WindowLi
     private char DOWN_KEY = 'S';
     private char LEFT_KEY = 'A';
     private char RIGHT_KEY = 'D';
-    private int MOVE_AMOUNT = 10;
+    /**
+     * UP - DOWN - LEFT - RIGHT - SPACE/MOUSE BUTTON ONE - MOUSE BUTTON TWO
+     */
+    private final boolean[] keysPressed = new boolean[6];
 
+    /**
+     * UP - DOWN - LEFT - RIGHT - SPACE/MOUSE BUTTON ONE - MOUSE BUTTON TWO
+     */
     public ControlHandler() {
     }
 
@@ -42,53 +48,81 @@ public class ControlHandler implements MouseInputListener, KeyListener, WindowLi
 
     @Override
     public void keyTyped(KeyEvent e) {
+        //keyPressed(e);
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
         char c = Character.toUpperCase(e.getKeyChar());
-        
-        if (c == UP_KEY || e.getKeyCode() ==  KeyEvent.VK_UP) {
-            init.getGameGUI().getGraphicsControl().getMainCharacter().moveY(MOVE_AMOUNT * -1);
+
+        if (c == UP_KEY || e.getKeyCode() == KeyEvent.VK_UP) {
+            keysPressed[0] = true;
+            keysPressed[1] = false;
         }
-        if (c == DOWN_KEY || e.getKeyCode() ==  KeyEvent.VK_DOWN) {
-            init.getGameGUI().getGraphicsControl().getMainCharacter().moveY(MOVE_AMOUNT);
+        if (c == DOWN_KEY || e.getKeyCode() == KeyEvent.VK_DOWN) {
+            keysPressed[1] = true;
+            keysPressed[0] = false;
         }
-        if (c == LEFT_KEY || e.getKeyCode() ==  KeyEvent.VK_LEFT ) {
-            init.getGameGUI().getGraphicsControl().getMainCharacter().moveX(MOVE_AMOUNT * -1);
+        if (c == LEFT_KEY || e.getKeyCode() == KeyEvent.VK_LEFT) {
+            keysPressed[3] = false;
+            keysPressed[2] = true;
         }
-        if (c == RIGHT_KEY || e.getKeyCode() ==  KeyEvent.VK_RIGHT) {
-            init.getGameGUI().getGraphicsControl().getMainCharacter().moveX(MOVE_AMOUNT);
+        if (c == RIGHT_KEY || e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            keysPressed[3] = true;
+            keysPressed[2] = false;
         }
-        
-        if(e.getKeyCode() == KeyEvent.VK_SPACE){
-            init.getGameGUI().getGraphicsControl().getMainCharacter().fire(init.getGameGUI().getMousePosition());
+
+        if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+            keysPressed[4] = true;
         }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-    }
+        char c = Character.toUpperCase(e.getKeyChar());
+        if (c == UP_KEY || e.getKeyCode() == KeyEvent.VK_UP) {
+            keysPressed[0] = false;
+        }
+        if (c == DOWN_KEY || e.getKeyCode() == KeyEvent.VK_DOWN) {
+            keysPressed[1] = false;
+        }
+        if (c == LEFT_KEY || e.getKeyCode() == KeyEvent.VK_LEFT) {
+            keysPressed[2] = false;
+        }
+        if (c == RIGHT_KEY || e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            keysPressed[3] = false;
+        }
 
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        if (e.getButton() == MouseEvent.BUTTON1){
-            for (int i = 0; i < e.getClickCount() ; i++) {
-                            init.getGameGUI().getGraphicsControl().getMainCharacter().fire(init.getGameGUI().getMousePosition());
-
-            }
+        if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+            keysPressed[4] = false;
         }
     }
 
     @Override
+    public void mouseClicked(MouseEvent e) {
+
+    }
+
+    @Override
     public void mousePressed(MouseEvent e) {
-        if (e.getButton() == MouseEvent.BUTTON1){
-            init.getGameGUI().getGraphicsControl().getMainCharacter().fire(init.getGameGUI().getMousePosition());
+         if (e.getButton() == MouseEvent.BUTTON1) {
+            keysPressed[4] = true;
+        }
+        if (e.getButton() == MouseEvent.BUTTON3) {
+            keysPressed[5] = true;
         }
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
+
+        if (e.getButton() == MouseEvent.BUTTON1) {
+            keysPressed[4] = false;
+        }
+        if (e.getButton() == MouseEvent.BUTTON3) {
+            keysPressed[5] = false;
+        }
+
     }
 
     @Override
@@ -171,6 +205,10 @@ public class ControlHandler implements MouseInputListener, KeyListener, WindowLi
 
     public void setRIGHT_KEY(char RIGHT_KEY) {
         this.RIGHT_KEY = RIGHT_KEY;
+    }
+
+    public boolean[] getKeysPressed() {
+        return keysPressed.clone();
     }
 
 }

@@ -12,6 +12,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.geom.Area;
+import main.init;
 import unit.ProjectileExplosion;
 import unit.UnitUtilities;
 
@@ -22,7 +23,6 @@ import unit.UnitUtilities;
 public class BasicEnemy extends EnemyUnit {
 
     private int angle = 0;
-
     public BasicEnemy(int health) {
         super(health);
     }
@@ -31,6 +31,7 @@ public class BasicEnemy extends EnemyUnit {
         super(health, x, y);
         this.setSize(10);
         this.setAi(new EnemyAI(this, new Formation(1, Formation.NO_FORMATION, this.getLocation()), 0));
+        score = health;
     }
 
     @Override
@@ -40,6 +41,7 @@ public class BasicEnemy extends EnemyUnit {
         g.drawPolygon(data[0], data[1], data[0].length);
         angle++;
         angle %= 360;
+        g.setColor(Color.MAGENTA);
         UnitUtilities.drawHealth(g, this);
     }
 
@@ -51,13 +53,9 @@ public class BasicEnemy extends EnemyUnit {
 
     @Override
     public int getComplexity() {
-        return 5;
+        return health;
     }
 
-    @Override
-    public int getScore() {
-        return getComplexity();
-    }
     @Override
     
     public void onDeath(){
@@ -65,6 +63,7 @@ public class BasicEnemy extends EnemyUnit {
         explosion.setLocation(getLocation());
         explosion.setProjectileMoves(5);
         explosion.onCreate();
+        init.getGameGUI().getGraphicsControl().addScore(getScore());
         super.onDeath();
     }
     

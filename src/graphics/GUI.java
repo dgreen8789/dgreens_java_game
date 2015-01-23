@@ -54,7 +54,7 @@ public class GUI extends Thread {
     private final CollisionOperation collisionHandler;
     private LevelMaker level;
     private boolean levelInitialized;
-    private static final int STARTING_LEVEL = 50; // debug line
+    private static final int STARTING_LEVEL = 1000000; // debug line
 
     // create a hardware accelerated image
     public final BufferedImage create(final int width, final int height, final boolean alpha) {
@@ -261,5 +261,10 @@ public class GUI extends Thread {
     public void setLevelMaker(LevelMaker level) {
         this.level = level;
     }
+
+    public ControlHandler getControlHandler() {
+        return controlHandler;
+    }
+    
 
 }
