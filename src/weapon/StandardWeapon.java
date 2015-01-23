@@ -44,10 +44,12 @@ public class StandardWeapon implements Weapon {
        // this.attachedUnit = attachedUnit;
     }
 
+    @Override
     public int getDamage() {
         return damage;
     }
 
+    @Override
     public void setDamage(int damage) {
         this.damage = damage;
     }

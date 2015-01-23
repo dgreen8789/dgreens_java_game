@@ -66,11 +66,13 @@ public class MainCharacter extends Unit {
 
     @Override
     public void onCollide(Unit u) {
+        System.out.println("COLLISION");
         if (u.getCollisionConstant() == CollisionConstants.ENEMY_UNIT) {
             this.health--;
         }
         if (u.getCollisionConstant() == CollisionConstants.ENEMY_PROJECTILE
                 || u.getCollisionConstant() == CollisionConstants.NEUTRAL_PROJECTILE) {
+            System.out.println("CALLED");
             this.health -= ((StandardProjectile) u).getDamage();
         }
         if (this.health < 0) {

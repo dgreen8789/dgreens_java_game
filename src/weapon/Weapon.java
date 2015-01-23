@@ -14,4 +14,6 @@ import java.awt.Point;
  */
 public interface Weapon {
     public void fire(Point Location, Point target, int CollisionConstant);
+    public void setDamage(int damage);
+    public int getDamage();
 }
