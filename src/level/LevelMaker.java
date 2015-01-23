@@ -26,7 +26,7 @@ import unit.enemy.BasicEnemy;
 public class LevelMaker {
 
     public static int MINIMUM_UNIT_COMPLEXITY = 1;
-    public static int MAXIMUM_UNIT_COMPLEXITY = 1024 * 1024;
+    public static int MAXIMUM_UNIT_COMPLEXITY = 1024;
     private boolean completed;
     int difficulty;
     ArrayList<Unit> units;

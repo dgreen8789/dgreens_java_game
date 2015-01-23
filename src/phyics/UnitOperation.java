@@ -39,7 +39,8 @@ public class UnitOperation {
      * Defines method code for special operations, should be overridden by
      * implementing class.
      *
-     * @param u the ArrayList<
+     * @param u the ArrayList of units to perform operations on
+     * @return true on successful completion;
      */
     public boolean specialOperation(ArrayList<Unit> u) {
         return true;

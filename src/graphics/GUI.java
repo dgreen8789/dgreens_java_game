@@ -17,13 +17,10 @@ import java.awt.Toolkit;
 import java.awt.Transparency;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.util.Timer;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 import level.LevelMaker;
@@ -54,7 +51,7 @@ public class GUI extends Thread {
     private final CollisionOperation collisionHandler;
     private LevelMaker level;
     private boolean levelInitialized;
-    private static final int STARTING_LEVEL = 1000000; // debug line
+    private static final int STARTING_LEVEL = 1; // debug line
 
     // create a hardware accelerated image
     public final BufferedImage create(final int width, final int height, final boolean alpha) {

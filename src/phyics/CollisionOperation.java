@@ -35,7 +35,7 @@ public class CollisionOperation extends UnitOperation {
         ComputeAndHandle(u);
         return true;
     }
-    
+
     public void ComputeAndHandle(ArrayList<Unit> u) {
 
         //TODO
@@ -81,6 +81,7 @@ public class CollisionOperation extends UnitOperation {
      */
     private void computeAndHandleSubset(ArrayList<Unit> units, int start1, int end1, int start2, int end2, boolean reverse) {
         try {
+
             for (int listOne = start1; listOne < end1; listOne++) {
                 for (int listTwo = start2; listTwo < end2; listTwo++) {
                     Unit one = units.get(listOne);
@@ -106,12 +107,11 @@ public class CollisionOperation extends UnitOperation {
             }
         } catch (IndexOutOfBoundsException e) {
             for (int i = 0; i < indexes.length; i++) {
-                System.out.println(CollisionConstants.getCodeName(i) + " begins at index " +
-                        indexes[i].get() + " and ends at index " + getEndingIndex(i, units) );
-                
+                System.out.println(CollisionConstants.getCodeName(i) + " begins at index "
+                        + indexes[i].get() + " and ends at index " + getEndingIndex(i, units));
+
             }
             System.out.println("# of units = " + units.size() + "\n\n");
-            
         }
     }
 
@@ -125,7 +125,7 @@ public class CollisionOperation extends UnitOperation {
     public void updateListLocs(int collisionCode, int delta) {
         if (CollisionConstants.isValidCollisionCode(collisionCode)) {
             for (int i = collisionCode + 1; i < indexes.length; i++) {
-                indexes[i].set(Math.max(indexes[i].get() + delta, 0));              
+                indexes[i].set(Math.max(indexes[i].get() + delta, 0));
             }
         }
     }
@@ -142,7 +142,7 @@ public class CollisionOperation extends UnitOperation {
 
     public int getEndingIndex(int collisionCode, ArrayList<Unit> u) {
         if (collisionCode == CollisionConstants.CODE_LIST[CollisionConstants.CODE_LIST.length - 1]) {
-            return u.size() - 1; // OPTIMIZE THIS !!!
+            return u.size(); // OPTIMIZE THIS !!!
         }
         return indexes[collisionCode + 1].get();
     }
@@ -159,11 +159,11 @@ public class CollisionOperation extends UnitOperation {
     public String getOperationName() {
         return "COLLISION";
     }
-    public void clearIndexes(){
+
+    public void clearIndexes() {
         for (int i = 0; i < indexes.length; i++) {
-           indexes[i].set(0);        
+            indexes[i].set(0);
         }
     }
-    
 
 }

@@ -12,6 +12,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.Area;
+import main.init;
 import phyics.CollisionConstants;
 import weapon.MultishotWeapon;
 
@@ -24,7 +25,7 @@ public class MainCharacter extends Unit {
     int shapeCount = 4;
     int rotationAngle = 0;
     int finalSize;
-
+    private static final int PLAYER_HEALTH = 10000;
     public MainCharacter() {
         this(0, 0, 100);
     }
@@ -37,7 +38,7 @@ public class MainCharacter extends Unit {
         super(x, y);
         this.setAi(new PlayerAI(this));
         this.finalSize = size;
-        setHealth(1000000);
+        setHealth(PLAYER_HEALTH);
     }
 
     @Override
@@ -61,20 +62,19 @@ public class MainCharacter extends Unit {
             shapeCount++;
         }
         g.setColor(Color.WHITE);
+        UnitUtilities.drawHealth(g, this);
         g.drawOval(getX() - 5, getY() - 5, 10, 10);
         g.setColor(c);
-        UnitUtilities.drawHealth(g, this);
+
     }
 
     @Override
     public void onCollide(Unit u) {
-        System.out.println("COLLISION");
         if (u.getCollisionConstant() == CollisionConstants.ENEMY_UNIT) {
             this.health--;
         }
         if (u.getCollisionConstant() == CollisionConstants.ENEMY_PROJECTILE
                 || u.getCollisionConstant() == CollisionConstants.NEUTRAL_PROJECTILE) {
-            System.out.println("CALLED");
             this.health -= ((StandardProjectile) u).getDamage();
         }
         if (this.health < 0) {
@@ -115,7 +115,7 @@ public class MainCharacter extends Unit {
         super.allowFirePermission(canFire);
         if (canFire && this.getWeapon() == null) {
             //this.setWeapon(new StandardWeapon(this));
-            this.setWeapon(new MultishotWeapon(this, 5, 10, 1));
+            this.setWeapon(new MultishotWeapon(this, 3, 10, 1));
         }
     }
 
@@ -133,5 +133,12 @@ public class MainCharacter extends Unit {
     public int getScore() {
         return 0;
     }
+
+    @Override
+    public void onDeath() {
+        super.onDeath(); 
+        System.exit(0);
+    }
+    
 
 }
