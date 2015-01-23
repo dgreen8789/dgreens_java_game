@@ -17,27 +17,29 @@ import main.init;
 public class DestroyableTarget extends Target {
 
     public DestroyableTarget(int health) {
-        setHealth(health);
+        this.health = health;
     }
 
     public DestroyableTarget(int health, int x, int y) {
         super(x, y);
+        this.health = health;
     }
 
     public DestroyableTarget(int health, int x, int y, int size) {
         super(x, y, size);
+        this.health = health;
     }
 
     public DestroyableTarget(int health, int x, int y, int size, Color color) {
         super(x, y, size, color);
-        setHealth(health);
+        this.health = health;
     }
 
     @Override
     public void onCollide(Unit u) {
         if (u instanceof StandardProjectile) {
-            setHealth(getHealth() - ((StandardProjectile) u).getDamage());
-            if (getHealth() <= 0) {
+            health--;
+            if (health <= 0) {
                 init.getGameGUI().getGraphicsControl().addScore(1);
                 onDeath();
             } else {
@@ -50,7 +52,16 @@ public class DestroyableTarget extends Target {
 
     public void draw(Graphics2D g) {
         super.draw(g);
-        UnitUtilities.drawHealth(g, this);
+        int characterAllowance = (getSize() / 10 + 1);
+        if (characterAllowance == 0) {
+            characterAllowance++;
+        }
+        characterAllowance *= (getSize() / 4);
+        g.setFont(GraphicsUtilities.fillRect(Integer.toString(health), g,
+                (getSize() / 2) + characterAllowance, getSize()));
+        g.drawString(Integer.toString(health),
+                getX() - characterAllowance * Integer.signum(getX()),
+                getY() - (getSize() * Integer.signum(getY())));
     }
 
     @Override

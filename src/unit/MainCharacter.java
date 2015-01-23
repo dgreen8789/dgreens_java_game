@@ -24,6 +24,7 @@ public class MainCharacter extends Unit {
     int rotationAngle = 0;
     int finalSize;
 
+
     public MainCharacter() {
         this(0, 0, 100);
     }
@@ -35,7 +36,6 @@ public class MainCharacter extends Unit {
     public MainCharacter(int x, int y, int size) {
         super(x, y);
         this.finalSize = size;
-        setHealth(1000000);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class MainCharacter extends Unit {
         g.drawPolygon(data[0], data[1], data[0].length);
         g.setColor(Color.YELLOW);
         for (int i = 0; i < data[0].length; i++) {
-            int[][] shape2 = RotatingShape.shape(new Point(data[0][i], data[1][i]), getSize() / 10, shapeCount, (360 / (i + 1)) * i);
+            int[][] shape2 = RotatingShape.shape(new Point(data[0][i], data[1][i]),  getSize() / 10, shapeCount, (360 / (i + 1)) * i);
             g.drawPolygon(shape2[0], shape2[1], shape2[0].length);
         }
         shapeCount = (shapeCount > 15) ? 3 : shapeCount;
@@ -61,21 +61,11 @@ public class MainCharacter extends Unit {
         g.setColor(Color.WHITE);
         g.drawOval(getX() - 5, getY() - 5, 10, 10);
         g.setColor(c);
-        UnitUtilities.drawHealth(g, this);
+
     }
 
     @Override
     public void onCollide(Unit u) {
-        if (u.getCollisionConstant() == CollisionConstants.ENEMY_UNIT) {
-            this.health--;
-        }
-        if (u.getCollisionConstant() == CollisionConstants.ENEMY_PROJECTILE
-                || u.getCollisionConstant() == CollisionConstants.NEUTRAL_PROJECTILE) {
-            this.health -= ((StandardProjectile) u).getDamage();
-        }
-        if (this.health < 0) {
-            onDeath();
-        }
     }
 
     @Override
@@ -101,7 +91,7 @@ public class MainCharacter extends Unit {
         Rectangle hitbox = new Rectangle(this.getLocation());
         hitbox.x -= getSize() / 2;
         hitbox.y -= getSize() / 2;
-        hitbox.setBounds(hitbox.x, hitbox.y, getSize(), getSize());
+        hitbox.setBounds(hitbox.x, hitbox.y,  getSize(),  getSize());
         return new Area(hitbox);
 
     }
@@ -112,10 +102,10 @@ public class MainCharacter extends Unit {
 
     @Override
     public void allowFirePermission(boolean canFire) {
-        super.allowFirePermission(canFire);
-        if (canFire && this.getWeapon() == null) {
-            //this.setWeapon(new StandardWeapon(this));
-            this.setWeapon(new MultishotWeapon(this, 5, 10, 1));
+        super.allowFirePermission(canFire); 
+        if (canFire && this.getWeapon() == null){
+        //this.setWeapon(new StandardWeapon(this));
+        this.setWeapon(new MultishotWeapon(this, 5, 10));
         }
     }
 
@@ -133,5 +123,7 @@ public class MainCharacter extends Unit {
     public int getScore() {
         return 0;
     }
+    
+    
 
 }

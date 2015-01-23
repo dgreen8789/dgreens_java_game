@@ -21,7 +21,7 @@ public class GraphicsController {
     private boolean firstRender = true;
     private Rectangle oldBounds;
     private final AtomicLong score;
-    private final boolean drawHitboxes = false; //Debug Line
+    private final boolean drawHitboxes = true; //Debug Line
     private ArrayList<GraphicsTask> tasks;
 
     public GraphicsController(Insets insets) {

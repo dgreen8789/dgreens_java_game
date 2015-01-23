@@ -17,21 +17,16 @@ import unit.Unit;
  */
 public class StandardWeapon implements Weapon {
     
-    public static final int STANDARD_BULLET_SPEED = 15;
+    public static final int STANDARD_BULLET_SPEED = 20;
     private Unit attachedUnit;
-    private int damage;
 
-    public StandardWeapon(Unit attachedUnit, int damage) {
+    public StandardWeapon(Unit attachedUnit) {
         this.attachedUnit = attachedUnit;
-        this.damage = damage;
-        
     }
     
-    @Override
     public void fire(Point Location, Point target, int CollisionConstant) {
         StandardProjectile x = new StandardProjectile(Color.RED, 3, Location.x, Location.y, target
-        ,CollisionConstant, STANDARD_BULLET_SPEED); 
-        x.setDamage(this.getDamage());
+        ,CollisionConstant, STANDARD_BULLET_SPEED);
         x.onCreate();
       
     }
@@ -42,14 +37,6 @@ public class StandardWeapon implements Weapon {
 
     public void setAttachedUnit(Unit attachedUnit) {
        // this.attachedUnit = attachedUnit;
-    }
-
-    public int getDamage() {
-        return damage;
-    }
-
-    public void setDamage(int damage) {
-        this.damage = damage;
     }
     
 }

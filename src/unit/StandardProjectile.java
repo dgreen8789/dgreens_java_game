@@ -46,7 +46,6 @@ public class StandardProjectile extends Unit implements ColoredUnit {
      * @param target
      * @param affiliation The collision constant for the team that this
      * projectile is on
-     * @param speed
      */
     public StandardProjectile(Color color, int radius, int x, int y, Point target, int affiliation, int speed) {
         super(x, y);
@@ -95,6 +94,13 @@ public class StandardProjectile extends Unit implements ColoredUnit {
     public void onCollide(Unit u) {
     }
 
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
 
     public Point getTarget() {
         return target;

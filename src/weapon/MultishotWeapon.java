@@ -25,8 +25,8 @@ public class MultishotWeapon extends StandardWeapon {
      * @param numShots number of shots between 1 and 5, inclusive
      * @param shotSpacing distance, in pixels, between shots;
      */
-    public MultishotWeapon(Unit attachedUnit, int numShots, int shotSpacing, int damage) {
-        super(attachedUnit, damage);
+    public MultishotWeapon(Unit attachedUnit, int numShots, int shotSpacing) {
+        super(attachedUnit);
         this.numShots = numShots % 6;
         this.shotSpacing = shotSpacing;
        // System.out.println(super.getAttachedUnit().getLocation().toString());
