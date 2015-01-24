@@ -26,6 +26,7 @@ public class ProjectileExplosion extends Unit {
     private int frameCount;
     private Color[] colors;
     private boolean speciallyColored;
+    private int damage;
     private int projectileMoves;
 
     public static final Color[] DEFAULT_PROJECTILE_COLORS = {Color.RED, Color.ORANGE, Color.YELLOW, Color.WHITE};//, Color.GREEN, Color.BLUE};
@@ -87,6 +88,23 @@ public class ProjectileExplosion extends Unit {
 
     }
 
+    protected StandardProjectile getProjecitile(Color c, int radius, Point target) {
+        StandardProjectile newProjectile;
+
+        if (projectileMoves != 0) {
+            newProjectile = new SelfDeletingProjectile(c, radius, this.getX(), this.getY(), target,
+                    CollisionConstants.GRAPHICAL_PROJECTILE, PROJECTILE_SPEED, projectileMoves);
+        } else {
+            newProjectile = new StandardProjectile(c, radius, this.getX(), this.getY(), target,
+                    CollisionConstants.GRAPHICAL_PROJECTILE, PROJECTILE_SPEED);
+        }
+        if (damage != 0) {
+            newProjectile.setDamage(damage);
+        }
+
+        return newProjectile;
+    }
+
     @Override
     public void onCollide(Unit u) {
     }
@@ -136,6 +154,17 @@ public class ProjectileExplosion extends Unit {
     public void setProjectileMoves(int projectileMoves) {
         this.projectileMoves = projectileMoves;
     }
-    
+
+    @Override
+    public void specialAbility() {
+    }
+
+    public int getProjectileDamage() {
+        return damage;
+    }
+
+    public void setDamage(int doesDamage) {
+        this.damage = doesDamage;
+    }
 
 }

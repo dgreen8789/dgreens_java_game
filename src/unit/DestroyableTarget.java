@@ -18,6 +18,7 @@ public class DestroyableTarget extends Target {
 
     public DestroyableTarget(int health) {
         setHealth(health);
+        this.maxHealth = health;
     }
 
     public DestroyableTarget(int health, int x, int y) {
@@ -31,6 +32,7 @@ public class DestroyableTarget extends Target {
     public DestroyableTarget(int health, int x, int y, int size, Color color) {
         super(x, y, size, color);
         setHealth(health);
+        this.maxHealth = health;
     }
 
     @Override

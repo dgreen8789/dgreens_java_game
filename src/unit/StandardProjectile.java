@@ -217,5 +217,9 @@ public class StandardProjectile extends Unit implements ColoredUnit {
     public void setDamage(int damage) {
         this.damage = damage;
     }
+
+    @Override
+    public void specialAbility() {
+    }
     
 }

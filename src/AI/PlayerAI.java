@@ -32,8 +32,7 @@ public class PlayerAI extends AI {
     protected void move() {
         keys = controls.getKeysPressed();
         if (keys[5]){
-            getUnit().setLocation(init.getGameGUI().getMousePosition());
-            return;
+            getUnit().specialAbility();
         }
         //if up or down and left or right
         if ((keys[0] || keys[1]) && (keys[2] || keys[3])) {

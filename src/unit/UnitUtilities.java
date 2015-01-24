@@ -6,6 +6,7 @@
 package unit;
 
 import graphics.GraphicsUtilities;
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import main.init;
@@ -25,7 +26,7 @@ public class UnitUtilities {
         return loc;
     }
 
-    public static void drawHealth(Graphics2D g, Unit u) {
+    public static void drawHealthNumber(Graphics2D g, Unit u) {
         int health = u.getHealth();
         int size = u.getSize();
         int x = u.getX();
@@ -40,5 +41,26 @@ public class UnitUtilities {
         g.drawString(Integer.toString(health),
                 x - characterAllowance * Integer.signum(x),
                 y - (size * Integer.signum(y)));
+    }
+    private static final int HEALTH_RECTANGLE_HEIGHT = 4;
+
+    public static void drawHealth(Graphics2D g, Unit u) {
+        Color c = g.getColor();
+        int max = 2 * u.getSize();
+        double x = u.getHealth() / (double) u.getMaxHealth();
+        g.setColor(Color.RED);
+        if (x >= .75) {
+            g.setColor(Color.GREEN);
+        }
+        if (x >= .50 && x < .75) {
+            g.setColor(Color.YELLOW);
+        }
+        if (x >= .25 && x < .50) {
+            g.setColor(Color.YELLOW);
+        }
+        x *= max;
+        g.fillRect(u.getX() - u.getSize(), u.getY() - (u.getSize() + 6),
+                (int) x, HEALTH_RECTANGLE_HEIGHT);
+        g.setColor(c);
     }
 }

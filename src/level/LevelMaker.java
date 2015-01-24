@@ -91,15 +91,13 @@ public class LevelMaker {
     private Unit generateEnemy(Integer i) {
         Unit u;
         if (i > 5) {
-            u = new BasicEnemy(i - 5, 1, 1);
+            u = new BasicEnemy(i, 1, 1);
             u.getWeapon().setDamage(i / 2 + 1);
-            u.setLocation(UnitUtilities.getRandomLocation(u));
-            u.setSize(15);
         } else {
             u = new DestroyableTarget(i);
-            u.setSize(15);
-
         }
+        u.setLocation(UnitUtilities.getRandomLocation(u));
+        u.setSize(15);
         return u;
     }
 

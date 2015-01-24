@@ -24,11 +24,13 @@ public abstract class EnemyUnit extends Unit implements ColoredUnit {
     protected int score;
     public EnemyUnit(int health) {
         this.health = health;
+        this.maxHealth = health;
     }
 
     public EnemyUnit(int health, int x, int y) {
         super(x, y);
         this.health = health;
+        this.maxHealth = health;
         this.allowFirePermission(true);
         this.setWeapon(new StandardWeapon(this, 1));
     }

@@ -25,7 +25,8 @@ public class MainCharacter extends Unit {
     int shapeCount = 4;
     int rotationAngle = 0;
     int finalSize;
-    private static final int PLAYER_HEALTH = 10000;
+    private static final int PLAYER_HEALTH = 1000;
+
     public MainCharacter() {
         this(0, 0, 100);
     }
@@ -39,6 +40,7 @@ public class MainCharacter extends Unit {
         this.setAi(new PlayerAI(this));
         this.finalSize = size;
         setHealth(PLAYER_HEALTH);
+        setMaxHealth(PLAYER_HEALTH);
     }
 
     @Override
@@ -136,9 +138,16 @@ public class MainCharacter extends Unit {
 
     @Override
     public void onDeath() {
-        super.onDeath(); 
+        super.onDeath();
         System.exit(0);
     }
-    
+
+    @Override
+    public void specialAbility() {
+        if (this.specialAbilityCooldown == 0) {
+            setLocation(init.getGameGUI().getMousePosition());
+            
+        }
+    }
 
 }

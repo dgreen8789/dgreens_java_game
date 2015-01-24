@@ -131,4 +131,8 @@ public class Target extends Unit implements ColoredUnit {
         return 1;
     }
 
+    @Override
+    public void specialAbility() {
+    }
+    
 }

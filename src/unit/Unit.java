@@ -27,6 +27,7 @@ public abstract class Unit implements Comparable {
     private Weapon weapon;
     private int size;
     protected int health;
+    protected int maxHealth;
     public Point getLocation() {
         return location;
     }
@@ -128,9 +129,11 @@ public abstract class Unit implements Comparable {
     }
 
     @Override
-    public int compareTo(Object t) {
-        return this.getCollisionConstant() - ((Unit) t).getCollisionConstant();
+    public int compareTo(Object o) {
+        return this.getComplexity() - ((Unit) o).getComplexity();
     }
+
+
 
     public boolean canFire() {
         return canFire;
@@ -169,5 +172,24 @@ public abstract class Unit implements Comparable {
     public void setHealth(int health) {
         this.health = health;
     }
+
+    public int getMaxHealth() {
+        return maxHealth;
+    }
+
+    public void setMaxHealth(int maxHealth) {
+        this.maxHealth = maxHealth;
+    }
+    protected int specialAbilityCooldown;
+
+    public void setSpecialAbilityCooldown(int specialAbilityCooldown) {
+        this.specialAbilityCooldown = specialAbilityCooldown;
+    }
+
+    public int getSpecialAbilityCooldown() {
+        return specialAbilityCooldown;
+    }
+    
+    public abstract void specialAbility();
     
 }

@@ -32,11 +32,12 @@ public class BasicEnemy extends EnemyUnit {
         this.setSize(10);
         this.setAi(new EnemyAI(this, new Formation(1, Formation.NO_FORMATION, this.getLocation()), 0));
         score = health;
+        setColor(Color.ORANGE);
     }
 
     @Override
     public void draw(Graphics2D g) {
-        g.setColor(Color.ORANGE);
+        g.setColor(getColor());
         int[][] data = RotatingShape.shape(getLocation(), getSize(), 4, angle);
         g.drawPolygon(data[0], data[1], data[0].length);
         angle++;
@@ -65,6 +66,10 @@ public class BasicEnemy extends EnemyUnit {
         explosion.onCreate();
         init.getGameGUI().getGraphicsControl().addScore(getScore());
         super.onDeath();
+    }
+
+    @Override
+    public void specialAbility() {
     }
     
 }
