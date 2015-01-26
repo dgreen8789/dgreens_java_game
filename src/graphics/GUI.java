@@ -6,6 +6,7 @@ import control.ControlHandler;
 import graphics.tasks.LevelStartDelayer;
 import java.awt.Canvas;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
@@ -51,7 +52,9 @@ public class GUI extends Thread {
     private final CollisionOperation collisionHandler;
     private LevelMaker level;
     private boolean levelInitialized;
-    private static final int STARTING_LEVEL = 1; // debug line
+
+    private static final int STARTING_LEVEL = 100; // debug line
+    private static final boolean FULL_SCREEN = true;
 
     // create a hardware accelerated image
     public final BufferedImage create(final int width, final int height, final boolean alpha) {
@@ -64,7 +67,16 @@ public class GUI extends Thread {
         frame = new JFrame();
         frame.addWindowListener(new FrameClose());
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
         frame.setSize(width * scale, height * scale);
+        if (FULL_SCREEN) {
+            frame.setResizable(false);
+            frame.setAlwaysOnTop(true);
+            Dimension x = Toolkit.getDefaultToolkit().getScreenSize();
+            frame.setSize(x);
+            frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+            frame.setUndecorated(true);
+        }
         frame.setVisible(true);
 
         // Canvas
@@ -193,6 +205,7 @@ public class GUI extends Thread {
         }
         frame.dispose();
     }
+
     public void updateApplication() {
         if (!paused) {
             if (!this.levelInitialized) {
@@ -207,7 +220,7 @@ public class GUI extends Thread {
             init.getUnitOperationHandler().addOperation(collisionHandler);
             if (this.getLevel() != null) {
                 if (this.getLevel().isCompleted()) {
-               
+
                     this.getLevel().onVictory(graphics, this.getBounds());
                 }
             }
@@ -262,6 +275,5 @@ public class GUI extends Thread {
     public ControlHandler getControlHandler() {
         return controlHandler;
     }
-    
 
 }

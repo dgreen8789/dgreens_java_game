@@ -76,4 +76,5 @@ public abstract class EnemyUnit extends Unit implements ColoredUnit {
         this.color = color;
     }
     
+    
 }

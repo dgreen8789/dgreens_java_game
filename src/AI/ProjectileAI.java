@@ -29,11 +29,13 @@ public class ProjectileAI extends AI {
         StandardProjectile projectile = (StandardProjectile) getUnit();
         double y = projectile.getSpeed() * Math.sin(angle);
         int sign = (Math.signum(projectile.getTarget().x - projectile.getInitialX()) < 1) ? -1 : 1;
-        double x = Math.sqrt((projectile.getSpeed() * projectile.getSpeed()) - (y * y)) * sign;
+        double x = Math.sqrt((projectile.getSpeed() * projectile.getSpeed())
+                - (y * y)) * sign;
         projectile.setHitboxDeltas( x,  y);
         x*= count;
         y*= count++;
-        projectile.setLocation((int) x + projectile.getInitialX(), (int) y + projectile.getInitialY());
+        projectile.setLocation((int) x + projectile.getInitialX(),
+                (int) y + projectile.getInitialY());
         projectile.updateHitbox();
 
     }

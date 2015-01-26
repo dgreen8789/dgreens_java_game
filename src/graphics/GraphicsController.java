@@ -23,6 +23,7 @@ public class GraphicsController {
     private final AtomicLong score;
     private final boolean drawHitboxes = false; //Debug Line
     private ArrayList<GraphicsTask> tasks;
+    private Unit mouseOverUnit;
 
     public GraphicsController(Insets insets) {
         this.insets = insets;
@@ -137,5 +138,14 @@ public class GraphicsController {
     public boolean removeTask(GraphicsTask o) {
         return tasks.remove(o);
     }
+
+    public Unit getMouseOverUnit() {
+        return mouseOverUnit;
+    }
+
+    public void setMouseOverUnit(Unit mouseOverUnit) {
+        this.mouseOverUnit = mouseOverUnit;
+    }
+    
 
 }
