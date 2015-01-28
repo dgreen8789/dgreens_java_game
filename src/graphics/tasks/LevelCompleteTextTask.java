@@ -17,7 +17,7 @@ public class LevelCompleteTextTask extends TextTask {
 
     public LevelCompleteTextTask(String text, int width, int height, Point position, int frames) {
         super(text, width, height, position, frames);
-        int x = init.getGameGUI().getLevel().getDifficulty();
+        int x = init.getGameGUI().getLevel().getLevelNum();
         init.getGameGUI().setLevelMaker(new LevelMaker(++x));
     }
 

@@ -10,6 +10,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import main.init;
 import phyics.UnitClearOperation;
@@ -27,18 +28,20 @@ public class LevelMaker {
 
     public static int MINIMUM_UNIT_COMPLEXITY = 1;
     public static int MAXIMUM_UNIT_COMPLEXITY = 1024;
+    public static double LEVEL_SCALING = .9;
     private boolean completed;
-    int difficulty;
+    private short[] seed;
+    int levelNum;
     ArrayList<Unit> units;
 
     public LevelMaker(int difficulty) {
-        this.difficulty = difficulty;
+        this.levelNum = difficulty;
     }
 
     public boolean onVictory(Graphics2D g, Rectangle bounds) {
         //System.out.println("VICTORY METHOD CALLED");
         afterLevel();
-        String message = "Level " + difficulty + " Success";
+        String message = "Level " + levelNum + " Success";
         Point p = new Point(0, 3 * bounds.height / 4);
 
         LevelCompleteTextTask task = new LevelCompleteTextTask(message,
@@ -68,11 +71,12 @@ public class LevelMaker {
 
     public void setup() {
         clearLevel(true);
-        ArrayList<Integer> unitComplexities = generateUnitNumbers(difficulty);
+        ArrayList<Integer> unitComplexities = generateUnitNumbers(levelNum);
         units = generateUnits(unitComplexities);
         for (Unit u : units) {
             u.onCreate();
         }
+        seed = generateSeed();
         //System.out.println("Setup for level " + difficulty + " complete");
     }
 
@@ -109,8 +113,8 @@ public class LevelMaker {
         this.completed = completed;
     }
 
-    public int getDifficulty() {
-        return difficulty;
+    public int getLevelNum() {
+        return levelNum;
     }
 
     public void clearLevel(boolean reAddMainCharacter) {
@@ -119,6 +123,23 @@ public class LevelMaker {
             init.getUnitOperationHandler().addOperation(new UnitOperation(UnitOperation.ADD_UNIT,
                     init.getGameGUI().getGraphicsControl().getMainCharacter()));
         }
+    }
+
+    private short[] generateSeed() {
+        long l = (long) (Math.random() * Long.MAX_VALUE / 2) + Long.MAX_VALUE / 2;
+        int len = (int) Math.log10(l);
+        short[] data = new short[len / 3];
+        for (int i = 0; i < data.length; i++) {
+            data[i] = (short) (l % 1000);
+            l /= 1000;
+        }
+        System.out.println(Arrays.toString(data));
+        return data;
+
+    }
+
+    private int getDifficulty() {
+        return (int) (Math.pow(LEVEL_SCALING, levelNum));
     }
 
 }
