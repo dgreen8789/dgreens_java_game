@@ -28,7 +28,8 @@ public class LevelMaker {
 
     public static int MINIMUM_UNIT_COMPLEXITY = 1;
     public static int MAXIMUM_UNIT_COMPLEXITY = 1024;
-    public static double LEVEL_SCALING = .9;
+    public static double LEVEL_SCALING = 1.1;
+    private static final int RANDOMIZATION_FACTOR = 4;
     private boolean completed;
     private short[] seed;
     int levelNum;
@@ -58,26 +59,60 @@ public class LevelMaker {
         return levelUnits;
     }
 
-    private ArrayList<Integer> generateUnitNumbers(int difficulty) {
-        ArrayList<Integer> vals = new ArrayList<>();
-        while (difficulty > 0) {
-            int max = Math.min(difficulty, MAXIMUM_UNIT_COMPLEXITY);
-            int complexity = (int) (Math.random() * (max - MINIMUM_UNIT_COMPLEXITY) + MINIMUM_UNIT_COMPLEXITY);
-            vals.add(complexity);
-            difficulty -= complexity;
+    private ArrayList<Integer> generateUnitNumbers() {
+        ArrayList<Integer> numbers = new ArrayList<>();
+        //Generate the number of units in the level
+        int cap = (int) Math.pow(10, (int) Math.log10(levelNum) + 1);
+        /**
+         * 1 - 10 = 10 11 - 100 = 100 101 - 1000 = 100
+         */
+        cap += levelNum;
+        //make the cap scale with the level;
+        //random 4 digit number
+        int numUnits = (seed[seed.length - 1]) * (seed[0] + 1);
+        numUnits %= cap;
+        //make sure there is at least 1 unit ;
+        ++numUnits;
+
+        int levelComplexity = getDifficulty();
+
+        double[] vals = new double[numUnits];
+        Arrays.fill(vals, levelComplexity / (double) numUnits);
+
+        for (int i = 0; i < RANDOMIZATION_FACTOR; i++) {
+            double percentage = Math.random();
+            for (int j = 0; j < vals.length / 2 + vals.length % 2; j++) {
+                int removeIndex = (int) (Math.random() * vals.length);
+                int addIndex = (int) (Math.random() * vals.length);
+                double value = vals[removeIndex] * percentage;
+                vals[addIndex] += value;
+                vals[removeIndex] -= value;
+            }
         }
-        return vals;
+        for (int i = 0; i < vals.length; i++) {
+            vals[i] *= numUnits;
+            if (vals[i] < 1) {
+                vals[i]++;
+            }
+            numbers.add((int) vals[i]);
+
+        }
+        System.out.println("Cap = " + cap);
+        System.out.println("Total Complexity = " + levelComplexity);
+        System.out.println("# units = " + numUnits);
+        System.out.println("Unit Complexities : " + numbers);
+        return numbers;
     }
 
     public void setup() {
         clearLevel(true);
-        ArrayList<Integer> unitComplexities = generateUnitNumbers(levelNum);
+        seed = generateSeed();
+        ArrayList<Integer> unitComplexities = generateUnitNumbers();
         units = generateUnits(unitComplexities);
         for (Unit u : units) {
             u.onCreate();
         }
-        seed = generateSeed();
-        //System.out.println("Setup for level " + difficulty + " complete");
+        System.out.println("Setup for level " + levelNum + " complete");
     }
 
     public boolean checkForVictory() {
