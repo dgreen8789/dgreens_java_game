@@ -21,7 +21,7 @@ import unit.UnitUtilities;
  * @author david.green
  */
 public class BasicEnemy extends EnemyUnit {
-
+    private static final int ENEMY_SPEED = 2;
     private int angle = 0;
     public BasicEnemy(int health) {
         super(health);
@@ -71,5 +71,11 @@ public class BasicEnemy extends EnemyUnit {
     @Override
     public void specialAbility() {
     }
+
+    @Override
+    public int getSpeed() {
+        return ENEMY_SPEED;
+    }
+    
     
 }

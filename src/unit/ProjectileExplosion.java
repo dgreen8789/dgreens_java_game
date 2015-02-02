@@ -60,7 +60,7 @@ public class ProjectileExplosion extends Unit {
             ArrayList<Unit> newProjectiles = new ArrayList<>();
             for (int i = 0;
                     i < ((numProjectilesPerFrame == 0)
-                            ? DEFAULT_PROJECTILES_PER_FRAME : numProjectilesPerFrame); i++) {
+                    ? DEFAULT_PROJECTILES_PER_FRAME : numProjectilesPerFrame); i++) {
                 Point target = new Point((int) (Math.random() * bounds.width), (int) (Math.random() * bounds.height));
                 int radius = (int) (Math.random() * MAXIMUM_PROJECTILE_RADIUS)
                         + MINIMUM_PROJECTILE_RADIUS
@@ -165,6 +165,11 @@ public class ProjectileExplosion extends Unit {
 
     public void setDamage(int doesDamage) {
         this.damage = doesDamage;
+    }
+
+    @Override
+    public int getSpeed() {
+        return PROJECTILE_SPEED;
     }
 
 }

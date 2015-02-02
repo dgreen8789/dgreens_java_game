@@ -21,6 +21,10 @@ public class init {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        
+        //DEBUG CODE
+        
+        // END DEBUG CODE
         gameGUI = new GUI(60);
         unitOperationHandler = new UnitOperationHandler();
         Thread unitHandler = new Thread(unitOperationHandler);

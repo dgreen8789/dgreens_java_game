@@ -109,7 +109,7 @@ public class GraphicsController {
     }
 
     public final void addScore(long l) {
-        score.addAndGet(l);
+        score.addAndGet((int) (l * init.getGameGUI().getLevel().getScoreMultiplier()));
     }
 
     private void drawScore(int x, int y, int height, Graphics2D g) {

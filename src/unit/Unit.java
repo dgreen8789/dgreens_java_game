@@ -28,6 +28,7 @@ public abstract class Unit implements Comparable {
     private int size;
     protected int health;
     protected int maxHealth;
+    protected int speed;
     public Point getLocation() {
         return location;
     }
@@ -188,6 +189,14 @@ public abstract class Unit implements Comparable {
 
     public int getSpecialAbilityCooldown() {
         return specialAbilityCooldown;
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
     }
     
     public abstract void specialAbility();

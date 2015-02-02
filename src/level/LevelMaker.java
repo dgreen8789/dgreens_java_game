@@ -28,11 +28,16 @@ public class LevelMaker {
 
     public static int MINIMUM_UNIT_COMPLEXITY = 1;
     public static int MAXIMUM_UNIT_COMPLEXITY = 1024;
-    public static double LEVEL_SCALING = 1.1;
+    public static double BASE_LEVEL_SCALING = 1.1;
+    public static final double EASY = .2;
+    public static final double MEDIUM = .4;
+    public static final double HARD = .6; 
+    private static final double NIGHTMARE = 1.0; 
     private static final int RANDOMIZATION_FACTOR = 4;
     private boolean completed;
     private short[] seed;
     int levelNum;
+    private double gameDifficulty = NIGHTMARE;
     ArrayList<Unit> units;
 
     public LevelMaker(int difficulty) {
@@ -62,23 +67,22 @@ public class LevelMaker {
     private ArrayList<Integer> generateUnitNumbers() {
         ArrayList<Integer> numbers = new ArrayList<>();
         //Generate the number of units in the level
-        int cap = (int) Math.pow(10, (int) Math.log10(levelNum) + 1);
-        /**
-         * 1 - 10 = 10 11 - 100 = 100 101 - 1000 = 100
-         */
+        int cap = ((int) Math.log10(levelNum) + 1) * levelNum / 10;
+
         cap += levelNum;
         //make the cap scale with the level;
         //random 4 digit number
         int numUnits = (seed[seed.length - 1]) * (seed[0] + 1);
         numUnits %= cap;
-        //make sure there is at least 1 unit ;
-        ++numUnits;
+        //make sure there is at least 1 unit and multiply by scalingddd ;
+        numUnits = (int)(++numUnits *this.getScaling());
 
         int levelComplexity = getDifficulty();
 
         double[] vals = new double[numUnits];
-        Arrays.fill(vals, levelComplexity / (double) numUnits);
-
+        Arrays.fill(vals, levelComplexity / (double)numUnits);
+        System.out.println(Arrays.toString(vals));
+        System.out.println(vals[0] * numUnits);
         for (int i = 0; i < RANDOMIZATION_FACTOR; i++) {
             double percentage = Math.random();
             for (int j = 0; j < vals.length / 2 + vals.length % 2; j++) {
@@ -90,7 +94,7 @@ public class LevelMaker {
             }
         }
         for (int i = 0; i < vals.length; i++) {
-            vals[i] *= numUnits;
+            //vals[i] *= numUnits;
             if (vals[i] < 1) {
                 vals[i]++;
             }
@@ -174,7 +178,23 @@ public class LevelMaker {
     }
 
     private int getDifficulty() {
-        return (int) (Math.pow(LEVEL_SCALING, levelNum));
+        return (int) (Math.pow(getScaling(), levelNum));
     }
+    private double getScaling(){
+      return BASE_LEVEL_SCALING + getGameDifficulty();   
+    }
+
+    public double getGameDifficulty() {
+        return gameDifficulty;
+    }
+
+    public void setGameDifficulty(double gameDifficulty) {
+        this.gameDifficulty = gameDifficulty;
+    }
+    public  double getScoreMultiplier(){
+        return 1 + this.getGameDifficulty();
+    }
+    
+    
 
 }

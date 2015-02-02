@@ -23,7 +23,6 @@ public class StandardProjectile extends Unit implements ColoredUnit {
     private Color color;
     private int size;
     private Point target;
-    private int speed;
     private int initialX;
     private int initialY;
     private int affiliation;
