@@ -9,6 +9,7 @@ import graphics.GraphicsUtilities;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
 import main.init;
 
 /**
@@ -62,5 +63,14 @@ public class UnitUtilities {
         g.fillRect(u.getX() - u.getSize(), u.getY() - (u.getSize() + 6),
                 (int) x, HEALTH_RECTANGLE_HEIGHT);
         g.setColor(c);
+    }
+    public static Point getRandomLocation(int xTol, int yTol) {
+        Rectangle r = init.getGameGUI().getBounds();
+        Point loc = new Point(r.width / 2, r.height / 2);
+        int yDiff = (int)(Math.random() * 2 * yTol) - yTol;
+        int xDiff = (int)(Math.random() * 2 * xTol) - xTol;
+        loc.x -= xDiff;
+        loc.y -= yDiff;
+        return loc;
     }
 }

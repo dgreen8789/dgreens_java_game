@@ -118,7 +118,7 @@ public class GraphicsController {
         String scoreString = "Score = " + this.getScore();
         g.setFont(GraphicsUtilities.fillRect(scoreString, g, 
                 10 * scoreString.length(), height));
-        g.drawString(scoreString, 0, (int) (g.getFontMetrics()
+        g.drawString(scoreString, x, y + (int) (g.getFontMetrics()
                 .getLineMetrics(scoreString, g).getHeight()));
         g.setFont(f);
     }

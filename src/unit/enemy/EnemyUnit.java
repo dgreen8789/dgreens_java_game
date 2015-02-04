@@ -76,5 +76,11 @@ public abstract class EnemyUnit extends Unit implements ColoredUnit {
         this.color = color;
     }
     
+    public static <T extends EnemyUnit> T generate(int complexity){
+        throw new UnsupportedOperationException("Can't instantiate abstract class");
+    }
+
+
+
     
 }

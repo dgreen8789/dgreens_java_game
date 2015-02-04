@@ -6,6 +6,7 @@
 package AI;
 
 import java.awt.Point;
+import java.util.Arrays;
 import unit.Unit;
 
 /**
@@ -20,6 +21,7 @@ public class Formation {
     private static final int DISTANCE = 50;
     private int formationConstant;
     private int[][] formation;
+    private double[] segmentLengths;
     private boolean rotation;
     private int rotationPerFrame;
     private int angle = 0;
@@ -30,9 +32,10 @@ public class Formation {
 
     public Formation(int numUnits, int formationConstant, Point center) {
         this.formationConstant = formationConstant;
-        formation = new int[numUnits][2];
+        formation = new int[2][numUnits];
         this.centerPoint = center;
         this.distance = Formation.DISTANCE;
+        this.updateFormation();
     }
 
     public int getFormationConstant() {
@@ -43,12 +46,13 @@ public class Formation {
         this.formationConstant = formationConstant;
     }
 
-    public int[][] getFormation() {
+    public int[][] getPoints() {
         return formation;
     }
 
-    public void setFormation(int[][] formation) {
+    public void setPoints(int[][] formation) {
         this.formation = formation;
+        this.setSegmentLengths();
     }
 
     public boolean isRotating() {
@@ -81,24 +85,61 @@ public class Formation {
 
     public void updateFormation() {
         switch (formationConstant) {
+            case LINEAR_FORMATION:
             case GEOMETRIC_FORMATION:
-                formation = graphics.RotatingShape.shape(getCenter(), distance, formation.length, angle);
+                formation = graphics.RotatingShape.shape(getCenter(), distance, formation[0].length, angle);
                 angle += this.getRotationPerFrame();
                 angle %= 360;
                 break;
-            case LINEAR_FORMATION:
-                break;
             case NO_FORMATION:
                 break;
-            default: throw new IndexOutOfBoundsException("Invalid Formation Code");
-                
+            default:
+                throw new IndexOutOfBoundsException("Invalid Formation Code");
+
         }
+        setSegmentLengths();
     }
-    public int getNumUnits(){
+
+    public int getNumUnits() {
         return formation.length;
     }
+
     public Point getMove(int unitNumber) {
         return new Point(formation[unitNumber][0], formation[unitNumber][1]);
     }
 
+    private void setSegmentLengths() {
+        this.segmentLengths = new double[formation[0].length];
+        for (int i = 0; i < formation[0].length; i++) {
+            Point one = new Point(formation[0][i], formation[1][i]);
+            int newIndex = (i + 1) % segmentLengths.length;
+            Point two = new Point(formation[0][newIndex], formation[1][newIndex]);
+            segmentLengths[i] = one.distance(two);
+        }
+    }
+
+    public double[] getSegmentLengths() {
+        return segmentLengths;
+    }
+
+    @Override
+    public String toString() {
+        return "Formation{" + "formationConstant=" + formationConstant + ", \nformation=" 
+                + Arrays.deepToString(formation)
+                + ", \nsegmentLengths=" + Arrays.toString(segmentLengths) 
+                + ", rotation=" + rotation + ", rotationPerFrame=" 
+                + rotationPerFrame + ", angle=" + angle + ", center="
+                + center + ", distance=" + distance + ", centerPoint=" 
+                + centerPoint + ", centersOnUnit=" + centersOnUnit + '}';
+    }
+
+    public int getDistance() {
+        return distance;
+    }
+
+    public void setDistance(int distance) {
+        this.distance = distance;
+        updateFormation();
+    }
+    
 }

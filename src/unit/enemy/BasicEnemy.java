@@ -27,10 +27,10 @@ public class BasicEnemy extends EnemyUnit {
         super(health);
     }
 
-    public BasicEnemy(int health, int x, int y) {
+    public BasicEnemy(int health, int x, int y, Formation f, int numinFormation) {
         super(health, x, y);
         this.setSize(10);
-        this.setAi(new EnemyAI(this, new Formation(1, Formation.NO_FORMATION, this.getLocation()), 0));
+        this.setAi(new EnemyAI(this, f, numinFormation));
         score = health;
         setColor(Color.ORANGE);
     }
@@ -76,6 +76,7 @@ public class BasicEnemy extends EnemyUnit {
     public int getSpeed() {
         return ENEMY_SPEED;
     }
+    
     
     
 }

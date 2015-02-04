@@ -14,7 +14,6 @@ import unit.Unit;
 public abstract class AI {
 
     protected Unit unit;
-    private int[][] movePoints;
 
     public AI(Unit unit) {
         this.unit = unit;
@@ -43,13 +42,5 @@ public abstract class AI {
     protected abstract void move();
 
     protected abstract void attack();
-
-    public int[][] getMovePoints() {
-        return movePoints;
-    }
-
-    public void setMovePoints(int[][] movePoints) {
-        this.movePoints = movePoints;
-    }
     
 }

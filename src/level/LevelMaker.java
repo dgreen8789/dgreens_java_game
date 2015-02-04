@@ -5,13 +5,17 @@
  */
 package level;
 
+import AI.EnemyAI;
+import AI.Formation;
 import graphics.tasks.LevelCompleteTextTask;
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Random;
 import main.init;
 import phyics.UnitClearOperation;
 import phyics.UnitOperation;
@@ -31,16 +35,18 @@ public class LevelMaker {
     public static double BASE_LEVEL_SCALING = 1.1;
     public static final double EASY = .2;
     public static final double MEDIUM = .4;
-    public static final double HARD = .6; 
-    private static final double NIGHTMARE = 1.0; 
+    public static final double HARD = .6;
+    private static final double NIGHTMARE = 1.0;
     private static final int RANDOMIZATION_FACTOR = 4;
     private boolean completed;
     private short[] seed;
+    private Random random;
     int levelNum;
     private double gameDifficulty = NIGHTMARE;
     ArrayList<Unit> units;
 
     public LevelMaker(int difficulty) {
+        random = new Random();
         this.levelNum = difficulty;
     }
 
@@ -52,6 +58,7 @@ public class LevelMaker {
 
         LevelCompleteTextTask task = new LevelCompleteTextTask(message,
                 bounds.width, bounds.height / 2, p, 60);
+        task.setColor(gameDifficulty == NIGHTMARE ? Color.RED : Color.GREEN);
         init.getGameGUI().getGraphicsControl().addTask(task);
         return true;
     }
@@ -75,24 +82,13 @@ public class LevelMaker {
         int numUnits = (seed[seed.length - 1]) * (seed[0] + 1);
         numUnits %= cap;
         //make sure there is at least 1 unit and multiply by scalingddd ;
-        numUnits = (int)(++numUnits *this.getScaling());
+        numUnits = (int) (++numUnits * this.getScaling());
 
         int levelComplexity = getDifficulty();
 
         double[] vals = new double[numUnits];
-        Arrays.fill(vals, levelComplexity / (double)numUnits);
-        System.out.println(Arrays.toString(vals));
-        System.out.println(vals[0] * numUnits);
-        for (int i = 0; i < RANDOMIZATION_FACTOR; i++) {
-            double percentage = Math.random();
-            for (int j = 0; j < vals.length / 2 + vals.length % 2; j++) {
-                int removeIndex = (int) (Math.random() * vals.length);
-                int addIndex = (int) (Math.random() * vals.length);
-                double value = vals[removeIndex] * percentage;
-                vals[addIndex] += value;
-                vals[removeIndex] -= value;
-            }
-        }
+        Arrays.fill(vals, levelComplexity / (double) numUnits);
+        randomizeArray(vals);
         for (int i = 0; i < vals.length; i++) {
             //vals[i] *= numUnits;
             if (vals[i] < 1) {
@@ -101,18 +97,20 @@ public class LevelMaker {
             numbers.add((int) vals[i]);
 
         }
-        System.out.println("Cap = " + cap);
-        System.out.println("Total Complexity = " + levelComplexity);
-        System.out.println("# units = " + numUnits);
-        System.out.println("Unit Complexities : " + numbers);
+//        System.out.println("Cap = " + cap);
+//        System.out.println("Total Complexity = " + levelComplexity);
+//        System.out.println("# units = " + numUnits);
+//        System.out.println("Unit Complexities : " + numbers);
         return numbers;
     }
 
     public void setup() {
         clearLevel(true);
         seed = generateSeed();
+        random.setSeed(seed[0] * seed[1] * seed[2]);
         ArrayList<Integer> unitComplexities = generateUnitNumbers();
         units = generateUnits(unitComplexities);
+        makeFormations(units);
         for (Unit u : units) {
             u.onCreate();
         }
@@ -129,12 +127,11 @@ public class LevelMaker {
     public void afterLevel() {
         //blah blah
     }
-    Unit[] availableUnits = {new DestroyableTarget(1), new BasicEnemy(1, 1, 1)};
 
     private Unit generateEnemy(Integer i) {
         Unit u;
         if (i > 5) {
-            u = new BasicEnemy(i, 1, 1);
+            u = new BasicEnemy(i, 1, 1, null, 0);
             u.getWeapon().setDamage(i / 2 + 1);
         } else {
             u = new DestroyableTarget(i);
@@ -172,7 +169,6 @@ public class LevelMaker {
             data[i] = (short) (l % 1000);
             l /= 1000;
         }
-        System.out.println(Arrays.toString(data));
         return data;
 
     }
@@ -180,8 +176,9 @@ public class LevelMaker {
     private int getDifficulty() {
         return (int) (Math.pow(getScaling(), levelNum));
     }
-    private double getScaling(){
-      return BASE_LEVEL_SCALING + getGameDifficulty();   
+
+    private double getScaling() {
+        return BASE_LEVEL_SCALING + getGameDifficulty();
     }
 
     public double getGameDifficulty() {
@@ -191,10 +188,62 @@ public class LevelMaker {
     public void setGameDifficulty(double gameDifficulty) {
         this.gameDifficulty = gameDifficulty;
     }
-    public  double getScoreMultiplier(){
+
+    public double getScoreMultiplier() {
         return 1 + this.getGameDifficulty();
     }
-    
-    
+
+    private void makeFormations(ArrayList<Unit> units) {
+        ArrayList<BasicEnemy> enemies = new ArrayList<>();
+        for (Unit unit : units) {
+            if (unit instanceof BasicEnemy) {
+                enemies.add((BasicEnemy) unit);
+            }
+        }
+        int next = random.nextInt(10) + 1;
+        Formation f = GenerateFormation(next);
+        int x = 0;
+        while (x < enemies.size()) {
+            BasicEnemy enemy = enemies.get(x);
+            EnemyAI enemyAI = ((EnemyAI) enemy.getAi());
+            enemyAI.setFormation(f);
+            enemyAI.setNumberInFormation(next);
+            System.out.println(next);
+            System.out.println(f);
+            Point loc = new Point(f.getPoints()[0][next - 1], f.getPoints()[1][next - 1]);
+            System.out.println("\n\n");
+            enemy.setLocation(loc);
+            System.out.println(loc);
+            next--;
+            if (next == 0) {
+                 next = random.nextInt(10);
+                 f = GenerateFormation(next);
+            }
+            x++;
+        }
+    }
+    private static final int FORMATION_X_SPREAD = 100;
+    private static final int FORMATION_Y_SPREAD = 50;
+    private static final int FORMATION_MAXIMUM_DISTANCE = 200;
+    private Formation GenerateFormation(int num) {
+        Formation f =  new Formation(num,
+                Formation.GEOMETRIC_FORMATION,
+                UnitUtilities.getRandomLocation(FORMATION_X_SPREAD, FORMATION_Y_SPREAD));
+        f.setDistance(random.nextInt(FORMATION_MAXIMUM_DISTANCE));
+        return f;
+    }
+
+    private void randomizeArray(double[] vals) {
+        for (int i = 0; i < RANDOMIZATION_FACTOR; i++) {
+            double percentage = random.nextDouble() % 1;
+            for (int j = 0; j < vals.length / 2 + vals.length % 2; j++) {
+                int removeIndex = (int) (random.nextDouble() % 1 * vals.length);
+                int addIndex = (int) (random.nextDouble() % 1 * vals.length);
+                double value = vals[removeIndex] * percentage;
+                vals[addIndex] += value;
+                vals[removeIndex] -= value;
+            }
+        }
+    }
 
 }

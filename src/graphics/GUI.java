@@ -53,8 +53,8 @@ public class GUI extends Thread {
     private LevelMaker level;
     private boolean levelInitialized;
 
-    private static final int STARTING_LEVEL = 1;// debug line
-    private static final boolean FULL_SCREEN = false;
+    private static final int STARTING_LEVEL = 4;// debug line
+    private static final boolean FULL_SCREEN = true;
 
     // create a hardware accelerated image
     public final BufferedImage create(final int width, final int height, final boolean alpha) {

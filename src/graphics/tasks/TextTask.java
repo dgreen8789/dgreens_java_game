@@ -43,7 +43,7 @@ public class TextTask extends GraphicsTask {
     public void draw(Graphics2D g, int width, int height) {
         Font f = g.getFont();
         Color c = g.getColor();
-        g.setColor((colorSwitch++ == 0) ? Color.GREEN : Color.WHITE);
+        g.setColor((colorSwitch++ == 0) ? getColor() : Color.WHITE);
         colorSwitch %=2;
         Font newFont = this.getFont(g);
         g.setFont(newFont);
