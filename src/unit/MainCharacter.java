@@ -139,6 +139,7 @@ public class MainCharacter extends Unit {
     @Override
     public void onDeath() {
         super.onDeath();
+        System.out.println("\n\n\n\t\tPlayer Death\n\tScore = " + init.getGameGUI().getGraphicsControl().getScore());
         System.exit(0);
     }
 

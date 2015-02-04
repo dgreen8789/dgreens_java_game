@@ -25,10 +25,10 @@ public class Formation {
     private boolean rotation;
     private int rotationPerFrame;
     private int angle = 0;
-    private Unit center;
+    private Unit centerUnit;
     private int distance;
     private Point centerPoint;
-    private boolean centersOnUnit;
+    private boolean centeredOnUnit;
 
     public Formation(int numUnits, int formationConstant, Point center) {
         this.formationConstant = formationConstant;
@@ -72,15 +72,15 @@ public class Formation {
     }
 
     public boolean CentersOnUnit() {
-        return centersOnUnit;
+        return centeredOnUnit;
     }
 
-    public void setCentersOnUnit(boolean centersOnUnit) {
-        this.centersOnUnit = centersOnUnit;
+    public void setCenteredOnUnit(boolean centeredOnUnit) {
+        this.centeredOnUnit = centeredOnUnit;
     }
 
     public Point getCenter() {
-        return (centersOnUnit) ? center.getLocation() : centerPoint;
+        return (centeredOnUnit) ? centerUnit.getLocation() : centerPoint;
     }
 
     public void updateFormation() {
@@ -129,8 +129,8 @@ public class Formation {
                 + ", \nsegmentLengths=" + Arrays.toString(segmentLengths) 
                 + ", rotation=" + rotation + ", rotationPerFrame=" 
                 + rotationPerFrame + ", angle=" + angle + ", center="
-                + center + ", distance=" + distance + ", centerPoint=" 
-                + centerPoint + ", centersOnUnit=" + centersOnUnit + '}';
+                + centerUnit + ", distance=" + distance + ", centerPoint=" 
+                + centerPoint + ", centersOnUnit=" + centeredOnUnit + '}';
     }
 
     public int getDistance() {
@@ -140,6 +140,14 @@ public class Formation {
     public void setDistance(int distance) {
         this.distance = distance;
         updateFormation();
+    }
+
+    public Unit getCenterUnit() {
+        return centerUnit;
+    }
+
+    public void setCenterUnit(Unit centerUnit) {
+        this.centerUnit = centerUnit;
     }
     
 }

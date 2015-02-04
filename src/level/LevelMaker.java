@@ -208,29 +208,33 @@ public class LevelMaker {
             EnemyAI enemyAI = ((EnemyAI) enemy.getAi());
             enemyAI.setFormation(f);
             enemyAI.setNumberInFormation(next);
-            System.out.println(next);
-            System.out.println(f);
             Point loc = new Point(f.getPoints()[0][next - 1], f.getPoints()[1][next - 1]);
-            System.out.println("\n\n");
             enemy.setLocation(loc);
-            System.out.println(loc);
             next--;
             if (next == 0) {
-                 next = random.nextInt(10);
-                 f = GenerateFormation(next);
+                next = random.nextInt(10);
+                f = GenerateFormation(next);
             }
             x++;
         }
     }
     private static final int FORMATION_X_SPREAD = 100;
     private static final int FORMATION_Y_SPREAD = 50;
-    private static final int FORMATION_MAXIMUM_DISTANCE = 200;
+    private static final int FORMATION_MAXIMUM_DISTANCE = 250;
+    private static final int FORMATION_MINIMUM_DISTANCE = 100;
+
     private Formation GenerateFormation(int num) {
-        Formation f =  new Formation(num,
+        Formation f = new Formation(num,
                 Formation.GEOMETRIC_FORMATION,
                 UnitUtilities.getRandomLocation(FORMATION_X_SPREAD, FORMATION_Y_SPREAD));
-        f.setDistance(random.nextInt(FORMATION_MAXIMUM_DISTANCE));
+        f.setDistance(random.nextInt(FORMATION_MAXIMUM_DISTANCE - FORMATION_MINIMUM_DISTANCE)
+                + FORMATION_MINIMUM_DISTANCE);
+        if (random.nextInt(10) > 8) {
+            f.setCenteredOnUnit(true);
+            f.setCenterUnit(init.getGameGUI().getGraphicsControl().getMainCharacter());
+        }
         return f;
+
     }
 
     private void randomizeArray(double[] vals) {

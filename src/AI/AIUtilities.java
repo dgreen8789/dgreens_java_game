@@ -23,7 +23,9 @@ public class AIUtilities {
      * @return The left over distance, if any;
      */
     public static int moveTowards(int distance, Point destination, Unit u) {
-
+//        System.out.println("Distance = " + distance);
+//        System.out.println("Destination = " + destination);
+//        System.out.println("Unit = " + u + " \n\tat " + u.getLocation());
         //Calculate the angle
         double angle = Math.atan2(destination.y - u.getY(), destination.x - u.getX());
         //Y difference - Unit circle multiplied by distance;
@@ -36,16 +38,20 @@ public class AIUtilities {
         //Get the distance from the destination to where the unit is now
         double destinationDistance = u.getLocation().distance(destination);
         //Turn the new coordinates into a Point object
-        Point moveLoc = new Point((int) x, (int) y);
+        Point moveLoc = new Point(u.getX() + (int) x, u.getY() + (int) y);
         //Figure out which is closer: the destination, or the new Point 
+        double moveLocDist = u.getLocation().distance(moveLoc);
+//        System.out.println("Given Destination Point = " + destination);
+//        System.out.println("Calculated Point = " + moveLoc);
+//        System.out.println("Destination distance = " + destinationDistance);
+//        System.out.println("Distance to calculated point = " + moveLocDist);
         boolean destinationCloser
                 = destinationDistance
-                < u.getLocation().distance(moveLoc);
+                < moveLocDist;
         //Set the location to the closest of the two points
         Point p = (Point)(destinationCloser ? destination : moveLoc).clone();
+        //System.out.println("Moving from " + u.getLocation() + " to " + p + "\n");
         u.setLocation(p);
-        System.out.println("Moved from " + u.getLocation()
-                + "\nto " + (destinationCloser ? destination : moveLoc));
         //return the leftover distance, if any
         return destinationCloser ? distance - (int) destinationDistance : 0;
     }

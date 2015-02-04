@@ -36,16 +36,28 @@ public class EnemyAI extends AI {
     protected void move() {
         if (getFormation() != null) {
             double[] segmentLengths = this.getFormation().getSegmentLengths();
-            int lengthLeft = this.unit.getSpeed();
-            while (lengthLeft > segmentLengths[currentSegment]) {
-                lengthLeft -= segmentLengths[currentSegment++];
-                currentSegment %= segmentLengths.length - 1;
+            if (segmentLengths.length > 1) {
+                double lengthLeft = this.unit.getSpeed();
+                boolean movedSegments = false;
+                while (lengthLeft > segmentLengths[currentSegment]) {
+                    movedSegments = true;
+                    lengthLeft -= segmentLengths[currentSegment++];
+                    System.out.println(lengthLeft + " dist left after seg " + currentSegment);
+                    System.out.println(Arrays.toString(segmentLengths));
+                    currentSegment %= segmentLengths.length;
+                }
+                if (movedSegments) {
+                    ++currentSegment;
+                    currentSegment %= segmentLengths.length;
+                }
+                Point p = new Point(getFormation().getPoints()[0][currentSegment],
+                        getFormation().getPoints()[1][currentSegment]);
+                if (AIUtilities.moveTowards((int) lengthLeft, p, unit) == unit.getSpeed()) {
+                    currentSegment++;
+                    currentSegment %= segmentLengths.length;
+                    move();
+                }
             }
-            ++currentSegment;
-            currentSegment %= segmentLengths.length - 1;
-            Point p = new Point(getFormation().getPoints()[0][currentSegment],
-                    getFormation().getPoints()[1][currentSegment]);
-            lengthLeft+= AIUtilities.moveTowards(lengthLeft, p, unit);
         }
     }
 
