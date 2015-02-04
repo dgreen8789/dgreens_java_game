@@ -11,6 +11,7 @@ import java.awt.Point;
 import java.awt.geom.Area;
 import main.init;
 import phyics.UnitOperation;
+import unit.enemy.EnemyUnit;
 import weapon.Weapon;
 
 /**
@@ -29,6 +30,7 @@ public abstract class Unit implements Comparable {
     protected int health;
     protected int maxHealth;
     protected int speed;
+
     public Point getLocation() {
         return location;
     }
@@ -100,24 +102,35 @@ public abstract class Unit implements Comparable {
         init.getUnitOperationHandler().addOperation(
                 new UnitOperation(UnitOperation.ADD_UNIT, this));
 
-    }    
+    }
 
     public void fire(Point target) {
         if (canFire && target != null) {
-            try{
-            this.getWeapon().fire(this.getLocation(), target, this.getCollisionConstant());
-            }catch(NullPointerException e){
+            try {
+                this.getWeapon().fire(this.getLocation(), target, this.getCollisionConstant());
+            } catch (NullPointerException e) {
                 //System.out.println("Target " + target + "\tLocation " + this.getLocation());
             }
         }
     }
 
     public abstract Area getHitbox();
+    private static final double PERCENT_HEALTH_GAIN_ON_ENEMY_KILL = .05;
+    private static final double PERCENT_HEALTH_GAIN_ON_TARGET_KILL = .05;
 
     public void onDeath() {
-
         init.getUnitOperationHandler().addOperation(
                 new UnitOperation(UnitOperation.DELETE_UNIT, this));
+        if (this instanceof EnemyUnit) {
+            Unit c = init.getGameGUI().getGraphicsControl().getMainCharacter();
+            int AdditionalHealth = (int) (c.getHealth() + c.getMaxHealth() * PERCENT_HEALTH_GAIN_ON_ENEMY_KILL);
+            c.setHealth(Math.min(c.getMaxHealth(), c.getHealth() + AdditionalHealth));
+        }
+        if (this instanceof Target) {
+            Unit c = init.getGameGUI().getGraphicsControl().getMainCharacter();
+            int AdditionalHealth = (int) (c.getHealth() + c.getMaxHealth() * PERCENT_HEALTH_GAIN_ON_TARGET_KILL);
+            c.setHealth(Math.min(c.getMaxHealth(), c.getHealth() + AdditionalHealth));
+        }
 
     }
 
@@ -133,8 +146,6 @@ public abstract class Unit implements Comparable {
     public int compareTo(Object o) {
         return this.getComplexity() - ((Unit) o).getComplexity();
     }
-
-
 
     public boolean canFire() {
         return canFire;
@@ -198,7 +209,7 @@ public abstract class Unit implements Comparable {
     public void setSpeed(int speed) {
         this.speed = speed;
     }
-    
+
     public abstract void specialAbility();
-    
+
 }

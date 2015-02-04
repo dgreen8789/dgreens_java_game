@@ -39,6 +39,7 @@ public class LevelMaker {
     private static final double NIGHTMARE = 1.0;
     private static final int RANDOMIZATION_FACTOR = 4;
     private boolean completed;
+    private int numUnits;
     private short[] seed;
     private Random random;
     int levelNum;
@@ -83,7 +84,7 @@ public class LevelMaker {
         numUnits %= cap;
         //make sure there is at least 1 unit and multiply by scalingddd ;
         numUnits = (int) (++numUnits * this.getScaling());
-
+        this.numUnits = numUnits;
         int levelComplexity = getDifficulty();
 
         double[] vals = new double[numUnits];
@@ -200,10 +201,14 @@ public class LevelMaker {
                 enemies.add((BasicEnemy) unit);
             }
         }
-        int next = random.nextInt(10) + 1;
+        int next = random.nextInt(numUnits) + 1;
         Formation f = GenerateFormation(next);
         int x = 0;
         while (x < enemies.size()) {
+            if (next == 0) {
+                next = random.nextInt(10) + 1;
+                f = GenerateFormation(next);
+            }
             BasicEnemy enemy = enemies.get(x);
             EnemyAI enemyAI = ((EnemyAI) enemy.getAi());
             enemyAI.setFormation(f);
@@ -211,15 +216,11 @@ public class LevelMaker {
             Point loc = new Point(f.getPoints()[0][next - 1], f.getPoints()[1][next - 1]);
             enemy.setLocation(loc);
             next--;
-            if (next == 0) {
-                next = random.nextInt(10);
-                f = GenerateFormation(next);
-            }
             x++;
         }
     }
-    private static final int FORMATION_X_SPREAD = 100;
-    private static final int FORMATION_Y_SPREAD = 50;
+    private static final int FORMATION_X_SPREAD = 400;
+    private static final int FORMATION_Y_SPREAD = 200;
     private static final int FORMATION_MAXIMUM_DISTANCE = 250;
     private static final int FORMATION_MINIMUM_DISTANCE = 100;
 
@@ -229,9 +230,9 @@ public class LevelMaker {
                 UnitUtilities.getRandomLocation(FORMATION_X_SPREAD, FORMATION_Y_SPREAD));
         f.setDistance(random.nextInt(FORMATION_MAXIMUM_DISTANCE - FORMATION_MINIMUM_DISTANCE)
                 + FORMATION_MINIMUM_DISTANCE);
-        if (random.nextInt(10) > 8) {
-            f.setCenteredOnUnit(true);
-            f.setCenterUnit(init.getGameGUI().getGraphicsControl().getMainCharacter());
+        if (random.nextInt(10) > 4) {
+        f.setCenterUnit(init.getGameGUI().getGraphicsControl().getMainCharacter());
+        f.setCenteredOnUnit(true);
         }
         return f;
 

@@ -7,6 +7,7 @@ package AI;
 
 import java.awt.Point;
 import java.util.Arrays;
+import main.init;
 import unit.Unit;
 
 /**
@@ -25,7 +26,7 @@ public class Formation {
     private boolean rotation;
     private int rotationPerFrame;
     private int angle = 0;
-    private Unit centerUnit;
+    private volatile Unit centerUnit;
     private int distance;
     private Point centerPoint;
     private boolean centeredOnUnit;
@@ -77,6 +78,7 @@ public class Formation {
 
     public void setCenteredOnUnit(boolean centeredOnUnit) {
         this.centeredOnUnit = centeredOnUnit;
+        updateFormation();
     }
 
     public Point getCenter() {
@@ -84,6 +86,11 @@ public class Formation {
     }
 
     public void updateFormation() {
+//        System.out.println("FORMATION CENTER = " + getCenter());
+//        System.out.println("Center unit location  = " + 
+//                ((centerUnit == null) ? "null" : centerUnit.getLocation()));
+//        System.out.println("Main character location = " + 
+//                init.getGameGUI().getGraphicsControl().getMainCharacter().getLocation());
         switch (formationConstant) {
             case LINEAR_FORMATION:
             case GEOMETRIC_FORMATION:

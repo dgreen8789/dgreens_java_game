@@ -21,7 +21,7 @@ import unit.UnitUtilities;
  * @author david.green
  */
 public class BasicEnemy extends EnemyUnit {
-    private static final int ENEMY_SPEED = 5;
+    private static final int ENEMY_SPEED = 10;
     private int angle = 0;
     public BasicEnemy(int health) {
         super(health);

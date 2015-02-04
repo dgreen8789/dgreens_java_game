@@ -34,7 +34,9 @@ public class EnemyAI extends AI {
 
     @Override
     protected void move() {
+
         if (getFormation() != null) {
+            this.getFormation().updateFormation();
             double[] segmentLengths = this.getFormation().getSegmentLengths();
             if (segmentLengths.length > 1) {
                 double lengthLeft = this.unit.getSpeed();

@@ -1,5 +1,6 @@
 package graphics;
 
+import AI.EnemyAI;
 import graphics.tasks.GraphicsTask;
 import java.awt.*;
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ import main.init;
 import unit.MainCharacter;
 import unit.ProjectileExplosion;
 import unit.Unit;
+import unit.enemy.BasicEnemy;
 
 /**
  *
@@ -42,12 +44,15 @@ public class GraphicsController {
         if (firstRender) {
             firstRender();
         }
+        boolean forceWait;
         width -= insets.left + insets.right;
         height -= insets.top + insets.bottom;
         if (!init.getGameGUI().getBounds().equals(oldBounds)) {
             scale();
             oldBounds = init.getGameGUI().getBounds();
+            //BackgroundGenerator.setup(width, height);
         }
+        //forceWait = BackgroundGenerator.Generate(g);
         for (Iterator iterator = tasks.iterator(); iterator.hasNext();) {
 
             GraphicsTask x = (GraphicsTask) iterator.next();
@@ -58,23 +63,26 @@ public class GraphicsController {
                 iterator.remove();
             }
         }
-        boolean b = init.getUnitOperationHandler().lock();
+        forceWait = init.getUnitOperationHandler().lock();
         ArrayList<Unit> units = init.getUnitOperationHandler().getUnits();
         for (int i = 0; i < units.size(); i++) {
             try {
                 units.get(i).draw(g);
                 if (drawHitboxes) {
                     g.setColor(Color.MAGENTA);
-
                     GraphicsUtilities.drawArea(units.get(i).getHitbox(), g);
-
+                    if (units.get(i) instanceof BasicEnemy) {
+                        int[][] points = ((EnemyAI) units.get(i).getAi()).getFormation().getPoints();
+                        g.setColor(Color.CYAN);
+                        g.drawPolygon(points[0], points[1], points[0].length);
+                    }
                 }
             } catch (NullPointerException e) {
                 //e.printStackTrace();
             }
         }
-        b = init.getUnitOperationHandler().unlock();
-        drawScore(0, 0, 40 , g);
+        forceWait = init.getUnitOperationHandler().unlock();
+        drawScore(0, 0, 40, g);
 
     }
 
@@ -88,6 +96,7 @@ public class GraphicsController {
 
     private void firstRender() {
         Rectangle bounds = init.getGameGUI().getBounds();
+        //BackgroundGenerator.setup(bounds.width, bounds.height);
         firstRender = false;
         mainCharacter = new MainCharacter(bounds.width / 2, bounds.height / 2, 20);
         oldBounds = bounds;
@@ -116,7 +125,7 @@ public class GraphicsController {
         Font f = g.getFont();
         g.setColor(Color.WHITE);
         String scoreString = "Score = " + this.getScore();
-        g.setFont(GraphicsUtilities.fillRect(scoreString, g, 
+        g.setFont(GraphicsUtilities.fillRect(scoreString, g,
                 10 * scoreString.length(), height));
         g.drawString(scoreString, x, y + (int) (g.getFontMetrics()
                 .getLineMetrics(scoreString, g).getHeight()));
@@ -146,6 +155,5 @@ public class GraphicsController {
     public void setMouseOverUnit(Unit mouseOverUnit) {
         this.mouseOverUnit = mouseOverUnit;
     }
-    
 
 }

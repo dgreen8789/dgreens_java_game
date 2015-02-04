@@ -53,7 +53,7 @@ public class GUI extends Thread {
     private LevelMaker level;
     private boolean levelInitialized;
 
-    private static final int STARTING_LEVEL = 4;// debug line
+    private static final int STARTING_LEVEL = 1;// debug line
     private static final boolean FULL_SCREEN = true;
 
     // create a hardware accelerated image
@@ -85,7 +85,7 @@ public class GUI extends Thread {
         frame.add(canvas, 0);
 
         // Background & Buffer
-        background = create(width, height, false);
+        background = create(width, height, true);
         canvas.createBufferStrategy(2);
         do {
             strategy = canvas.getBufferStrategy();
