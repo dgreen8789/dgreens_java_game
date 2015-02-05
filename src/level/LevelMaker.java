@@ -36,7 +36,8 @@ public class LevelMaker {
     public static final double EASY = .2;
     public static final double MEDIUM = .4;
     public static final double HARD = .6;
-    private static final double NIGHTMARE = 1.0;
+    public static final double NIGHTMARE = 1.0;
+    
     private static final int RANDOMIZATION_FACTOR = 4;
     private boolean completed;
     private int numUnits;
@@ -72,6 +73,10 @@ public class LevelMaker {
         return levelUnits;
     }
 
+    public void setSeed(long l) {
+        random.setSeed(l);
+    }
+    
     private ArrayList<Integer> generateUnitNumbers() {
         ArrayList<Integer> numbers = new ArrayList<>();
         //Generate the number of units in the level
@@ -163,7 +168,8 @@ public class LevelMaker {
     }
 
     private short[] generateSeed() {
-        long l = (long) (Math.random() * Long.MAX_VALUE / 2) + Long.MAX_VALUE / 2;
+
+        long l = random.nextInt(Integer.MAX_VALUE) * random.nextInt(Integer.MAX_VALUE / 2) + Long.MAX_VALUE / 2;
         int len = (int) Math.log10(l);
         short[] data = new short[len / 3];
         for (int i = 0; i < data.length; i++) {
