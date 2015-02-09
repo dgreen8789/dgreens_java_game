@@ -12,6 +12,8 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.io.File;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -23,6 +25,7 @@ import unit.DestroyableTarget;
 import unit.Unit;
 import unit.UnitUtilities;
 import unit.enemy.BasicEnemy;
+import unit.enemy.EnemyUnit;
 
 /**
  *
@@ -37,8 +40,9 @@ public class LevelMaker {
     public static final double MEDIUM = .4;
     public static final double HARD = .6;
     public static final double NIGHTMARE = 1.0;
-    
-    private static final int RANDOMIZATION_FACTOR = 4;
+
+    private final int RANDOMIZATION_FACTOR = 4;
+    private final ArrayList<Class> unitClasses;
     private boolean completed;
     private int numUnits;
     private short[] seed;
@@ -48,6 +52,11 @@ public class LevelMaker {
     ArrayList<Unit> units;
 
     public LevelMaker(int difficulty) {
+        unitClasses = new ArrayList<>();
+        ArrayList<Class> newClasses = getEnemyClasses();
+        for (Class class1 : newClasses) {
+            add(class1);
+        }
         random = new Random();
         this.levelNum = difficulty;
     }
@@ -76,7 +85,7 @@ public class LevelMaker {
     public void setSeed(long l) {
         random.setSeed(l);
     }
-    
+
     private ArrayList<Integer> generateUnitNumbers() {
         ArrayList<Integer> numbers = new ArrayList<>();
         //Generate the number of units in the level
@@ -135,6 +144,7 @@ public class LevelMaker {
     }
 
     private Unit generateEnemy(Integer i) {
+
         Unit u;
         if (i > 5) {
             u = new BasicEnemy(i, 1, 1, null, 0);
@@ -237,8 +247,8 @@ public class LevelMaker {
         f.setDistance(random.nextInt(FORMATION_MAXIMUM_DISTANCE - FORMATION_MINIMUM_DISTANCE)
                 + FORMATION_MINIMUM_DISTANCE);
         if (random.nextInt(10) > 4) {
-        f.setCenterUnit(init.getGameGUI().getGraphicsControl().getMainCharacter());
-        f.setCenteredOnUnit(true);
+            f.setCenterUnit(init.getGameGUI().getGraphicsControl().getMainCharacter());
+            f.setCenteredOnUnit(true);
         }
         return f;
 
@@ -255,6 +265,40 @@ public class LevelMaker {
                 vals[removeIndex] -= value;
             }
         }
+    }
+
+    public boolean add(Class e) {
+        return (e.asSubclass(EnemyUnit.class) == e) ? unitClasses.add(e) : false;
+    }
+
+    private ArrayList<Class> getEnemyClasses() {
+        ArrayList<Class> returnList = new ArrayList<>();
+        String pkg = EnemyUnit.class.getPackage().getName();
+        String relPath = pkg.replace('.', '/');
+
+        URL resource = ClassLoader.getSystemClassLoader().getResource(relPath);
+        if (resource == null) {
+            throw new RuntimeException("Unexpected problem: No resource for "
+                    + relPath);
+        }
+
+        File f = new File(resource.getPath());
+
+        String[] files = f.list();
+
+        for (int i = 0; i < files.length; i++) {
+
+            String fileName = files[i];
+            String className = null;
+            String fileNm = null;
+
+            if (fileName.endsWith(".class")) {
+
+                fileNm = fileName.substring(0, fileName.length() - 6);
+                className = pkg + '.' + fileNm;
+            }
+        }
+        return returnList;
     }
 
 }
