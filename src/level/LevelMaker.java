@@ -8,6 +8,7 @@ package level;
 import AI.EnemyAI;
 import AI.Formation;
 import graphics.tasks.LevelCompleteTextTask;
+import graphics.tasks.LevelStartDelayer;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -37,19 +38,37 @@ public class LevelMaker {
     public static final double MEDIUM = .4;
     public static final double HARD = .6;
     public static final double NIGHTMARE = 1.0;
-    
+    private static final double defaultDifficulty = MEDIUM;
     private static final int RANDOMIZATION_FACTOR = 4;
     private boolean completed;
     private int numUnits;
     private short[] seed;
+    private boolean isSetup = false;
     private Random random;
     int levelNum;
-    private double gameDifficulty = NIGHTMARE;
+    private double gameDifficulty = defaultDifficulty;
     ArrayList<Unit> units;
 
-    public LevelMaker(int difficulty) {
+    public LevelMaker(int levelNum, double difficulty) {
         random = new Random();
-        this.levelNum = difficulty;
+        this.gameDifficulty = difficulty;
+        this.levelNum = levelNum;
+    }
+
+    public static double getDifficultyfromString(String s) {
+        if (s.toUpperCase().equals("EASY")) {
+            return EASY;
+        }
+        if (s.toUpperCase().equals("MEDIUM")) {
+            return MEDIUM;
+        }
+        if (s.toUpperCase().equals("HARD")) {
+            return HARD;
+        }
+        if (s.toUpperCase().equals("NIGHTMARE")) {
+            return NIGHTMARE;
+        }
+        return defaultDifficulty;
     }
 
     public boolean onVictory(Graphics2D g, Rectangle bounds) {
@@ -76,7 +95,7 @@ public class LevelMaker {
     public void setSeed(long l) {
         random.setSeed(l);
     }
-    
+
     private ArrayList<Integer> generateUnitNumbers() {
         ArrayList<Integer> numbers = new ArrayList<>();
         //Generate the number of units in the level
@@ -111,21 +130,26 @@ public class LevelMaker {
     }
 
     public void setup() {
-        clearLevel(true);
+        isSetup = false;
+        this.setCompleted(false);
         seed = generateSeed();
         random.setSeed(seed[0] * seed[1] * seed[2]);
         ArrayList<Integer> unitComplexities = generateUnitNumbers();
         units = generateUnits(unitComplexities);
         makeFormations(units);
+        clearLevel(true);
         for (Unit u : units) {
             u.onCreate();
         }
+        isSetup = true;
         System.out.println("Setup for level " + levelNum + " complete");
     }
 
     public boolean checkForVictory() {
+        
         // boolean b = init.getUnitOperationHandler().lock();
-        boolean returnValue = Collections.disjoint(init.getUnitOperationHandler().getUnits(), units);
+        boolean returnValue =
+                isSetup && Collections.disjoint(init.getUnitOperationHandler().getUnits(), units);
         // b = init.getUnitOperationHandler().unlock();
         return returnValue;
     }
@@ -225,6 +249,12 @@ public class LevelMaker {
             x++;
         }
     }
+
+    public void incrementandSetup() {
+        this.isSetup = false;
+        this.levelNum++;
+        init.getGameGUI().getGraphicsControl().addTask(new LevelStartDelayer(60));
+    }
     private static final int FORMATION_X_SPREAD = 400;
     private static final int FORMATION_Y_SPREAD = 200;
     private static final int FORMATION_MAXIMUM_DISTANCE = 250;
@@ -237,8 +267,8 @@ public class LevelMaker {
         f.setDistance(random.nextInt(FORMATION_MAXIMUM_DISTANCE - FORMATION_MINIMUM_DISTANCE)
                 + FORMATION_MINIMUM_DISTANCE);
         if (random.nextInt(10) > 4) {
-        f.setCenterUnit(init.getGameGUI().getGraphicsControl().getMainCharacter());
-        f.setCenteredOnUnit(true);
+            f.setCenterUnit(init.getGameGUI().getGraphicsControl().getMainCharacter());
+            f.setCenteredOnUnit(true);
         }
         return f;
 

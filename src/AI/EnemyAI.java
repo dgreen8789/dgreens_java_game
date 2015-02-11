@@ -44,8 +44,8 @@ public class EnemyAI extends AI {
                 while (lengthLeft > segmentLengths[currentSegment]) {
                     movedSegments = true;
                     lengthLeft -= segmentLengths[currentSegment++];
-                    System.out.println(lengthLeft + " dist left after seg " + currentSegment);
-                    System.out.println(Arrays.toString(segmentLengths));
+                    //System.out.println(lengthLeft + " dist left after seg " + currentSegment);
+                    //System.out.println(Arrays.toString(segmentLengths));
                     currentSegment %= segmentLengths.length;
                 }
                 if (movedSegments) {

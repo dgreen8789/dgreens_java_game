@@ -17,13 +17,11 @@ public class LevelCompleteTextTask extends TextTask {
 
     public LevelCompleteTextTask(String text, int width, int height, Point position, int frames) {
         super(text, width, height, position, frames);
-        int x = init.getGameGUI().getLevel().getLevelNum();
-        init.getGameGUI().setLevelMaker(new LevelMaker(x + 1));
     }
 
     @Override
     public void onCompletion() {
-        init.getGameGUI().getLevel().setup();
+        init.getGameGUI().getLevel().incrementandSetup();
     }
     
 }

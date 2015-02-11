@@ -23,14 +23,16 @@ public class GraphicsController {
     private boolean firstRender = true;
     private Rectangle oldBounds;
     private final AtomicLong score;
-    private final boolean drawHitboxes = false; //Debug Line
+    private final boolean drawHitboxes; //Debug Line
     private ArrayList<GraphicsTask> tasks;
     private Unit mouseOverUnit;
+    private boolean isDrawingTasks;
 
-    public GraphicsController(Insets insets) {
+    public GraphicsController(Insets insets, boolean drawHitboxes) {
         this.insets = insets;
         score = new AtomicLong(0);
         tasks = new ArrayList<>();
+        this.drawHitboxes = drawHitboxes;
     }
 
     /**
@@ -53,6 +55,9 @@ public class GraphicsController {
             //BackgroundGenerator.setup(width, height);
         }
         //forceWait = BackgroundGenerator.Generate(g);
+        isDrawingTasks = true;
+        System.out.println("Started drawing tasks at " + System.nanoTime());
+        System.out.println(tasks);
         for (Iterator iterator = tasks.iterator(); iterator.hasNext();) {
 
             GraphicsTask x = (GraphicsTask) iterator.next();
@@ -63,6 +68,8 @@ public class GraphicsController {
                 iterator.remove();
             }
         }
+        isDrawingTasks = false;
+        System.out.println("Finished drawing tasks at " + System.nanoTime());
         forceWait = init.getUnitOperationHandler().lock();
         ArrayList<Unit> units = init.getUnitOperationHandler().getUnits();
         for (int i = 0; i < units.size(); i++) {
@@ -141,10 +148,15 @@ public class GraphicsController {
     }
 
     public boolean addTask(GraphicsTask e) {
+        if (tasks.contains(e)) {
+            return false;
+        }
+        while (this.isDrawingTasks);
         return tasks.add(e);
     }
 
     public boolean removeTask(GraphicsTask o) {
+        while (this.isDrawingTasks);
         return tasks.remove(o);
     }
 

@@ -50,11 +50,11 @@ public class GUI extends Thread {
     private boolean paused;
     private final ControlHandler controlHandler;
     private final CollisionOperation collisionHandler;
-    private LevelMaker level;
-    private boolean levelInitialized;
-
-    private static final int STARTING_LEVEL = 1;// debug line
-    private static final boolean FULL_SCREEN = true;
+    private final LevelMaker level;
+    private final int STARTING_LEVEL;// debug line
+    private final boolean FULL_SCREEN;
+    private final double GAME_DIFFICULTY;
+    private boolean firstRender = true;
 
     // create a hardware accelerated image
     public final BufferedImage create(final int width, final int height, final boolean alpha) {
@@ -62,7 +62,10 @@ public class GUI extends Thread {
     }
 
     // Setup
-    public GUI(int FPSLimit) {
+    public GUI(double[] vals) {
+        FULL_SCREEN = vals[0] == 0;
+        STARTING_LEVEL = (int) vals[4];
+        GAME_DIFFICULTY = (int) vals[3];
         // JFrame
         frame = new JFrame();
         frame.addWindowListener(new FrameClose());
@@ -90,12 +93,12 @@ public class GUI extends Thread {
         do {
             strategy = canvas.getBufferStrategy();
         } while (strategy == null);
-        this.FPSLimit = new AtomicInteger(FPSLimit);
+        this.FPSLimit = new AtomicInteger((int) vals[1]);
         Timer x = new Timer();
         x.schedule(fpsCounter, 0, 1000);
 
         //Initialize Graphics
-        graphicsControl = new GraphicsController(frame.getInsets());
+        graphicsControl = new GraphicsController(frame.getInsets(), vals[3] == 1);
 
         //Initialize input listeners
         this.controlHandler = new ControlHandler();
@@ -104,6 +107,9 @@ public class GUI extends Thread {
         //Initialize collision engine
         collisionHandler = new CollisionOperation();
 
+        //Initialize Level system
+        this.level = new LevelMaker(STARTING_LEVEL, GAME_DIFFICULTY);
+        
         //LIFTOFF *rocket noises*
         start();
     }
@@ -208,27 +214,25 @@ public class GUI extends Thread {
 
     public void updateApplication() {
         if (!paused) {
-            if (!this.levelInitialized) {
-                //Initialize Level System
-                this.getGraphicsControl().addTask(new LevelStartDelayer(60, STARTING_LEVEL));
-                levelInitialized = true;
 
-            }
             //AI moves
             init.getUnitOperationHandler().addOperation(new AIMoveHandler());
             //Collision
             init.getUnitOperationHandler().addOperation(collisionHandler);
             if (this.getLevel() != null) {
                 if (this.getLevel().isCompleted()) {
-
-                    this.getLevel().onVictory(graphics, this.getBounds());
+                    this.getLevel().setCompleted(!this.getLevel().onVictory(graphics, this.getBounds()));
                 }
             }
         }
     }
 
     public void renderApplication(Graphics2D g, int width, int height, Insets insets) {
-
+        if (firstRender){
+            firstRender = false;
+            System.out.println("FIRST RENDER");
+            getGraphicsControl().addTask(new LevelStartDelayer(60));
+        }
         if (!paused) {
             graphicsControl.render(g, width, height, insets);
         } else {
@@ -268,9 +272,6 @@ public class GUI extends Thread {
         return level;
     }
 
-    public void setLevelMaker(LevelMaker level) {
-        this.level = level;
-    }
 
     public ControlHandler getControlHandler() {
         return controlHandler;
