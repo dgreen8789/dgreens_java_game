@@ -57,9 +57,7 @@ public class UnitOperation {
             case DELETE_UNIT:
                 units.remove(getAffectedUnit());
                 init.getGameGUI().getCollisionHandler().updateListLocs(getAffectedUnit().getCollisionConstant(), -1);
-                if (init.getGameGUI().getLevel().checkForVictory()){
-                    init.getGameGUI().getLevel().setCompleted(true);
-                }
+                init.getGameGUI().getLevel().checkForVictory();
                 break;
             case SPECIAL_OPERATION:
                 boolean b = specialOperation(units);

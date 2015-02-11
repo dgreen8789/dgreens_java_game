@@ -211,7 +211,6 @@ public class GUI extends Thread {
         }
         frame.dispose();
     }
-
     public void updateApplication() {
         if (!paused) {
 
@@ -220,8 +219,9 @@ public class GUI extends Thread {
             //Collision
             init.getUnitOperationHandler().addOperation(collisionHandler);
             if (this.getLevel() != null) {
+                this.getLevel().checkForVictory();
                 if (this.getLevel().isCompleted()) {
-                    this.getLevel().setCompleted(!this.getLevel().onVictory(graphics, this.getBounds()));
+                    this.getLevel().onVictory(graphics, this.getBounds());
                 }
             }
         }
@@ -230,7 +230,7 @@ public class GUI extends Thread {
     public void renderApplication(Graphics2D g, int width, int height, Insets insets) {
         if (firstRender){
             firstRender = false;
-            System.out.println("FIRST RENDER");
+            System.out.println("FIRST RENDER - TASK ADDED");
             getGraphicsControl().addTask(new LevelStartDelayer(60));
         }
         if (!paused) {

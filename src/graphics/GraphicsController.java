@@ -56,20 +56,24 @@ public class GraphicsController {
         }
         //forceWait = BackgroundGenerator.Generate(g);
         isDrawingTasks = true;
-        System.out.println("Started drawing tasks at " + System.nanoTime());
-        System.out.println(tasks);
+//        System.out.println("Started drawing tasks at " + System.nanoTime());
+//        System.out.println(tasks);
+//        System.out.print("{");
+//        for (GraphicsTask task : tasks) {
+//            System.out.print(task.frames + ", ");
+//        }
+//        System.out.println("}");
         for (Iterator iterator = tasks.iterator(); iterator.hasNext();) {
-
             GraphicsTask x = (GraphicsTask) iterator.next();
             x.draw(g, width, height);
             x.frames--;
             if (x.frames == 0) {
-                x.onCompletion();
                 iterator.remove();
+                x.onCompletion();
             }
         }
         isDrawingTasks = false;
-        System.out.println("Finished drawing tasks at " + System.nanoTime());
+//        System.out.println("Finished drawing tasks at " + System.nanoTime());
         forceWait = init.getUnitOperationHandler().lock();
         ArrayList<Unit> units = init.getUnitOperationHandler().getUnits();
         for (int i = 0; i < units.size(); i++) {

@@ -26,6 +26,7 @@ public class LevelStartDelayer extends GraphicsTask{
 
     @Override
     public void onCompletion() {
+        //System.out.println("CALLED");
         init.getGameGUI().getLevel().incrementandSetup();
     }
 
