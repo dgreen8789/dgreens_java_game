@@ -41,20 +41,19 @@ public class LevelMaker {
     public static final double MEDIUM = .4;
     public static final double HARD = .6;
     public static final double NIGHTMARE = 1.0;
-    private static final double defaultDifficulty = MEDIUM;   
+    private static final double defaultDifficulty = MEDIUM;
     private final int RANDOMIZATION_FACTOR = 4;
     private final ArrayList<Class> unitClasses;
-    private boolean completed;
+    private boolean completed = false;
     private int numUnits;
     private short[] seed;
-    private boolean isSetup = false;
+    private boolean isSetup = true;
     private Random random;
     int levelNum;
     private double gameDifficulty = defaultDifficulty;
     ArrayList<Unit> units;
 
-
-    public LevelMaker(int difficulty) {
+    public LevelMaker(int levelNum, double difficulty) {
         unitClasses = new ArrayList<>();
         ArrayList<Class> newClasses = getEnemyClasses();
         for (Class class1 : newClasses) {
@@ -80,18 +79,23 @@ public class LevelMaker {
         }
         return defaultDifficulty;
     }
+    private boolean victoryMethodCalled = false;
 
     public boolean onVictory(Graphics2D g, Rectangle bounds) {
-        //System.out.println("VICTORY METHOD CALLED");
-        afterLevel();
-        String message = "Level " + levelNum + " Success";
-        Point p = new Point(0, 3 * bounds.height / 4);
+        if (!victoryMethodCalled) {
+            //System.out.println("VICTORY METHOD CALLED");
+            afterLevel();
+            String message = "Level " + levelNum + " Success";
+            Point p = new Point(0, 3 * bounds.height / 4);
 
-        LevelCompleteTextTask task = new LevelCompleteTextTask(message,
-                bounds.width, bounds.height / 2, p, 60);
-        task.setColor(gameDifficulty == NIGHTMARE ? Color.RED : Color.GREEN);
-        init.getGameGUI().getGraphicsControl().addTask(task);
-        return true;
+            LevelCompleteTextTask task = new LevelCompleteTextTask(message,
+                    bounds.width, bounds.height / 2, p, 60);
+            task.setColor(gameDifficulty == NIGHTMARE ? Color.RED : Color.GREEN);
+            init.getGameGUI().getGraphicsControl().addTask(task);
+            victoryMethodCalled = true;
+            return true;
+        }
+        return false;
     }
 
     private ArrayList<Unit> generateUnits(ArrayList<Integer> complexities) {
@@ -143,6 +147,7 @@ public class LevelMaker {
         isSetup = false;
         this.setCompleted(false);
         seed = generateSeed();
+        this.victoryMethodCalled = false;
         random.setSeed(seed[0] * seed[1] * seed[2]);
         ArrayList<Integer> unitComplexities = generateUnitNumbers();
         units = generateUnits(unitComplexities);
@@ -155,13 +160,12 @@ public class LevelMaker {
         System.out.println("Setup for level " + levelNum + " complete");
     }
 
-    public boolean checkForVictory() {
-        
+    public void checkForVictory() {
+
         // boolean b = init.getUnitOperationHandler().lock();
-        boolean returnValue =
-                isSetup && Collections.disjoint(init.getUnitOperationHandler().getUnits(), units);
+        completed = isSetup && (units == null) ? false :
+                Collections.disjoint(init.getUnitOperationHandler().getUnits(), units);
         // b = init.getUnitOperationHandler().unlock();
-        return returnValue;
     }
 
     public void afterLevel() {
@@ -262,9 +266,18 @@ public class LevelMaker {
     }
 
     public void incrementandSetup() {
-        this.isSetup = false;
-        this.levelNum++;
-        init.getGameGUI().getGraphicsControl().addTask(new LevelStartDelayer(60));
+        if (isSetup) {
+            if (levelNum == 1) {
+                //System.out.println("BLOCK ONE");
+                setup();
+            }
+            if (completed) {
+                //System.out.println("BLOCK 2");
+                this.isSetup = false;
+                setup();
+            }
+        }
+        levelNum++;
     }
     private static final int FORMATION_X_SPREAD = 400;
     private static final int FORMATION_Y_SPREAD = 200;
