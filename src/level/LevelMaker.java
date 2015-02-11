@@ -14,6 +14,8 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,11 +24,11 @@ import java.util.Random;
 import main.init;
 import phyics.UnitClearOperation;
 import phyics.UnitOperation;
-import unit.DestroyableTarget;
+import unit_enemy.DestroyableTarget;
 import unit.Unit;
 import unit.UnitUtilities;
-import unit.enemy.BasicEnemy;
-import unit.enemy.EnemyUnit;
+import unit_enemy.BasicEnemy;
+import unit_enemy.EnemyUnit;
 
 /**
  *
@@ -54,11 +56,8 @@ public class LevelMaker {
     ArrayList<Unit> units;
 
     public LevelMaker(int levelNum, double difficulty) {
-        unitClasses = new ArrayList<>();
-        ArrayList<Class> newClasses = getEnemyClasses();
-        for (Class class1 : newClasses) {
-            add(class1);
-        }
+        unitClasses = getValidEnemyClasses();
+        System.out.println(unitClasses);
         random = new Random();
         this.gameDifficulty = difficulty;
         this.levelNum = levelNum;
@@ -163,8 +162,8 @@ public class LevelMaker {
     public void checkForVictory() {
 
         // boolean b = init.getUnitOperationHandler().lock();
-        completed = isSetup && (units == null) ? false :
-                Collections.disjoint(init.getUnitOperationHandler().getUnits(), units);
+        completed = isSetup && (units == null) ? false
+                : Collections.disjoint(init.getUnitOperationHandler().getUnits(), units);
         // b = init.getUnitOperationHandler().unlock();
     }
 
@@ -174,16 +173,27 @@ public class LevelMaker {
 
     private Unit generateEnemy(Integer i) {
 
-        Unit u;
-        if (i > 5) {
-            u = new BasicEnemy(i, 1, 1, null, 0);
-            u.getWeapon().setDamage(i / 2 + 1);
-        } else {
-            u = new DestroyableTarget(i);
+        System.out.println(this.unitClasses.size());
+        int index = random.nextInt(this.unitClasses.size());
+        Class unitClass = unitClasses.get(index);
+        unitClass = unitClass.asSubclass(EnemyUnit.class);
+        Method[] methods = unitClass.getDeclaredMethods();
+        for (int j = 0; j < methods.length; j++) {
+            if (methods[j].getName().equals("generate")) {
+                Unit x = new DestroyableTarget(1);
+                try {
+                    x = (Unit) methods[j].invoke(null, i);
+                } catch (IllegalAccessException z) {
+                    z.printStackTrace();
+                } catch (InvocationTargetException z) {
+                    z.printStackTrace();
+                }
+                return x;
+            }
         }
-        u.setLocation(UnitUtilities.getRandomLocation(u));
-        u.setSize(15);
-        return u;
+
+        System.out.println("NO GENERATE METHOD FOUND for " + unitClass " , LOOPING AGAIN");
+        return generateEnemy(i);
     }
 
     public boolean isCompleted() {
@@ -311,11 +321,13 @@ public class LevelMaker {
         }
     }
 
-    public boolean add(Class e) {
-        return (e.asSubclass(EnemyUnit.class) == e) ? unitClasses.add(e) : false;
+    public static boolean isValidEnemyClass(Class e) {
+        boolean val = (e.asSubclass(EnemyUnit.class) == e && e != EnemyUnit.class);
+        System.out.println(e + " " + val);
+        return val;
     }
 
-    private ArrayList<Class> getEnemyClasses() {
+    public static ArrayList<Class> getValidEnemyClasses() {
         ArrayList<Class> returnList = new ArrayList<>();
         String pkg = EnemyUnit.class.getPackage().getName();
         String relPath = pkg.replace('.', '/');
@@ -325,11 +337,11 @@ public class LevelMaker {
             throw new RuntimeException("Unexpected problem: No resource for "
                     + relPath);
         }
-
+        //System.out.println(resource);
         File f = new File(resource.getPath());
 
         String[] files = f.list();
-
+        //System.out.println(Arrays.toString(files));
         for (int i = 0; i < files.length; i++) {
 
             String fileName = files[i];
@@ -340,6 +352,16 @@ public class LevelMaker {
 
                 fileNm = fileName.substring(0, fileName.length() - 6);
                 className = pkg + '.' + fileNm;
+                try {
+                    Class c = ClassLoader.getSystemClassLoader().loadClass(className);
+                    if (c != null) {
+                        if (isValidEnemyClass(c)) {
+                            returnList.add(c);
+                        }
+                    }
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
             }
         }
         return returnList;

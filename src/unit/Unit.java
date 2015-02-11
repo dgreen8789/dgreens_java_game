@@ -11,7 +11,7 @@ import java.awt.Point;
 import java.awt.geom.Area;
 import main.init;
 import phyics.UnitOperation;
-import unit.enemy.EnemyUnit;
+import unit_enemy.EnemyUnit;
 import weapon.Weapon;
 
 /**

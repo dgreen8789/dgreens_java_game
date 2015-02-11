@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package unit.enemy;
+package unit_enemy;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -77,7 +77,7 @@ public abstract class EnemyUnit extends Unit implements ColoredUnit {
     }
     
     public static <T extends EnemyUnit> T generate(int complexity){
-        throw new UnsupportedOperationException("Can't instantiate abstract class");
+        throw new UnsupportedOperationException("NOPE");
     }
 
 

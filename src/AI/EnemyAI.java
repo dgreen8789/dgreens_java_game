@@ -8,7 +8,7 @@ package AI;
 import java.awt.Point;
 import java.util.Arrays;
 import main.init;
-import unit.enemy.EnemyUnit;
+import unit_enemy.EnemyUnit;
 
 /**
  *

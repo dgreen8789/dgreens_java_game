@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package unit.enemy;
+package unit_enemy;
 
 import AI.EnemyAI;
 import AI.Formation;
@@ -21,8 +21,10 @@ import unit.UnitUtilities;
  * @author david.green
  */
 public class BasicEnemy extends EnemyUnit {
+
     private static final int ENEMY_SPEED = 10;
     private int angle = 0;
+
     public BasicEnemy(int health) {
         super(health);
     }
@@ -58,8 +60,8 @@ public class BasicEnemy extends EnemyUnit {
     }
 
     @Override
-    
-    public void onDeath(){
+
+    public void onDeath() {
         ProjectileExplosion explosion = new ProjectileExplosion(null, 5, 20, new Color[0]);
         explosion.setLocation(getLocation());
         explosion.setProjectileMoves(5);
@@ -76,7 +78,13 @@ public class BasicEnemy extends EnemyUnit {
     public int getSpeed() {
         return ENEMY_SPEED;
     }
+
     
-    
-    
+    public static BasicEnemy generate(int complexity) {
+        BasicEnemy e = new BasicEnemy(complexity, 1, 1, null, 0);
+        e.getWeapon().setDamage(complexity / 2 + 1);
+        e.setSize(15);
+        return e;
+    }
+
 }

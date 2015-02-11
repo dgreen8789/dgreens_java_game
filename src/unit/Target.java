@@ -16,12 +16,21 @@ import java.awt.geom.Dimension2D;
 import java.awt.geom.Ellipse2D;
 import main.init;
 import phyics.CollisionConstants;
+import unit.ColoredUnit;
+import unit.ColoredUnit;
+import unit.StandardProjectile;
+import unit.StandardProjectile;
+import unit.Unit;
+import unit.Unit;
+import unit.UnitUtilities;
+import unit.UnitUtilities;
+import unit_enemy.EnemyUnit;
 
 /**
  *
  * @author david.green
  */
-public class Target extends Unit implements ColoredUnit {
+public class Target extends EnemyUnit implements ColoredUnit {
 
     private Color color;
 
@@ -39,7 +48,7 @@ public class Target extends Unit implements ColoredUnit {
     }
 
     public Target(int x, int y, int size, Color color) {
-        super(x, y);
+        super(x, y, 1);
         this.color = color;
         setSize(size);
     }
@@ -133,6 +142,15 @@ public class Target extends Unit implements ColoredUnit {
 
     @Override
     public void specialAbility() {
+    }
+
+    
+    public static Target generate(int complexity) {
+        Target t = new Target();
+        t.setLocation(UnitUtilities.getRandomLocation(t));
+        t.setHealth(complexity);
+        t.setSize(15);
+        return t;
     }
     
 }

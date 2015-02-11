@@ -10,7 +10,7 @@ import main.init;
 import unit.MainCharacter;
 import unit.ProjectileExplosion;
 import unit.Unit;
-import unit.enemy.BasicEnemy;
+import unit_enemy.BasicEnemy;
 
 /**
  *
