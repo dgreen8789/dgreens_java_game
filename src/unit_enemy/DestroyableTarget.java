@@ -5,7 +5,7 @@
  */
 package unit_enemy;
 
-import unit.Target;
+import unit_enemy.EnemyUnit;
 import graphics.GraphicsUtilities;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -74,4 +74,13 @@ public class DestroyableTarget extends Target {
 
     }
 
+    public static DestroyableTarget generate(int complexity) {
+        if (complexity > 10) {
+            return null;
+        }
+        DestroyableTarget t = new DestroyableTarget(complexity);
+        t.setLocation(UnitUtilities.getRandomLocation(t));
+        t.setSize(15);
+        return t;
+    }
 }

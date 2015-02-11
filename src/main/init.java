@@ -55,7 +55,7 @@ public class init {
             vals = convert(defaultValues);
 
         }
-        System.out.println(Arrays.toString(vals));
+        //System.out.println(Arrays.toString(vals));
         gameGUI = new GUI(vals);
         unitOperationHandler = new UnitOperationHandler();
         Thread unitHandler = new Thread(unitOperationHandler);
@@ -90,7 +90,9 @@ public class init {
     public static String[] configOptions = {"WINDOWED_MODE", "TARGET_FPS", "DIFFICULTY", "DRAW_HITBOXES",
         "STARTING_LEVEL"};
     public static String[] configNotes = {"1 for full screen, 0 for a resizable window", "Target FPS for the game to run at",
-        "Can be \"EASY\", \"MEDIUM\", \"HARD\", \"NIGHTMARE\"", "1 to draw hitboxes, 0 to not. This is a dev option.",
+        "Can be \"EASY\"(" + LevelMaker.EASY + " ), \"MEDIUM\"(" + LevelMaker.MEDIUM + ")"
+        + "  \"HARD\"(" + LevelMaker.HARD + "), \"NIGHTMARE\"(" + LevelMaker.NIGHTMARE + ")",
+        "1 to draw hitboxes, 0 to not. This is a dev option.",
         "Sets the starting level for the game. Higher Levels may cause instant death and or lag"};
     public static String[] defaultValues = {"0", "60", Double.toString(LevelMaker.MEDIUM), "0", "1"};
 

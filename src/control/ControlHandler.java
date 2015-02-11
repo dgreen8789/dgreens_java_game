@@ -71,7 +71,10 @@ public class ControlHandler implements MouseInputListener, KeyListener, WindowLi
             keysPressed[3] = true;
             keysPressed[2] = false;
         }
-
+        if (c == 'H' ) {
+            init.getGameGUI().getGraphicsControl().drawHitboxes(
+            !init.getGameGUI().getGraphicsControl().isDrawingHitboxes());
+        }
         if (e.getKeyCode() == KeyEvent.VK_SPACE) {
             keysPressed[4] = true;
         }
@@ -105,7 +108,7 @@ public class ControlHandler implements MouseInputListener, KeyListener, WindowLi
 
     @Override
     public void mousePressed(MouseEvent e) {
-         if (e.getButton() == MouseEvent.BUTTON1) {
+        if (e.getButton() == MouseEvent.BUTTON1) {
             keysPressed[4] = true;
         }
         if (e.getButton() == MouseEvent.BUTTON3) {

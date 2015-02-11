@@ -52,15 +52,16 @@ public class LevelMaker {
     private boolean isSetup = true;
     private Random random;
     int levelNum;
+    private int initialLevel;
     private double gameDifficulty = defaultDifficulty;
     ArrayList<Unit> units;
 
     public LevelMaker(int levelNum, double difficulty) {
         unitClasses = getValidEnemyClasses();
-        System.out.println(unitClasses);
+        System.out.println("Loaded classes: " + unitClasses);
         random = new Random();
         this.gameDifficulty = difficulty;
-        this.levelNum = levelNum;
+        this.levelNum = this.initialLevel = levelNum;
     }
 
     public static double getDifficultyfromString(String s) {
@@ -84,7 +85,7 @@ public class LevelMaker {
         if (!victoryMethodCalled) {
             //System.out.println("VICTORY METHOD CALLED");
             afterLevel();
-            String message = "Level " + levelNum + " Success";
+            String message = "Level " + (levelNum - 1)+ " Success";
             Point p = new Point(0, 3 * bounds.height / 4);
 
             LevelCompleteTextTask task = new LevelCompleteTextTask(message,
@@ -173,14 +174,14 @@ public class LevelMaker {
 
     private Unit generateEnemy(Integer i) {
 
-        System.out.println(this.unitClasses.size());
+       // System.out.println(this.unitClasses.size());
         int index = random.nextInt(this.unitClasses.size());
         Class unitClass = unitClasses.get(index);
         unitClass = unitClass.asSubclass(EnemyUnit.class);
         Method[] methods = unitClass.getDeclaredMethods();
         for (int j = 0; j < methods.length; j++) {
             if (methods[j].getName().equals("generate")) {
-                Unit x = new DestroyableTarget(1);
+                Unit x = null;
                 try {
                     x = (Unit) methods[j].invoke(null, i);
                 } catch (IllegalAccessException z) {
@@ -188,11 +189,11 @@ public class LevelMaker {
                 } catch (InvocationTargetException z) {
                     z.printStackTrace();
                 }
-                return x;
+                return (x == null) ? generateEnemy(i) : x;
             }
         }
 
-        System.out.println("NO GENERATE METHOD FOUND for " + unitClass " , LOOPING AGAIN");
+        //System.out.println("NO GENERATE METHOD FOUND for " + unitClass + " , LOOPING AGAIN");
         return generateEnemy(i);
     }
 
@@ -277,7 +278,7 @@ public class LevelMaker {
 
     public void incrementandSetup() {
         if (isSetup) {
-            if (levelNum == 1) {
+            if (levelNum == initialLevel) {
                 //System.out.println("BLOCK ONE");
                 setup();
             }
@@ -323,7 +324,7 @@ public class LevelMaker {
 
     public static boolean isValidEnemyClass(Class e) {
         boolean val = (e.asSubclass(EnemyUnit.class) == e && e != EnemyUnit.class);
-        System.out.println(e + " " + val);
+        //System.out.println(e + " " + val);
         return val;
     }
 
@@ -367,4 +368,12 @@ public class LevelMaker {
         return returnList;
     }
 
+    public int nextInt() {
+        return random.nextInt();
+    }
+
+    public int nextInt(int i) {
+        return random.nextInt(i);
+    }
+    
 }

@@ -63,9 +63,9 @@ public class GUI extends Thread {
 
     // Setup
     public GUI(double[] vals) {
-        FULL_SCREEN = vals[0] == 0;
+        FULL_SCREEN = vals[0] == 1;
         STARTING_LEVEL = (int) vals[4];
-        GAME_DIFFICULTY = (int) vals[3];
+        GAME_DIFFICULTY = vals[2];
         // JFrame
         frame = new JFrame();
         frame.addWindowListener(new FrameClose());
@@ -73,12 +73,7 @@ public class GUI extends Thread {
 
         frame.setSize(width * scale, height * scale);
         if (FULL_SCREEN) {
-            frame.setResizable(false);
-            frame.setAlwaysOnTop(true);
-            Dimension x = Toolkit.getDefaultToolkit().getScreenSize();
-            frame.setSize(x);
-            frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-            frame.setUndecorated(true);
+            setFullScreen(frame);
         }
         frame.setVisible(true);
 
@@ -109,7 +104,7 @@ public class GUI extends Thread {
 
         //Initialize Level system
         this.level = new LevelMaker(STARTING_LEVEL, GAME_DIFFICULTY);
-        
+
         //LIFTOFF *rocket noises*
         start();
     }
@@ -120,6 +115,24 @@ public class GUI extends Thread {
         canvas.addFocusListener(controlHandler);
         canvas.addMouseListener(controlHandler);
         canvas.addMouseWheelListener(controlHandler);
+    }
+
+    public void setFullScreen(JFrame frame) {
+        frame.setResizable(false);
+        frame.setAlwaysOnTop(true);
+        Dimension x = Toolkit.getDefaultToolkit().getScreenSize();
+        frame.setSize(x);
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        frame.setUndecorated(true);
+    }
+    public void setWindowed(JFrame frame){
+        
+    }
+    public void setFullScreen(){
+        setFullScreen(frame);
+    }
+    public void setWindowed(){
+        setWindowed(frame);
     }
 
     private class FrameClose extends WindowAdapter {
@@ -211,6 +224,7 @@ public class GUI extends Thread {
         }
         frame.dispose();
     }
+
     public void updateApplication() {
         if (!paused) {
 
@@ -228,9 +242,9 @@ public class GUI extends Thread {
     }
 
     public void renderApplication(Graphics2D g, int width, int height, Insets insets) {
-        if (firstRender){
+        if (firstRender) {
             firstRender = false;
-            System.out.println("FIRST RENDER - TASK ADDED");
+            //System.out.println("FIRST RENDER - TASK ADDED");
             getGraphicsControl().addTask(new LevelStartDelayer(60));
         }
         if (!paused) {
@@ -271,7 +285,6 @@ public class GUI extends Thread {
     public LevelMaker getLevel() {
         return level;
     }
-
 
     public ControlHandler getControlHandler() {
         return controlHandler;

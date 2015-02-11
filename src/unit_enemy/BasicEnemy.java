@@ -22,7 +22,6 @@ import unit.UnitUtilities;
  */
 public class BasicEnemy extends EnemyUnit {
 
-    private static final int ENEMY_SPEED = 10;
     private int angle = 0;
 
     public BasicEnemy(int health) {
@@ -74,13 +73,13 @@ public class BasicEnemy extends EnemyUnit {
     public void specialAbility() {
     }
 
-    @Override
-    public int getSpeed() {
-        return ENEMY_SPEED;
-    }
+
 
     
     public static BasicEnemy generate(int complexity) {
+        if (complexity < 5){
+            return null;
+        }
         BasicEnemy e = new BasicEnemy(complexity, 1, 1, null, 0);
         e.getWeapon().setDamage(complexity / 2 + 1);
         e.setSize(15);

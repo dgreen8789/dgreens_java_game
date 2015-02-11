@@ -5,6 +5,7 @@
  */
 package unit;
 
+import unit_enemy.Target;
 import AI.AI;
 import java.awt.Graphics2D;
 import java.awt.Point;

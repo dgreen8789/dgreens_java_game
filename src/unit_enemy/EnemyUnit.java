@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package unit_enemy;
 
 import java.awt.Color;
@@ -20,8 +19,11 @@ import weapon.StandardWeapon;
  * @author david.green
  */
 public abstract class EnemyUnit extends Unit implements ColoredUnit {
+
     private Color color;
     protected int score;
+    private static final int ENEMY_SPEED = 10;
+
     public EnemyUnit(int health) {
         this.health = health;
         this.maxHealth = health;
@@ -34,21 +36,22 @@ public abstract class EnemyUnit extends Unit implements ColoredUnit {
         this.allowFirePermission(true);
         this.setWeapon(new StandardWeapon(this, 1));
     }
-    
-    @Override
-    public abstract void draw(Graphics2D g);
-    
 
     @Override
-    public void onCollide(Unit u){
-        if (u.getCollisionConstant() == CollisionConstants.FRIENDLY_UNIT){
+    public abstract void draw(Graphics2D g);
+
+    @Override
+    public void onCollide(Unit u) {
+        if (u.getCollisionConstant() == CollisionConstants.FRIENDLY_UNIT) {
             this.health--;
         }
-        if (u.getCollisionConstant() == CollisionConstants.FRIENDLY_PROJECTILE || 
-                u.getCollisionConstant() == CollisionConstants.NEUTRAL_PROJECTILE){
+        if (u.getCollisionConstant() == CollisionConstants.FRIENDLY_PROJECTILE
+                || u.getCollisionConstant() == CollisionConstants.NEUTRAL_PROJECTILE) {
             this.health -= ((StandardProjectile) u).getDamage();
         }
-        if (this.health < 0) onDeath();
+        if (this.health < 0) {
+            onDeath();
+        }
     }
 
     @Override
@@ -61,9 +64,15 @@ public abstract class EnemyUnit extends Unit implements ColoredUnit {
 
     @Override
     public abstract int getComplexity();
+
     @Override
-    public int getScore(){
+    public int getScore() {
         return score;
+    }
+
+    @Override
+    public int getSpeed() {
+        return ENEMY_SPEED;
     }
 
     @Override
@@ -75,12 +84,9 @@ public abstract class EnemyUnit extends Unit implements ColoredUnit {
     public void setColor(Color color) {
         this.color = color;
     }
-    
-    public static <T extends EnemyUnit> T generate(int complexity){
+
+    public static <T extends EnemyUnit> T generate(int complexity) {
         throw new UnsupportedOperationException("NOPE");
     }
 
-
-
-    
 }

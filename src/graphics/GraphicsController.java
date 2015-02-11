@@ -23,7 +23,7 @@ public class GraphicsController {
     private boolean firstRender = true;
     private Rectangle oldBounds;
     private final AtomicLong score;
-    private final boolean drawHitboxes; //Debug Line
+    private boolean drawHitboxes; //Debug Line
     private ArrayList<GraphicsTask> tasks;
     private Unit mouseOverUnit;
     private boolean isDrawingTasks;
@@ -82,7 +82,7 @@ public class GraphicsController {
                 if (drawHitboxes) {
                     g.setColor(Color.MAGENTA);
                     GraphicsUtilities.drawArea(units.get(i).getHitbox(), g);
-                    if (units.get(i) instanceof BasicEnemy) {
+                    if (units.get(i).getAi() instanceof EnemyAI) {
                         int[][] points = ((EnemyAI) units.get(i).getAi()).getFormation().getPoints();
                         g.setColor(Color.CYAN);
                         g.drawPolygon(points[0], points[1], points[0].length);
@@ -172,4 +172,12 @@ public class GraphicsController {
         this.mouseOverUnit = mouseOverUnit;
     }
 
+    public boolean isDrawingHitboxes() {
+        return drawHitboxes;
+    }
+
+    public void drawHitboxes(boolean drawHitboxes) {
+        this.drawHitboxes = drawHitboxes;
+    }
+    
 }
