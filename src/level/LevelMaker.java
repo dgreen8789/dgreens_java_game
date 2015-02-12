@@ -157,7 +157,8 @@ public class LevelMaker {
             u.onCreate();
         }
         isSetup = true;
-        System.out.println("Setup for level " + levelNum + " complete");
+        System.out.println("Setup for level " + levelNum + " complete\n\tLevel Difficulty Number: "
+        + this.getDifficulty());
     }
 
     public void checkForVictory() {
@@ -292,15 +293,9 @@ public class LevelMaker {
     }
     private static final int FORMATION_X_SPREAD = 400;
     private static final int FORMATION_Y_SPREAD = 200;
-    private static final int FORMATION_MAXIMUM_DISTANCE = 250;
-    private static final int FORMATION_MINIMUM_DISTANCE = 100;
 
     private Formation GenerateFormation(int num) {
-        Formation f = new Formation(num,
-                Formation.GEOMETRIC_FORMATION,
-                UnitUtilities.getRandomLocation(FORMATION_X_SPREAD, FORMATION_Y_SPREAD));
-        f.setDistance(random.nextInt(FORMATION_MAXIMUM_DISTANCE - FORMATION_MINIMUM_DISTANCE)
-                + FORMATION_MINIMUM_DISTANCE);
+        Formation f = UnitUtilities.getRandomFormation(num, FORMATION_X_SPREAD, FORMATION_Y_SPREAD);
         if (random.nextInt(10) > 4) {
             f.setCenterUnit(init.getGameGUI().getGraphicsControl().getMainCharacter());
             f.setCenteredOnUnit(true);

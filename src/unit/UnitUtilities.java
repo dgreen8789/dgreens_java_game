@@ -5,6 +5,7 @@
  */
 package unit;
 
+import AI.Formation;
 import graphics.GraphicsUtilities;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -64,13 +65,22 @@ public class UnitUtilities {
                 (int) x, HEALTH_RECTANGLE_HEIGHT);
         g.setColor(c);
     }
+
     public static Point getRandomLocation(int xTol, int yTol) {
         Rectangle r = init.getGameGUI().getBounds();
         Point loc = new Point(r.width / 2, r.height / 2);
-        int yDiff = (int)(Math.random() * 2 * yTol) - yTol;
-        int xDiff = (int)(Math.random() * 2 * xTol) - xTol;
+        int yDiff = (int) (Math.random() * 2 * yTol) - yTol;
+        int xDiff = (int) (Math.random() * 2 * xTol) - xTol;
         loc.x -= xDiff;
         loc.y -= yDiff;
         return loc;
+    }
+
+    public static Formation getRandomFormation(int numUnits, int xTol, int yTol) {
+        Point x = getRandomLocation(xTol, yTol);
+        Formation f = new Formation(numUnits, Formation.GEOMETRIC_FORMATION, x);
+        f.setDistance(Math.min(xTol, yTol));
+        return f;
+
     }
 }

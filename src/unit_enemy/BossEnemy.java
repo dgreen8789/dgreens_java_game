@@ -27,16 +27,15 @@ public class BossEnemy extends EnemyUnit {
     private static final int SHOT_SPACING = 5;
     private static final int SHOT_DAMAGE = 100;
     private static final int NUM_SHOTS = 2;
-
+   
     public static BossEnemy generate(int complexity) {
         LevelMaker l = init.getGameGUI().getLevel();
         if (complexity < 100) {
             return null;
         }
         BossEnemy x = new BossEnemy(10 * complexity);
-        Formation f = new Formation(l.nextInt(4), Formation.GEOMETRIC_FORMATION, UnitUtilities.getRandomLocation(x));
-        f.setDistance(l.nextInt(50) + 200);
-        f.setRotationPerFrame(10);
+        Formation f = UnitUtilities.getRandomFormation(l.nextInt(4), 500, 500);
+        f.setRotationPerFrame(1);
         EnemyAI ai = new EnemyAI(x, f, 0);
         x.allowFirePermission(true);
         ai.setFireChance(75);
@@ -50,6 +49,7 @@ public class BossEnemy extends EnemyUnit {
 
     public BossEnemy(int health) {
         super(health);
+        
     }
     private int frame;
 
@@ -70,7 +70,7 @@ public class BossEnemy extends EnemyUnit {
 
     @Override
     public int getComplexity() {
-        return health * 10;
+        return maxHealth * 10;
     }
 
     @Override
@@ -79,7 +79,7 @@ public class BossEnemy extends EnemyUnit {
 
     @Override
     public int getScore() {
-        return (health / 10) * 1000; //To change body of generated methods, choose Tools | Templates.
+        return (maxHealth / 10) * 1000; //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -89,6 +89,7 @@ public class BossEnemy extends EnemyUnit {
         explosion.setProjectileMoves(5);
         explosion.onCreate();
         init.getGameGUI().getGraphicsControl().addScore(getScore());
+        System.out.println("BOSS KILLED");
         super.onDeath();
     }
 
