@@ -120,8 +120,8 @@ public class GUI extends Thread {
     public void setFullScreen(JFrame frame) {
         frame.setResizable(false);
         frame.setAlwaysOnTop(true);
-        Dimension x = Toolkit.getDefaultToolkit().getScreenSize();
-        frame.setSize(x);
+        //Dimension x = Toolkit.getDefaultToolkit().getScreenSize();
+        //frame.setSize(x);
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.setUndecorated(true);
     }

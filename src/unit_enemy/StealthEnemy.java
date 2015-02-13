@@ -38,8 +38,7 @@ public class StealthEnemy extends BasicEnemy implements ColoredUnit {
 
     @Override
     public void draw(Graphics2D g) {
-        stealthed = currentStealthFrames > 0 || init.getGameGUI().getLevel().nextInt(100)
-                < stealthChance;
+        stealthed = currentStealthFrames > 0;
         currentStealthFrames --;
         if (!isStealthed()) {
             g.setColor(getColor());
@@ -47,6 +46,11 @@ public class StealthEnemy extends BasicEnemy implements ColoredUnit {
             g.drawPolygon(data[0], data[1], data[0].length);
             frame %= 360;
             UnitUtilities.drawHealth(g, this);
+            stealthed = init.getGameGUI().getLevel().nextInt(100)
+                < stealthChance && currentStealthFrames < -30;
+            if (isStealthed()){
+                currentStealthFrames = StealthFrames;
+            }
         }
     }
 

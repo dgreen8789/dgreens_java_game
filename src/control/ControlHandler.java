@@ -75,6 +75,9 @@ public class ControlHandler implements MouseInputListener, KeyListener, WindowLi
             init.getGameGUI().getGraphicsControl().drawHitboxes(
             !init.getGameGUI().getGraphicsControl().isDrawingHitboxes());
         }
+        if (e.getKeyCode() == KeyEvent.VK_ESCAPE){
+            init.getGameGUI().Pause(!init.getGameGUI().isPaused());
+        }
         if (e.getKeyCode() == KeyEvent.VK_SPACE) {
             keysPressed[4] = true;
         }
