@@ -90,7 +90,7 @@ public class BossEnemy extends EnemyUnit {
         explosion.setProjectileMoves(5);
         explosion.onCreate();
         init.getGameGUI().getGraphicsControl().addScore(getScore());
-        System.out.println("BOSS KILLED");
+        //System.out.println("BOSS KILLED");
     }
 
 }

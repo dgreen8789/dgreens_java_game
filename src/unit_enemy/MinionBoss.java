@@ -51,10 +51,10 @@ public class MinionBoss extends BossEnemy {
                 ((EnemyAI) newEnemy.getAi()).setNumberInFormation(i);
                 newEnemy.setLocation(x.getLocation());
                 z.minions.add(newEnemy);
-                System.out.println("Minion number " + i + " for boss " + x + " created.\n\tHash = " + newEnemy);
+                //System.out.println("Minion number " + i + " for boss " + x + " created.\n\tHash = " + newEnemy);
             }
             f.setDistance(l.nextInt(100) + x.getSize() + z.minions.get(0).getSize());
-            System.out.println("MINION BOSS CREATED");
+            //System.out.println("MINION BOSS CREATED");
             return z;
         } else {
             return null;
@@ -63,7 +63,7 @@ public class MinionBoss extends BossEnemy {
 
     @Override
     public void onCreate() {
-        master.onCreate();
+        super.onCreate();
         for (Unit minion : minions) {
             minion.onCreate();
         }
@@ -100,6 +100,7 @@ public class MinionBoss extends BossEnemy {
 
     @Override
     public void onDeath() {
+        super.onDeath();
         System.out.print("MINIONS KILLED ");
         for (Unit minion : minions) {
             minion.onDeath();
@@ -108,6 +109,7 @@ public class MinionBoss extends BossEnemy {
 
     @Override
     public void onCollide(Unit u) {
+        System.out.println("CALLED");
         master.onCollide(u);
         onDeath();
     }

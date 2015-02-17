@@ -31,6 +31,7 @@ public abstract class Unit implements Comparable {
     protected int health;
     protected int maxHealth;
     protected int speed;
+    private boolean isAlive;
 
     public Point getLocation() {
         return location;
@@ -100,6 +101,7 @@ public abstract class Unit implements Comparable {
     public abstract void onCollide(Unit u);
 
     public void onCreate() {
+        isAlive = true;
         init.getUnitOperationHandler().addOperation(
                 new UnitOperation(UnitOperation.ADD_UNIT, this));
 
@@ -132,6 +134,7 @@ public abstract class Unit implements Comparable {
             int AdditionalHealth = (int) (c.getHealth() + c.getMaxHealth() * PERCENT_HEALTH_GAIN_ON_TARGET_KILL);
             c.setHealth(Math.min(c.getMaxHealth(), c.getHealth() + AdditionalHealth));
         }
+        isAlive = false;
 
     }
 
@@ -220,6 +223,10 @@ public abstract class Unit implements Comparable {
     public boolean isInvincible() {
         return invincible;
     }
-    
 
+    public boolean isAlive() {
+        return isAlive;
+    }
+    
+    
 }

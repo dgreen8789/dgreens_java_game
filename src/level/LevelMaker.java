@@ -89,7 +89,7 @@ public class LevelMaker {
 
             LevelCompleteTextTask task = new LevelCompleteTextTask(message,
                     bounds.width, bounds.height / 2, p, 60);
-            task.setColor(gameDifficulty == NIGHTMARE ? Color.RED : Color.GREEN);
+            task.setColor(gameDifficulty >= NIGHTMARE ? Color.RED : Color.GREEN);
             init.getGameGUI().getGraphicsControl().addTask(task);
             victoryMethodCalled = true;
             return true;
