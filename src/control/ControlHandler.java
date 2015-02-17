@@ -16,6 +16,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import javax.swing.event.MouseInputListener;
 import main.init;
+import unit.Unit;
 
 /**
  *
@@ -74,6 +75,11 @@ public class ControlHandler implements MouseInputListener, KeyListener, WindowLi
         if (c == 'H' ) {
             init.getGameGUI().getGraphicsControl().drawHitboxes(
             !init.getGameGUI().getGraphicsControl().isDrawingHitboxes());
+        }
+        if (c == 'G' ) {
+            Unit u = init.getGameGUI().getGraphicsControl().getMainCharacter();
+            u.setInvincible(!u.isInvincible());
+            u.getWeapon().setDamage(u.isInvincible() ? Integer.MAX_VALUE : 1);
         }
         if (e.getKeyCode() == KeyEvent.VK_ESCAPE){
             init.getGameGUI().Pause(!init.getGameGUI().isPaused());

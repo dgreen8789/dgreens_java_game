@@ -27,7 +27,7 @@ public class BossEnemy extends EnemyUnit {
     private static final int SHOT_SPACING = 5;
     private static final int SHOT_DAMAGE = 100;
     private static final int NUM_SHOTS = 2;
-   
+
     public static BossEnemy generate(int complexity) {
         LevelMaker l = init.getGameGUI().getLevel();
         if (complexity < 100) {
@@ -49,7 +49,7 @@ public class BossEnemy extends EnemyUnit {
 
     public BossEnemy(int health) {
         super(health);
-        
+
     }
     private int frame;
 
@@ -84,13 +84,13 @@ public class BossEnemy extends EnemyUnit {
 
     @Override
     public void onDeath() {
+        super.onDeath();
         ProjectileExplosion explosion = new ProjectileExplosion(null, 20, 40, new Color[0]);
         explosion.setLocation(getLocation());
         explosion.setProjectileMoves(5);
         explosion.onCreate();
         init.getGameGUI().getGraphicsControl().addScore(getScore());
         System.out.println("BOSS KILLED");
-        super.onDeath();
     }
 
 }

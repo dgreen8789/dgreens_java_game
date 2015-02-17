@@ -27,6 +27,7 @@ public class GraphicsController {
     private ArrayList<GraphicsTask> tasks;
     private Unit mouseOverUnit;
     private boolean isDrawingTasks;
+    private BackgroundGenerator bgGenerator;
 
     public GraphicsController(Insets insets, boolean drawHitboxes) {
         this.insets = insets;
@@ -52,9 +53,9 @@ public class GraphicsController {
         if (!init.getGameGUI().getBounds().equals(oldBounds)) {
             scale();
             oldBounds = init.getGameGUI().getBounds();
-            //BackgroundGenerator.setup(width, height);
+            bgGenerator = new BackgroundGenerator(width, height);
         }
-        //forceWait = BackgroundGenerator.Generate(g);
+        forceWait = bgGenerator.Generate(g);
         isDrawingTasks = true;
 //        System.out.println("Started drawing tasks at " + System.nanoTime());
 //        System.out.println(tasks);
@@ -107,7 +108,7 @@ public class GraphicsController {
 
     private void firstRender() {
         Rectangle bounds = init.getGameGUI().getBounds();
-        //BackgroundGenerator.setup(bounds.width, bounds.height);
+        bgGenerator = new BackgroundGenerator(bounds.width, bounds.height);
         firstRender = false;
         mainCharacter = new MainCharacter(bounds.width / 2, bounds.height / 2, 20);
         oldBounds = bounds;

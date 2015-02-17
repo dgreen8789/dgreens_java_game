@@ -77,7 +77,7 @@ public class MainCharacter extends Unit {
         }
         if (u.getCollisionConstant() == CollisionConstants.ENEMY_PROJECTILE
                 || u.getCollisionConstant() == CollisionConstants.NEUTRAL_PROJECTILE) {
-            this.health -= ((StandardProjectile) u).getDamage();
+            this.health -= this.isInvincible() ? 0 : ((StandardProjectile) u).getDamage();
         }
         if (this.health < 0) {
             onDeath();

@@ -6,6 +6,7 @@
 package unit_enemy;
 
 import AI.Formation;
+import AI.StealthEnemyAI;
 import graphics.RotatingShape;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -47,7 +48,7 @@ public class StealthEnemy extends BasicEnemy implements ColoredUnit {
             frame %= 360;
             UnitUtilities.drawHealth(g, this);
             stealthed = init.getGameGUI().getLevel().nextInt(100)
-                < stealthChance && currentStealthFrames < -30;
+                < stealthChance && currentStealthFrames < -60;
             if (isStealthed()){
                 currentStealthFrames = StealthFrames;
             }
@@ -92,6 +93,7 @@ public class StealthEnemy extends BasicEnemy implements ColoredUnit {
         Formation f = UnitUtilities.getRandomFormation(l.nextInt(5), l.nextInt(200), l.nextInt(200));
         StealthEnemy x = new StealthEnemy(complexity / 2, 0, 0, f, 0);
         x.setLocation(UnitUtilities.getRandomLocation(x));
+        x.setAi(new StealthEnemyAI(x, f, 0));
         x.setStealthFrames(l.nextInt(60) + 60);
         x.setStealthChance(l.nextInt(50));
         x.setColor(Color.WHITE);

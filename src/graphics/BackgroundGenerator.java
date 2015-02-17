@@ -8,6 +8,7 @@ package graphics;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.color.ColorSpace;
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
 
@@ -17,51 +18,33 @@ import java.awt.image.Raster;
  */
 public class BackgroundGenerator {
 
-    private static double[][][] data;
-    private static int width;
-    private static int height;
-    private static int state = 0;
+    private int width;
+    private int height;
+    private int state = 0;
 
-    public static boolean Generate(Graphics2D g) {
+    public boolean Generate(Graphics2D g) {
         BufferedImage bg = new BufferedImage(width, height, BufferedImage.TRANSLUCENT);
-        data = new double[width][height][];
-        System.out.println("STARTED DATA COLLECTION");
-        Raster r = bg.getData();
-       
-        for (int i = 0; i < bg.getWidth(); i++) {
-            for (int j = 0; j < bg.getHeight(); j++) {
-                //System.out.println("ATTEMPTED DATA COLLECTION OF " + new Point(i, j));
-                r.getPixel(i, j, data[i][j]);
-            }
-        }
-        System.out.println("GOT DATA");
-        shift(data);
         draw(bg.createGraphics(), state, width, height);
+        g.drawImage(bg, 0, 0, null);
         state++;
-        g.drawImage(bg, null, null);
         return true;
     }
 
-    public static void setup(int width, int height) {
-        BackgroundGenerator.width = width;
-        BackgroundGenerator.height = height;
-        System.out.println("SETUP");
+    public BackgroundGenerator(int width, int height) {
+        this.width = width;
+        this.height = height;
     }
-
-    private static void shift(double[][][] data) {
-        for (int i = 1; i < data.length; i++) {
-            System.arraycopy(data[i], 0, data[i - 1], 0, data[i].length);
+    private static final int SHADE_GRADIENT_NUMBER = 4;
+    private void draw(Graphics2D g, int state, int w, int h) {
+        int shadeGradient = 255 / SHADE_GRADIENT_NUMBER;
+        Color c = Color.BLACK;
+        float[] vals = Color.RGBtoHSB(c.getRed(), c.getGreen(), c.getBlue(), null);
+        for (int i = 0; i < SHADE_GRADIENT_NUMBER; i++) {
+            Color x = Color.getHSBColor(1, 0, shadeGradient * i);
+            g.setColor(x);
+            g.fillRect(i * SHADE_GRADIENT_NUMBER, 0, width, h);
         }
-    }
-
-    private static void draw(Graphics2D g, int state, int w, int h) {
-        g.setBackground(Color.GRAY);
-        
-        g.setColor(Color.yellow);
-        if(state % 60 == 0){
-            int x = (int)(Math.random() * w);
-            int y = (int)(Math.random() * h);
-            g.drawOval(x,y,20,20);
-        }
+        g.setColor(c);
+        g.clearRect(0, 0, width, height);
     }
 }

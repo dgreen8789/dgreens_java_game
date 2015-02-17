@@ -13,7 +13,7 @@ import unit.Unit;
  */
 public abstract class AI {
 
-    protected Unit unit;
+    protected volatile Unit unit;
 
     public AI(Unit unit) {
         this.unit = unit;

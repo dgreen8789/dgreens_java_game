@@ -20,7 +20,7 @@ import weapon.Weapon;
  * @author David
  */
 public abstract class Unit implements Comparable {
-
+    private boolean invincible;
     private Point location;
     private AI ai;
     private boolean hittable;
@@ -212,5 +212,14 @@ public abstract class Unit implements Comparable {
     }
 
     public abstract void specialAbility();
+
+    public void setInvincible(boolean b) {
+        invincible = b;
+    }
+
+    public boolean isInvincible() {
+        return invincible;
+    }
+    
 
 }
