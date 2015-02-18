@@ -23,6 +23,8 @@ import java.util.Random;
 import main.init;
 import phyics.UnitClearOperation;
 import phyics.UnitOperation;
+import unit.MainCharacter;
+import unit.ProjectileExplosion;
 import unit_enemy.DestroyableTarget;
 import unit.Unit;
 import unit.UnitUtilities;
@@ -84,7 +86,7 @@ public class LevelMaker {
         if (!victoryMethodCalled) {
             //System.out.println("VICTORY METHOD CALLED");
             afterLevel();
-            String message = "Level " + (levelNum - 1)+ " Success";
+            String message = "Level " + (levelNum - 1) + " Success";
             Point p = new Point(0, 3 * bounds.height / 4);
 
             LevelCompleteTextTask task = new LevelCompleteTextTask(message,
@@ -157,7 +159,7 @@ public class LevelMaker {
         }
         isSetup = true;
         System.out.println("Setup for level " + levelNum + " complete\n\tLevel Difficulty Number: "
-        + this.getDifficulty());
+                + this.getDifficulty());
     }
 
     public void checkForVictory() {
@@ -174,7 +176,7 @@ public class LevelMaker {
 
     private Unit generateEnemy(Integer i) {
 
-       // System.out.println(this.unitClasses.size());
+        // System.out.println(this.unitClasses.size());
         int index = random.nextInt(this.unitClasses.size());
         Class unitClass = unitClasses.get(index);
         unitClass = unitClass.asSubclass(EnemyUnit.class);
@@ -279,7 +281,12 @@ public class LevelMaker {
     public void incrementandSetup() {
         if (isSetup) {
             if (levelNum == initialLevel) {
-                //System.out.println("BLOCK ONE");
+                Rectangle bounds = init.getGameGUI().getBounds();
+                MainCharacter mainCharacter = new MainCharacter(bounds.width / 2, bounds.height / 2, 20);
+                ProjectileExplosion explosion = new ProjectileExplosion(mainCharacter);
+                explosion.setLocation(mainCharacter.getLocation());
+                explosion.onCreate();
+                init.getGameGUI().getGraphicsControl().setMainCharacter(mainCharacter);
                 setup();
             }
             if (completed) {
@@ -369,5 +376,5 @@ public class LevelMaker {
     public int nextInt(int i) {
         return random.nextInt(i);
     }
-    
+
 }

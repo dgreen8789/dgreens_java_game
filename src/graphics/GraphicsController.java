@@ -110,11 +110,8 @@ public class GraphicsController {
         Rectangle bounds = init.getGameGUI().getBounds();
         bgGenerator = new BackgroundGenerator(bounds.width, bounds.height);
         firstRender = false;
-        mainCharacter = new MainCharacter(bounds.width / 2, bounds.height / 2, 20);
         oldBounds = bounds;
-        ProjectileExplosion explosion = new ProjectileExplosion(mainCharacter);
-        explosion.setLocation(mainCharacter.getLocation());
-        explosion.onCreate();
+
     }
 
     private void scale() {
@@ -180,5 +177,5 @@ public class GraphicsController {
     public void drawHitboxes(boolean drawHitboxes) {
         this.drawHitboxes = drawHitboxes;
     }
-    
+
 }

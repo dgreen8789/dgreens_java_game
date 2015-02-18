@@ -26,6 +26,8 @@ import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 import level.LevelMaker;
 import main.init;
+import menu.Menu;
+import menu.TextMenuItem;
 
 public class GUI extends Thread {
 
@@ -125,14 +127,32 @@ public class GUI extends Thread {
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.setUndecorated(true);
     }
-    public void setWindowed(JFrame frame){
-        
+
+    public void setWindowed(JFrame frame) {
+
     }
-    public void setFullScreen(){
+
+    public void setFullScreen() {
         setFullScreen(frame);
     }
-    public void setWindowed(){
+
+    public void setWindowed() {
         setWindowed(frame);
+    }
+
+    private Menu generateMenu(int width, int height) {
+        int xOffset = width / 6;
+        int yOffset = height / 5;
+        Point p = new Point(xOffset, yOffset);
+        Menu x = new Menu();
+        TextMenuItem singlePlayer = new TextMenuItem(x, p, Color.RED, "Single Player", 2 * width / 3, yOffset);
+        Point p2 = p.getLocation();
+        p2.y += 2 * yOffset;
+        TextMenuItem multiPlayer = new TextMenuItem(x, p2, Color.ORANGE, "MultiPlayer", 2 * width / 3, yOffset);
+        x.add(multiPlayer);
+        x.add(singlePlayer);
+        singlePlayer.setTask(new LevelStartDelayer(60));
+        return x;
     }
 
     private class FrameClose extends WindowAdapter {
@@ -245,7 +265,8 @@ public class GUI extends Thread {
         if (firstRender) {
             firstRender = false;
             //System.out.println("FIRST RENDER - TASK ADDED");
-            getGraphicsControl().addTask(new LevelStartDelayer(60));
+            Menu x = generateMenu(width, height);
+            getGraphicsControl().addTask(x);
         }
         if (!paused) {
             graphicsControl.render(g, width, height, insets);

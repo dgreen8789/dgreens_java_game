@@ -23,7 +23,8 @@ import unit.Unit;
  * @author David
  */
 public class ControlHandler implements MouseInputListener, KeyListener, WindowListener, FocusListener, MouseWheelListener {
-
+    private Clickable mouseReciever;
+    private Typeable keyReciever;
     private char UP_KEY = 'W';
     private char DOWN_KEY = 'S';
     private char LEFT_KEY = 'A';
@@ -223,4 +224,20 @@ public class ControlHandler implements MouseInputListener, KeyListener, WindowLi
         return keysPressed.clone();
     }
 
+    public Clickable getMouseReciever() {
+        return mouseReciever;
+    }
+
+    public void setMouseReciever(Clickable mouseReciever) {
+        this.mouseReciever = mouseReciever;
+    }
+
+    public Typeable getKeyReciever() {
+        return keyReciever;
+    }
+
+    public void setKeyReciever(Typeable keyReciever) {
+        this.keyReciever = keyReciever;
+    }
+    
 }
