@@ -16,6 +16,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import javax.swing.event.MouseInputListener;
 import main.init;
+import menu.Menu;
 import unit.Unit;
 
 /**
@@ -113,6 +114,12 @@ public class ControlHandler implements MouseInputListener, KeyListener, WindowLi
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        if (init.getGameGUI().getMenu() != null){
+            Menu x  = init.getGameGUI().getMenu();
+            if (x.isDisplayed()){
+                x.onClick(e.getPoint());
+            }
+        }
 
     }
 

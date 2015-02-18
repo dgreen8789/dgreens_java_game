@@ -19,6 +19,7 @@ public abstract class MenuItem {
 
     public MenuItem(Rectangle bounds, Menu reference) {
         this.bounds = bounds;
+        this.reference = reference;
     }
     public abstract void draw(Graphics2D g);
     

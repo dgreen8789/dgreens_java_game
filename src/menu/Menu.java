@@ -18,7 +18,7 @@ import java.util.ArrayList;
  */
 public class Menu extends GraphicsTask implements Clickable{
     private ArrayList<MenuItem> menuItems;
-
+    private boolean displayed = true;
     public Menu() {
         super(1);
         this.menuItems = new ArrayList<>();
@@ -60,12 +60,18 @@ public class Menu extends GraphicsTask implements Clickable{
     @Override
     public void draw(Graphics2D g, int width, int height) {
         draw(g);
-        frames++;
+        frames+= displayed ?  1:0;
     }
 
     @Override
     public void onCompletion() {
-        frames = 0;
+        frames = 1;
+        displayed = false;
     }
+
+    public boolean isDisplayed() {
+        return displayed;
+    }
+    
     
 }

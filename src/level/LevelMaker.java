@@ -286,6 +286,7 @@ public class LevelMaker {
                 ProjectileExplosion explosion = new ProjectileExplosion(mainCharacter);
                 explosion.setLocation(mainCharacter.getLocation());
                 explosion.onCreate();
+                mainCharacter.allowFirePermission(true);
                 init.getGameGUI().getGraphicsControl().setMainCharacter(mainCharacter);
                 setup();
             }

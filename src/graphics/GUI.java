@@ -57,6 +57,7 @@ public class GUI extends Thread {
     private final boolean FULL_SCREEN;
     private final double GAME_DIFFICULTY;
     private boolean firstRender = true;
+    private Menu menu;
 
     // create a hardware accelerated image
     public final BufferedImage create(final int width, final int height, final boolean alpha) {
@@ -148,10 +149,11 @@ public class GUI extends Thread {
         TextMenuItem singlePlayer = new TextMenuItem(x, p, Color.RED, "Single Player", 2 * width / 3, yOffset);
         Point p2 = p.getLocation();
         p2.y += 2 * yOffset;
-        TextMenuItem multiPlayer = new TextMenuItem(x, p2, Color.ORANGE, "MultiPlayer", 2 * width / 3, yOffset);
+        TextMenuItem multiPlayer = new TextMenuItem(x, p2, Color.ORANGE, "Multiplayer", 2 * width / 3, yOffset);
         x.add(multiPlayer);
         x.add(singlePlayer);
         singlePlayer.setTask(new LevelStartDelayer(60));
+        singlePlayer.setExitMenuOnClick(true);
         return x;
     }
 
@@ -265,8 +267,8 @@ public class GUI extends Thread {
         if (firstRender) {
             firstRender = false;
             //System.out.println("FIRST RENDER - TASK ADDED");
-            Menu x = generateMenu(width, height);
-            getGraphicsControl().addTask(x);
+            menu = generateMenu(width, height);
+            getGraphicsControl().addTask(menu);
         }
         if (!paused) {
             graphicsControl.render(g, width, height, insets);
@@ -310,5 +312,14 @@ public class GUI extends Thread {
     public ControlHandler getControlHandler() {
         return controlHandler;
     }
+
+    public Menu getMenu() {
+        return menu;
+    }
+
+    public void setMenu(Menu menu) {
+        this.menu = menu;
+    }
+    
 
 }

@@ -19,10 +19,12 @@ import main.init;
  * @author David
  */
 public class TextMenuItem extends MenuItem {
+
     private String text;
     private Color color;
     private Color textColor;
     private GraphicsTask task;
+
     public TextMenuItem(Menu reference, Point pos, Color c, String text, int width, int height) {
         super(new Rectangle(pos.x, pos.y, width, height), reference);
         this.text = text;
@@ -34,17 +36,20 @@ public class TextMenuItem extends MenuItem {
         Rectangle r = getBounds();
         g.setColor(color);
         g.fill(r);
-        Font initial =  g.getFont();
+        Font initial = g.getFont();
         Font f = GraphicsUtilities.fillRect(text, g, r.width, r.height);
         g.setFont(f);
         g.setColor(textColor == null ? Color.WHITE : textColor);
-        g.drawString(text, r.x, r.y + r.height);
+        g.drawString(text, r.x, (r.y + r.height) - g.getFontMetrics().getMaxDescent());
         g.setFont(initial);
     }
 
     @Override
     public void onClick() {
-        init.getGameGUI().getGraphicsControl().addTask(task);
+        if (task != null) {
+            init.getGameGUI().getGraphicsControl().addTask(task);
+            super.onClick();
+        }
     }
 
     public String getText() {
@@ -78,8 +83,5 @@ public class TextMenuItem extends MenuItem {
     public void setTextColor(Color textColor) {
         this.textColor = textColor;
     }
-    
-    
-    
-    
+
 }
