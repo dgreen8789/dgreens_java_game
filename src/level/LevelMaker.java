@@ -1,13 +1,8 @@
-/* To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package level;
 
 import AI.EnemyAI;
 import AI.Formation;
 import graphics.tasks.LevelCompleteTextTask;
-import graphics.tasks.LevelStartDelayer;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -20,14 +15,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import main.init;
 import phyics.UnitClearOperation;
 import phyics.UnitOperation;
 import unit.MainCharacter;
 import unit.ProjectileExplosion;
-import unit_enemy.DestroyableTarget;
 import unit.Unit;
 import unit.UnitUtilities;
 import unit_enemy.BasicEnemy;

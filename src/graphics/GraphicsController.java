@@ -7,10 +7,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.concurrent.atomic.AtomicLong;
 import main.init;
-import unit.MainCharacter;
-import unit.ProjectileExplosion;
 import unit.Unit;
-import unit_enemy.BasicEnemy;
 
 /**
  *

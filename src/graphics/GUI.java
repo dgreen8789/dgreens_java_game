@@ -6,7 +6,6 @@ import control.ControlHandler;
 import graphics.tasks.LevelStartDelayer;
 import java.awt.Canvas;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
