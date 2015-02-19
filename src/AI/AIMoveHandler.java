@@ -7,6 +7,7 @@
 package AI;
 
 import java.util.ArrayList;
+import main.init;
 import phyics.UnitOperation;
 import unit.Unit;
 
@@ -19,8 +20,10 @@ public class AIMoveHandler extends UnitOperation{
     @Override
     public boolean specialOperation(ArrayList<Unit> u) {
         for (Unit unit : u) {
+            if ((!init.getUnitOperationHandler().AIMovesPaused()) || unit.overridesAIPause())
             unit.executeAImove();
         }
+        init.getUnitOperationHandler().decrementFramesPaused();
         return true;
 
     }

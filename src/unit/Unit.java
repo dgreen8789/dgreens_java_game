@@ -20,6 +20,7 @@ import weapon.Weapon;
  * @author David
  */
 public abstract class Unit implements Comparable {
+
     private boolean invincible;
     private Point location;
     private AI ai;
@@ -227,6 +228,9 @@ public abstract class Unit implements Comparable {
     public boolean isAlive() {
         return isAlive;
     }
-    
-    
+
+    public boolean overridesAIPause() {
+        return false;
+    }
+
 }

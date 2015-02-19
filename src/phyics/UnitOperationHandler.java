@@ -18,6 +18,8 @@ public class UnitOperationHandler implements Runnable {
     private ArrayList<Unit> units;
     private volatile boolean lock;
     private volatile boolean isActuallyLocked;
+    private boolean AImovesPaused;
+    private int numFramesPaused;
 
     @Override
     public void run() {
@@ -66,6 +68,17 @@ public class UnitOperationHandler implements Runnable {
         lock = false;
         while (isActuallyLocked != lock);
         return lock;
+    }
+
+    public void pauseAllAI(int frames) {
+        this.numFramesPaused = frames;
+        this.AImovesPaused = true;
+    }
+    public void decrementFramesPaused(){
+        numFramesPaused--;
+    }
+    public boolean AIMovesPaused(){
+        return numFramesPaused > 0;
     }
 
 }

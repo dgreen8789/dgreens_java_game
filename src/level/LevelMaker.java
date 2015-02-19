@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import main.init;
 import phyics.UnitClearOperation;
 import phyics.UnitOperation;
@@ -153,7 +155,11 @@ public class LevelMaker {
         ArrayList<Integer> unitComplexities = generateUnitNumbers();
         units = generateUnits(unitComplexities);
         makeFormations(units);
-        clearLevel(true);
+        if (levelNum == initialLevel) {
+ 
+        } else {
+            clearLevel(true);
+        }
         for (Unit u : units) {
             u.onCreate();
         }
@@ -286,6 +292,7 @@ public class LevelMaker {
                 ProjectileExplosion explosion = new ProjectileExplosion(mainCharacter);
                 explosion.setLocation(mainCharacter.getLocation());
                 explosion.onCreate();
+                //init.getUnitOperationHandler().pauseAllAI(60);
                 mainCharacter.allowFirePermission(true);
                 init.getGameGUI().getGraphicsControl().setMainCharacter(mainCharacter);
                 setup();

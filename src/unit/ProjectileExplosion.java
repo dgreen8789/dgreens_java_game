@@ -172,4 +172,10 @@ public class ProjectileExplosion extends Unit {
         return PROJECTILE_SPEED;
     }
 
+    @Override
+    public boolean overridesAIPause() {
+        return false;
+    }
+    
+
 }
